@@ -20,12 +20,14 @@ main.cpp\
     colorTools.cpp \
     interpolate.cpp \
     main2.cpp \
+    colortablewidget.cpp
 
 
 HEADERS  += \
     dllTools.h \
     mainwindow.h \
     colorTools.h \
-    exitCodes.h
+    exitCodes.h \
+    colortablewidget.h
 
 FORMS    += mainwindow.ui
