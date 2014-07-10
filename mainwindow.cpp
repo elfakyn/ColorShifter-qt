@@ -3,6 +3,7 @@
 #include <QDropEvent>
 #include <QMimeData>
 
+#include "colortablewidget.h"
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 

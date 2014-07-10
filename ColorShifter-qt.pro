@@ -14,7 +14,7 @@ TEMPLATE = app
 
 SOURCES += \
     mainwindow.cpp \
-main.cpp\
+    main.cpp\
     dllTools.cpp \
     Color.cpp \
     colorTools.cpp \

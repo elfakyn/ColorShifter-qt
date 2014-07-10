@@ -1,4 +1,10 @@
 #include "colortablewidget.h"
+#include <QDropEvent>
+#include <QMimeType>
+
+#ifdef QT_DEBUG
+#include <iostream>
+#endif
 
 ColorTableWidget::ColorTableWidget(QWidget *parent) :
     QTableWidget(parent)
