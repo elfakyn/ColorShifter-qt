@@ -2,6 +2,7 @@
 
 #include <QDropEvent>
 #include <QMimeData>
+#include <QScrollBar>
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -42,6 +43,57 @@ MainWindow::~MainWindow()
 {
     delete ui;
     setDwmColors(&initialDwmColor, 0);
+}
+
+void QTableWidget::dropEvent(QDropEvent *event)
+{
+
+    if (!event->source()) {
+#ifdef QT_DEBUG
+        std::cout<< "WARN: attempted to drop from outside" << std::endl;
+#endif
+        event->ignore();
+    }
+
+    QModelIndex srcIndex = selectedIndexes().first();
+    QModelIndex destIndex = indexAt(event->pos());
+    int srcRow = srcIndex.row();
+    int destRow = destIndex.row();
+    int scrollValue = verticalScrollBar()->value();
+
+    if (destRow < 0) { // all the way to the bottom
+        destIndex = indexFromItem(item(rowCount()-1, 0));
+        destRow = destIndex.row();
+    }
+
+#ifdef QT_DEBUG
+    std::cout<<"Table move: "<<srcRow<<" "<<destRow<<std::endl;
+#endif
+
+    event->ignore(); // Override default event handler
+
+    // Cutting corners
+    // Without this if statement the drag and drops are offset by one.
+    if (srcRow > destRow) {
+        srcRow++;
+    } else {
+        destRow++;
+    }
+
+    // copy data over to new row
+    insertRow(destRow);
+    for (int i = 0; i < columnCount(); i++) {
+        QTableWidgetItem *item = takeItem(srcRow, i);
+        setItem(destRow, i, item);
+    }
+    removeRow(srcRow);
+
+    // scroll to correct position and select destination
+    selectionModel()->select(destIndex, QItemSelectionModel::ClearAndSelect);
+    update();
+    verticalScrollBar()->setValue(scrollValue);
+    scrollTo(destIndex, QAbstractItemView::EnsureVisible);
+
 }
 
 void MainWindow::updateColor()

@@ -130,6 +130,9 @@
        <height>221</height>
       </rect>
      </property>
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
+     </property>
      <property name="frameShape">
       <enum>QFrame::StyledPanel</enum>
      </property>
@@ -141,6 +144,9 @@
      </property>
      <property name="horizontalScrollBarPolicy">
       <enum>Qt::ScrollBarAlwaysOff</enum>
+     </property>
+     <property name="editTriggers">
+      <set>QAbstractItemView::AnyKeyPressed|QAbstractItemView::DoubleClicked|QAbstractItemView::EditKeyPressed|QAbstractItemView::SelectedClicked</set>
      </property>
      <property name="dragEnabled">
       <bool>false</bool>
@@ -167,13 +173,16 @@
       <enum>QAbstractItemView::ScrollPerItem</enum>
      </property>
      <property name="showGrid">
+      <bool>true</bool>
+     </property>
+     <property name="wordWrap">
       <bool>false</bool>
      </property>
      <property name="cornerButtonEnabled">
       <bool>false</bool>
      </property>
      <property name="rowCount">
-      <number>15</number>
+      <number>3</number>
      </property>
      <property name="columnCount">
       <number>1</number>
@@ -191,20 +200,8 @@
       <bool>true</bool>
      </attribute>
      <attribute name="verticalHeaderVisible">
-      <bool>false</bool>
+      <bool>true</bool>
      </attribute>
-     <row/>
-     <row/>
-     <row/>
-     <row/>
-     <row/>
-     <row/>
-     <row/>
-     <row/>
-     <row/>
-     <row/>
-     <row/>
-     <row/>
      <row/>
      <row/>
      <row/>
