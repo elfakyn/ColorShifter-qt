@@ -21,19 +21,25 @@ private slots:
 
     void on_previewColorCheckbox_stateChanged(int arg1);
 
-    void on_hueSlider_sliderMoved(int position);
+    void on_hueRedSlider_valueChanged(int position);
 
-    void on_satSlider_sliderMoved(int position);
+    void on_satGreenSlider_valueChanged(int position);
 
-    void on_valueSlider_sliderMoved(int position);
+    void on_valueBlueSlider_valueChanged(int position);
 
-    void on_alphaSlider_sliderMoved(int position);
+    void on_alphaSlider_valueChanged(int position);
+
+    void on_hsvRadio_toggled(bool checked);
+
+    void on_rgbRadio_toggled(bool checked);
+
+    void on_randomizeColorButton_clicked();
 
 private:
     Ui::MainWindow *ui;
     void updateColor(void);
     DwmColor initialDwmColor;
-    int4 currentAHSV;
+    int4 currentARGB;
 };
 
 #endif // MAINWINDOW_H
