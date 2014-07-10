@@ -28,6 +28,7 @@ HEADERS  += \
     mainwindow.h \
     colorTools.h \
     exitCodes.h \
-    colortablewidget.h
+    colortablewidget.h \
+    flags.h
 
 FORMS    += mainwindow.ui

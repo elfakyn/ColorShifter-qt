@@ -9,6 +9,7 @@
 
 #include "colorTools.h"
 #include "dllTools.h"
+#include "flags.h"
 
 #ifdef QT_DEBUG
 #include <iostream>
@@ -45,6 +46,7 @@ MainWindow::~MainWindow()
     setDwmColors(&initialDwmColor, 0);
 }
 
+// override the drag-and-drop handler to swap instead of overwrite
 void QTableWidget::dropEvent(QDropEvent *event)
 {
 
@@ -204,66 +206,111 @@ void MainWindow::on_rgbRadio_toggled(bool checked)
 
 void MainWindow::on_randomizeColorButton_clicked()
 {
-    // We'll use a "smart" randomizer that prefers nice colors
+    if(ui->smartRandomizeCheckbox->isChecked()) {
 
-    if (ui->hsvRadio->isChecked()) {
-        // for HSV we will prefer high saturation, light colors
-        if (rand() % 3) { // 66% chance of high saturation
-            ui->satGreenSlider->setValue(rand() % 128 + 128);
-        } else {
-            ui->satGreenSlider->setValue(rand() % 256);
-        }
+        // We'll use a "smart" randomizer that prefers nice colors
 
-        if (rand() % 4) { // 75% chance of light color
-            ui->valueBlueSlider->setValue(rand() % 64 + 192);
-        } else {
-            ui->satGreenSlider->setValue(rand() % 256);
-        }
-
-        // choose between hues equally
-        ui->hueRedSlider->setValue(rand() % 256);
-
-    } else {
-        // for RGB we want to avoid all 3 sliders in the same position
-
-        int seed = rand() % 6 + 1;
-
-        if (rand() % 2) { // 50% chance of respecting seed
-            if (seed / 4) {
-                ui->hueRedSlider->setValue(rand() % 64 + 192);
+        if (ui->hsvRadio->isChecked()) {
+            // for HSV we will prefer high saturation, light colors
+            if (rand() % 3) { // 66% chance of high saturation
+                ui->satGreenSlider->setValue(rand() % 128 + 128);
             } else {
-                ui->hueRedSlider->setValue(rand() % 64);
+                ui->satGreenSlider->setValue(rand() % 256);
             }
-        } else {
-            ui->hueRedSlider->setValue(rand() % 256);
-        }
 
-        if (rand() % 2) { // 50% chance of respecting seed
-            if (seed / 2 % 2) {
-                ui->satGreenSlider->setValue(rand() % 64 + 192);
-            } else {
-                ui->satGreenSlider->setValue(rand() % 64);
-            }
-        } else {
-            ui->satGreenSlider->setValue(rand() % 256);
-        }
-
-        if (rand() % 2) { // 50% chance of respecting seed
-            if (seed % 2) {
+            if (rand() % 4) { // 75% chance of light color
                 ui->valueBlueSlider->setValue(rand() % 64 + 192);
             } else {
-                ui->valueBlueSlider->setValue(rand() % 64);
+                ui->satGreenSlider->setValue(rand() % 256);
             }
+
+            // choose between hues equally
+            ui->hueRedSlider->setValue(rand() % 256);
+
         } else {
-            ui->valueBlueSlider->setValue(rand() % 256);
+            // for RGB we want to avoid all 3 sliders in the same position
+
+            int seed = rand() % 6 + 1;
+
+            if (rand() % 2) { // 50% chance of respecting seed
+                if (seed / 4) {
+                    ui->hueRedSlider->setValue(rand() % 64 + 192);
+                } else {
+                    ui->hueRedSlider->setValue(rand() % 64);
+                }
+            } else {
+                ui->hueRedSlider->setValue(rand() % 256);
+            }
+
+            if (rand() % 2) { // 50% chance of respecting seed
+                if (seed / 2 % 2) {
+                    ui->satGreenSlider->setValue(rand() % 64 + 192);
+                } else {
+                    ui->satGreenSlider->setValue(rand() % 64);
+                }
+            } else {
+                ui->satGreenSlider->setValue(rand() % 256);
+            }
+
+            if (rand() % 2) { // 50% chance of respecting seed
+                if (seed % 2) {
+                    ui->valueBlueSlider->setValue(rand() % 64 + 192);
+                } else {
+                    ui->valueBlueSlider->setValue(rand() % 64);
+                }
+            } else {
+                ui->valueBlueSlider->setValue(rand() % 256);
+            }
         }
+
+        // prefer higher alphas
+
+        if (rand() % 2) { // 50% chance of high alpha
+            ui->alphaSlider->setValue(rand() % 192 + 64);
+        } else {
+            ui->alphaSlider->setValue(rand() % 256);
+        }
+
+    } else {
+
+        // dumb randomizer
+        ui->hueRedSlider->setValue(rand() % 256);
+        ui->satGreenSlider->setValue(rand() % 256);
+        ui->valueBlueSlider->setValue(rand() % 256);
+        ui->alphaSlider->setValue(rand() % 256);
+    }
+}
+
+void MainWindow::on_removeColorButton_clicked()
+{
+    ui->colorTable->removeRow(ui->colorTable->selectedItems().first()->row());
+
+    if (ui->colorTable->rowCount() == 0) { // disable button when table is empty
+        ui->removeColorButton->setEnabled(false);
+    }
+}
+
+void MainWindow::on_addColorButton_clicked()
+{
+    if (ui->colorTable->rowCount() == 0) { // no rows to insert into
+        ui->colorTable->insertRow(0);
+        ui->colorTable->selectRow(0);
+
+        ui->removeColorButton->setEnabled(true); // re-enable the remove color button
+
+        // TODO: populate item with default value
+
+        return;
     }
 
-    // prefer higher alphas
+    // insert and select specified row
+    int row = ui->colorTable->selectedItems().first()->row() + 1;
+    ui->colorTable->insertRow(row);
+    ui->colorTable->selectRow(row);
 
-    if (rand() % 2) { // 50% chance of high alpha
-        ui->alphaSlider->setValue(rand() % 192 + 64);
-    } else {
-        ui->alphaSlider->setValue(rand() % 256);
+    // copy contents over from previously selected row
+    for (int i = 0; i < ui->colorTable->columnCount(); i++) {
+        QTableWidgetItem *item = new QTableWidgetItem(*ui->colorTable->item(row - 1, i));
+        ui->colorTable->setItem(row, i, item);
     }
 }

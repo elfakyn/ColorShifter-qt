@@ -167,7 +167,7 @@
       <enum>QAbstractItemView::SingleSelection</enum>
      </property>
      <property name="selectionBehavior">
-      <enum>QAbstractItemView::SelectItems</enum>
+      <enum>QAbstractItemView::SelectRows</enum>
      </property>
      <property name="verticalScrollMode">
       <enum>QAbstractItemView::ScrollPerItem</enum>
@@ -317,7 +317,7 @@
       <rect>
        <x>10</x>
        <y>400</y>
-       <width>51</width>
+       <width>41</width>
        <height>21</height>
       </rect>
      </property>
@@ -331,9 +331,9 @@
     <widget class="QRadioButton" name="hsvRadio">
      <property name="geometry">
       <rect>
-       <x>70</x>
+       <x>60</x>
        <y>400</y>
-       <width>51</width>
+       <width>41</width>
        <height>21</height>
       </rect>
      </property>
@@ -350,7 +350,7 @@
     <widget class="QPushButton" name="randomizeColorButton">
      <property name="geometry">
       <rect>
-       <x>170</x>
+       <x>110</x>
        <y>400</y>
        <width>71</width>
        <height>21</height>
@@ -358,6 +358,22 @@
      </property>
      <property name="text">
       <string>Randomize</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="smartRandomizeCheckbox">
+     <property name="geometry">
+      <rect>
+       <x>190</x>
+       <y>400</y>
+       <width>61</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Smart</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
      </property>
     </widget>
    </widget>

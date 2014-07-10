@@ -35,6 +35,10 @@ private slots:
 
     void on_randomizeColorButton_clicked();
 
+    void on_removeColorButton_clicked();
+
+    void on_addColorButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     void updateColor(void);
