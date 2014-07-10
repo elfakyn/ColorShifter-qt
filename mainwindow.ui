@@ -121,7 +121,7 @@
       <string>Alpha</string>
      </property>
     </widget>
-    <widget class="ColorTableWidget" name="colorTable">
+    <widget class="QTableWidget" name="colorTable">
      <property name="geometry">
       <rect>
        <x>10</x>
