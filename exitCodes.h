@@ -1,0 +1,6 @@
+#pragma once
+
+#define EXIT_OK 0
+#define EXIT_DLL_LOAD_FAIL 1
+#define EXIT_COMPOSITION_DISABLED 2
+#define EXIT_A_EXEC_DID_NOT_RETURN 3

@@ -1,0 +1,532 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>640</width>
+    <height>480</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>640</width>
+    <height>480</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>640</width>
+    <height>480</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>ColorShifter</string>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <widget class="QGroupBox" name="colorGroup">
+    <property name="geometry">
+     <rect>
+      <x>380</x>
+      <y>10</y>
+      <width>251</width>
+      <height>431</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Colors</string>
+    </property>
+    <widget class="QPushButton" name="removeColorButton">
+     <property name="geometry">
+      <rect>
+       <x>90</x>
+       <y>400</y>
+       <width>71</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Remove</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="addColorButton">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>400</y>
+       <width>71</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Add</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="previewColorCheckbox">
+     <property name="geometry">
+      <rect>
+       <x>170</x>
+       <y>400</y>
+       <width>71</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Preview</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QSlider" name="alphaSlider">
+     <property name="geometry">
+      <rect>
+       <x>49</x>
+       <y>370</y>
+       <width>191</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="minimum">
+      <number>0</number>
+     </property>
+     <property name="maximum">
+      <number>255</number>
+     </property>
+     <property name="value">
+      <number>255</number>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+    <widget class="QLabel" name="alphaLabel">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>370</y>
+       <width>41</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Alpha</string>
+     </property>
+    </widget>
+    <widget class="QTableWidget" name="colorTable">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>20</y>
+       <width>231</width>
+       <height>251</height>
+      </rect>
+     </property>
+     <property name="verticalScrollBarPolicy">
+      <enum>Qt::ScrollBarAlwaysOn</enum>
+     </property>
+     <property name="horizontalScrollBarPolicy">
+      <enum>Qt::ScrollBarAlwaysOff</enum>
+     </property>
+    </widget>
+    <widget class="QSlider" name="valueSlider">
+     <property name="geometry">
+      <rect>
+       <x>49</x>
+       <y>340</y>
+       <width>191</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="minimum">
+      <number>0</number>
+     </property>
+     <property name="maximum">
+      <number>255</number>
+     </property>
+     <property name="value">
+      <number>128</number>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+    <widget class="QLabel" name="valueLabel">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>340</y>
+       <width>41</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Value</string>
+     </property>
+    </widget>
+    <widget class="QSlider" name="satSlider">
+     <property name="geometry">
+      <rect>
+       <x>49</x>
+       <y>310</y>
+       <width>191</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="minimum">
+      <number>0</number>
+     </property>
+     <property name="maximum">
+      <number>255</number>
+     </property>
+     <property name="value">
+      <number>192</number>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+    <widget class="QLabel" name="satLabel">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>310</y>
+       <width>41</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Sat</string>
+     </property>
+    </widget>
+    <widget class="QSlider" name="hueSlider">
+     <property name="geometry">
+      <rect>
+       <x>49</x>
+       <y>280</y>
+       <width>191</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="minimum">
+      <number>0</number>
+     </property>
+     <property name="maximum">
+      <number>255</number>
+     </property>
+     <property name="value">
+      <number>0</number>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+    <widget class="QLabel" name="hueLabel">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>280</y>
+       <width>41</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Hue</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QCheckBox" name="startWindowsCheckbox">
+    <property name="geometry">
+     <rect>
+      <x>390</x>
+      <y>450</y>
+      <width>121</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Start with Windows</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="mainButton">
+    <property name="geometry">
+     <rect>
+      <x>530</x>
+      <y>450</y>
+      <width>101</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Shift the colors!</string>
+    </property>
+   </widget>
+   <widget class="QGroupBox" name="settingsGroup">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>361</width>
+      <height>141</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Settings</string>
+    </property>
+    <widget class="QSlider" name="smoothnessSlider">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>20</y>
+       <width>191</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="minimum">
+      <number>0</number>
+     </property>
+     <property name="maximum">
+      <number>10</number>
+     </property>
+     <property name="pageStep">
+      <number>2</number>
+     </property>
+     <property name="value">
+      <number>2</number>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="tickPosition">
+      <enum>QSlider::TicksAbove</enum>
+     </property>
+    </widget>
+    <widget class="QLabel" name="smoothnessLabel">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>20</y>
+       <width>71</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Smoothness</string>
+     </property>
+    </widget>
+    <widget class="QSlider" name="timeSlider">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>50</y>
+       <width>191</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+    <widget class="QLabel" name="timeLabel">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>50</y>
+       <width>71</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Cycle time</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="smoothnessStatusLabel">
+     <property name="geometry">
+      <rect>
+       <x>280</x>
+       <y>20</y>
+       <width>71</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>[Granularity]</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="randomCheckbox">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>80</y>
+       <width>161</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Shift colors in random order</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="smartCheckbox">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>110</y>
+       <width>161</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Smart transitions (by hue)</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QTimeEdit" name="timeEdit">
+     <property name="geometry">
+      <rect>
+       <x>280</x>
+       <y>50</y>
+       <width>71</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="buttonSymbols">
+      <enum>QAbstractSpinBox::NoButtons</enum>
+     </property>
+     <property name="displayFormat">
+      <string>HH:mm:ss</string>
+     </property>
+    </widget>
+    <widget class="QGroupBox" name="advancedGroup">
+     <property name="geometry">
+      <rect>
+       <x>170</x>
+       <y>80</y>
+       <width>181</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string>Advanced</string>
+     </property>
+     <widget class="QCheckBox" name="overrideCheckbox">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>20</y>
+        <width>111</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Override balance</string>
+      </property>
+     </widget>
+     <widget class="QSpinBox" name="balanceBox">
+      <property name="geometry">
+       <rect>
+        <x>130</x>
+        <y>20</y>
+        <width>42</width>
+        <height>22</height>
+       </rect>
+      </property>
+     </widget>
+    </widget>
+   </widget>
+   <widget class="QGroupBox" name="paletteGroup">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>160</y>
+      <width>361</width>
+      <height>281</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Palettes</string>
+    </property>
+    <widget class="QPushButton" name="addPaletteButton">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>250</y>
+       <width>71</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Add</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="removePaletteButton">
+     <property name="geometry">
+      <rect>
+       <x>90</x>
+       <y>250</y>
+       <width>71</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Remove</string>
+     </property>
+    </widget>
+    <widget class="QTableView" name="paletteTable">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>20</y>
+       <width>341</width>
+       <height>221</height>
+      </rect>
+     </property>
+     <property name="verticalScrollBarPolicy">
+      <enum>Qt::ScrollBarAlwaysOn</enum>
+     </property>
+     <property name="horizontalScrollBarPolicy">
+      <enum>Qt::ScrollBarAlwaysOff</enum>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QPushButton" name="aboutButton">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>450</y>
+      <width>101</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>About</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="quitButton">
+    <property name="geometry">
+     <rect>
+      <x>120</x>
+      <y>450</y>
+      <width>101</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Stop and quit</string>
+    </property>
+   </widget>
+  </widget>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections/>
+</ui>

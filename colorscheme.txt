@@ -1,0 +1,8 @@
+ffff00ff
+ff00ffff 100 30
+ffff0000 100 30
+ff00ff00 50  30
+ff0000ff 20  30
+ffffff00 100 30
+ffff0000 200 30
+ff00ffff 100 30
