@@ -1,5 +1,8 @@
 #include <math.h>
 
+#include <QDropEvent>
+#include <QMimeData>
+
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
@@ -32,6 +35,7 @@ MainWindow::MainWindow(QWidget *parent) :
     currentARGB.y = 0;
     currentARGB.z = 0;
     currentARGB.w = 0;
+
 }
 
 MainWindow::~MainWindow()
@@ -61,8 +65,10 @@ void MainWindow::updateColor()
 
 void MainWindow::on_previewColorCheckbox_stateChanged(int arg1)
 {
-    if (!arg1) { // Checkbox now unchecked
-        setDwmColors(&initialDwmColor, 0); // reset colors to initial values
+    if (arg1) { // checkbox checked
+        updateColor();
+    } else {
+        setDwmColors(&initialDwmColor, 0); // revert to original colors
     }
 }
 
@@ -146,6 +152,8 @@ void MainWindow::on_rgbRadio_toggled(bool checked)
 
 void MainWindow::on_randomizeColorButton_clicked()
 {
+    // We'll use a "smart" randomizer that prefers nice colors
+
     if (ui->hsvRadio->isChecked()) {
         // for HSV we will prefer high saturation, light colors
         if (rand() % 3) { // 66% chance of high saturation
