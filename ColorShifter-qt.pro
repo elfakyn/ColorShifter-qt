@@ -20,7 +20,7 @@ main.cpp\
     colorTools.cpp \
     interpolate.cpp \
     main2.cpp \
-    colortablewidget.cpp
+    palette.cpp
 
 
 HEADERS  += \
@@ -28,7 +28,7 @@ HEADERS  += \
     mainwindow.h \
     colorTools.h \
     exitCodes.h \
-    colortablewidget.h \
-    flags.h
+    flags.h \
+    palette.h
 
 FORMS    += mainwindow.ui

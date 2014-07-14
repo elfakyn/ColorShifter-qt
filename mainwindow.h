@@ -39,6 +39,10 @@ private slots:
 
     void on_addColorButton_clicked();
 
+    void on_colorTable_itemSelectionChanged();
+
+    void on_quitButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     void updateColor(void);

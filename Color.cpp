@@ -2,8 +2,8 @@
 
 Color::Color()
 {
-	int4 argb = { 0 };
-	unsigned char balance = 0;
+    argb = { 0 };
+    balance = 0;
 }
 
 void Color::SetARGB(int4 argb_)

@@ -187,6 +187,9 @@
      <property name="columnCount">
       <number>1</number>
      </property>
+     <property name="immutableRows" stdset="0">
+      <number>2</number>
+     </property>
      <attribute name="horizontalHeaderVisible">
       <bool>false</bool>
      </attribute>
@@ -659,6 +662,9 @@
      </property>
      <property name="horizontalScrollBarPolicy">
       <enum>Qt::ScrollBarAlwaysOff</enum>
+     </property>
+     <property name="immutableRows" stdset="0">
+      <number>5</number>
      </property>
     </widget>
     <widget class="QPushButton" name="previewPaletteButton">

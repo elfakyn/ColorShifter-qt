@@ -11,6 +11,8 @@
 #include "dllTools.h"
 #include "flags.h"
 
+#include "palette.h"
+
 #ifdef QT_DEBUG
 #include <iostream>
 #endif
@@ -26,6 +28,8 @@ HRESULT(WINAPI *getDwmColors) (DwmColor *color);
 #include "dllTools.h"
 #endif
 
+#define PALETTE_MAX_PALETTES 100
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -38,6 +42,7 @@ MainWindow::MainWindow(QWidget *parent) :
     currentARGB.z = 0;
     currentARGB.w = 0;
 
+    Palette palettes[PALETTE_MAX_PALETTES];
 }
 
 MainWindow::~MainWindow()
@@ -52,9 +57,10 @@ void QTableWidget::dropEvent(QDropEvent *event)
 
     if (!event->source()) {
 #ifdef QT_DEBUG
-        std::cout<< "WARN: attempted to drop from outside" << std::endl;
+        std::cout<< "Table move: external (ignored)" << std::endl;
 #endif
         event->ignore();
+        return;
     }
 
     QModelIndex srcIndex = selectedIndexes().first();
@@ -69,10 +75,8 @@ void QTableWidget::dropEvent(QDropEvent *event)
     }
 
 #ifdef QT_DEBUG
-    std::cout<<"Table move: "<<srcRow<<" "<<destRow<<std::endl;
+    std::cout<<"Table move: "<<srcRow<<" "<<destRow;
 #endif
-
-    event->ignore(); // Override default event handler
 
     // Cutting corners
     // Without this if statement the drag and drops are offset by one.
@@ -80,6 +84,15 @@ void QTableWidget::dropEvent(QDropEvent *event)
         srcRow++;
     } else {
         destRow++;
+    }
+
+    if (srcRow < property("immutableRows").toInt() || destRow < property("immutableRows").toInt()) {
+        // move into forbidden area
+#ifdef QT_DEBUG
+        std::cout<<", immutable (ignored)"<<std::endl;
+#endif
+        event->ignore();
+        return;
     }
 
     // copy data over to new row
@@ -96,6 +109,10 @@ void QTableWidget::dropEvent(QDropEvent *event)
     verticalScrollBar()->setValue(scrollValue);
     scrollTo(destIndex, QAbstractItemView::EnsureVisible);
 
+#ifdef QT_DEBUG
+    std::cout<<" (ok)"<<std::endl;
+#endif
+    event->ignore(); // override default handler
 }
 
 void MainWindow::updateColor()
@@ -266,7 +283,7 @@ void MainWindow::on_randomizeColorButton_clicked()
         // prefer higher alphas
 
         if (rand() % 2) { // 50% chance of high alpha
-            ui->alphaSlider->setValue(rand() % 192 + 64);
+            ui->alphaSlider->setValue(rand() % 128 + 64);
         } else {
             ui->alphaSlider->setValue(rand() % 256);
         }
@@ -312,5 +329,34 @@ void MainWindow::on_addColorButton_clicked()
     for (int i = 0; i < ui->colorTable->columnCount(); i++) {
         QTableWidgetItem *item = new QTableWidgetItem(*ui->colorTable->item(row - 1, i));
         ui->colorTable->setItem(row, i, item);
+    }
+}
+
+void MainWindow::on_colorTable_itemSelectionChanged()
+{
+    if(ui->colorTable->selectedItems().empty()) {
+        return; // FIXME: make sure thing is stuff.
+    }
+    if (ui->colorTable->selectedItems().first()->row() < ui->colorTable->property("immutableRows").toInt()) {
+        // cannot delete immutable object
+        ui->removeColorButton->setEnabled(false);
+    } else {
+        // TODO: move this into a recalculateButtonState() function
+        ui->removeColorButton->setEnabled(true);
+    }
+}
+
+void MainWindow::on_quitButton_clicked()
+{
+    // FIXME: TEMPORARY
+    for (int i = 0; i < ui->colorTable->rowCount(); i++) {
+
+        if(ui->colorTable->item(i, 0)) {
+            ui->colorTable->item(i,0)->setText(QString::number(i+1));
+        } else {
+            QTableWidgetItem *item = new QTableWidgetItem;
+            item->setText(QString::number(i+1));
+            ui->colorTable->setItem(i,0,item);
+        }
     }
 }
