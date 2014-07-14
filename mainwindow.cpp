@@ -3,6 +3,7 @@
 #include <QDropEvent>
 #include <QMimeData>
 #include <QScrollBar>
+#include <QHeaderView>
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -28,7 +29,7 @@ HRESULT(WINAPI *getDwmColors) (DwmColor *color);
 #include "dllTools.h"
 #endif
 
-#define PALETTE_MAX_PALETTES 100
+#define PALETTE_MAX_PALETTES 30
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -43,6 +44,8 @@ MainWindow::MainWindow(QWidget *parent) :
     currentARGB.w = 0;
 
     Palette palettes[PALETTE_MAX_PALETTES];
+
+    ui->paletteTable->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
 }
 
 MainWindow::~MainWindow()
