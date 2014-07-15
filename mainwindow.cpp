@@ -4,6 +4,7 @@
 #include <QMimeData>
 #include <QScrollBar>
 #include <QHeaderView>
+#include <QFileDialog>
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -48,39 +49,17 @@ MainWindow::MainWindow(QWidget *parent) :
 
     n_palettes = 0; // TODO: replace with loading palettes from JSON
 
+    // Misc initialization
+    loadPalettes(":/palettes.json");
+
     // UI values initialization
     ui->balanceBox->setValue(initialDwmColor.colorBalance);
 
     ////////////////////////////////////////////////////////////////////////////
     // TEMPORARY FOR TESTING
 
-    QFile paletteFile(":/palettes.json");
-#ifdef QT_DEBUG
-    if (paletteFile.open(QIODevice::ReadOnly)) {
-        std::cout<<"Open OK"<<std::endl;
-    } else {
-        std::cout<<"ERR: Open fail!"<<std::endl;
-    }
-#endif
-    loadPalettesFromJSON(QJsonDocument::fromJson(paletteFile.readAll()).object());
-#ifdef QT_DEBUG
-    for (int i = 0; i < n_palettes; i++) {
-        char crt[50];
-        palettes[i].getName(crt);
-        std::cout<<"Palette loaded: "<<crt<<" ";
-        for (int j = 0; j < palettes[i].getN(); j++) {
-            std::cout<<palettes[i].getMergedAt(j)<<" ";
-        }
-        std::cout<<std::endl;
-    }
-#endif
 
 
-    QJsonDocument doc(savePalettesToJSON());
-    QFile paletteOut("testPalette.json");
-    paletteOut.open(QIODevice::WriteOnly);
-    paletteOut.write(doc.toJson());
-    paletteOut.close();
     // END TEMPORARY FOR TESTING
     ////////////////////////////////////////////////////////////////////////////
 }
@@ -426,8 +405,11 @@ void MainWindow::updateColorTable(int index)
     }
 }
 
+
+
 void MainWindow::loadPalettesFromJSON(QJsonObject json)
 {
+
     QJsonArray palettes_ = json["palettes"].toArray();
 
     for (int i = 0; i < palettes_.size(); i++) {
@@ -437,6 +419,11 @@ void MainWindow::loadPalettesFromJSON(QJsonObject json)
         palettes[i].setName(name__);
 
         QJsonArray colors_ = crt["colors"].toArray();
+
+        // clear palette before loading colors
+        for (int j = palettes[i].getN() - 1; j >= 0; j--) {
+            palettes[i].remove(j);
+        }
 
         for (int j = 0; j < colors_.size(); j++) {
             QJsonObject crt_ = colors_.at(j).toObject();
@@ -478,4 +465,69 @@ QJsonObject MainWindow::savePalettesToJSON()
     json["palettes"] = paletteArray;
 
     return json;
+}
+
+void MainWindow::on_loadPalettesButton_clicked()
+{
+    QFileDialog loadDialog(this);
+    loadDialog.setFileMode(QFileDialog::ExistingFile);
+    loadPalettes(loadDialog.getOpenFileName(this, "Load palette file", QDir::homePath(), "Palette files (*.json);;All files (*.*)"));
+}
+
+void MainWindow::loadPalettes(QString loadFileName)
+{
+    QFile loadFile(loadFileName);
+
+    if (loadFile.open(QIODevice::ReadOnly)) {
+#ifdef QT_DEBUG
+        std::cout<<"Load OK: "<<loadFileName.toLocal8Bit().data()<<std::endl;
+#endif
+    } else {
+#ifdef QT_DEBUG
+        std::cout<<"WARN: Load fail: "<<loadFileName.toLocal8Bit().data()<<std::endl;
+#endif
+        return;
+    }
+
+    loadPalettesFromJSON(QJsonDocument::fromJson(loadFile.readAll()).object());
+#ifdef QT_DEBUG
+    for (int i = 0; i < n_palettes; i++) {
+        char crt[50];
+        palettes[i].getName(crt);
+        std::cout<<"Palette loaded: "<<crt<<": ";
+        for (int j = 0; j < palettes[i].getN(); j++) {
+            std::cout<<std::hex<<palettes[i].getMergedAt(j)<<" ";
+        }
+        std::cout<<std::endl;
+    }
+#endif
+
+    loadFile.close();
+}
+
+void MainWindow::on_savePalettesButton_clicked()
+{
+    QFileDialog saveDialog(this);
+    saveDialog.setFileMode(QFileDialog::AnyFile);
+    saveDialog.setAcceptMode(QFileDialog::AcceptSave);
+    savePalettes(saveDialog.getSaveFileName(this, "Save palette file", QDir::homePath(), "Palette files (*.json);;All files (*.*)"));
+}
+
+void MainWindow::savePalettes(QString saveFileName)
+{
+    QJsonDocument doc(savePalettesToJSON());
+    QFile saveFile(saveFileName);
+    if (saveFile.open(QIODevice::WriteOnly)) {
+#ifdef QT_DEBUG
+        std::cout<<"Save OK: "<<saveFileName.toLocal8Bit().data()<<std::endl;
+#endif
+    } else {
+#ifdef QT_DEBUG
+        std::cout<<"WARN: Save fail: "<<saveFileName.toLocal8Bit().data()<<std::endl;
+#endif
+        return;
+    }
+
+    saveFile.write(doc.toJson());
+    saveFile.close();
 }

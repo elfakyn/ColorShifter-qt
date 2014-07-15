@@ -57,6 +57,10 @@ private slots:
 
     void on_balanceBox_valueChanged(int arg1);
 
+    void on_loadPalettesButton_clicked();
+
+    void on_savePalettesButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     DwmColor initialDwmColor;
@@ -68,6 +72,8 @@ private:
     void updateColorTableRowBackground(int row);
     void updateColorTable(int index);
     void loadPalettesFromJSON(QJsonObject json);
+    void loadPalettes(QString loadFileName);
+    void savePalettes(QString saveFileName);
     QJsonObject savePalettesToJSON(void);
 };
 
