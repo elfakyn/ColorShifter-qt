@@ -50,6 +50,28 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // UI values initialization
     ui->balanceBox->setValue(initialDwmColor.colorBalance);
+
+    /////////////////////////////////////////////////////////
+    // TEMPORARY FOR TESTING
+
+    QFile paletteFile(":/palettes.json");
+    if (paletteFile.open(QIODevice::ReadOnly)) {
+        std::cout<<"Open OK"<<std::endl;
+    }
+    loadPalettesFromJSON(QJsonDocument::fromJson(paletteFile.readAll()).object());
+#ifdef QT_DEBUG
+    for (int i = 0; i < n_palettes; i++) {
+        char crt[50];
+        palettes[i].getName(crt);
+        std::cout<<"Palette loaded: "<<crt<<" ";
+        for (int j = 0; j < palettes[i].getN(); j++) {
+            std::cout<<palettes[i].getMergedAt(j)<<" ";
+        }
+        std::cout<<std::endl;
+    }
+#endif
+    // END TEMPORARY FOR TESTING
+    /////////////////////////////////////////////////////////
 }
 
 MainWindow::~MainWindow()
@@ -391,4 +413,29 @@ void MainWindow::updateColorTable(int index)
         ui->colorTable->setItem(i, 0, item);
         updateColorTableRowBackground(i);
     }
+}
+
+void MainWindow::loadPalettesFromJSON(QJsonObject json)
+{
+    QJsonArray palettes_ = json["palettes"].toArray();
+
+    for (int i = 0; i < palettes_.size(); i++) {
+        QJsonObject crt = palettes_.at(i).toObject();
+        QByteArray name_ = crt["name"].toString().toLocal8Bit();
+        char *name__ = name_.data();
+        palettes[i].setName(name__);
+
+        QJsonArray colors_ = crt["colors"].toArray();
+
+        for (int j = 0; j < colors_.size(); j++) {
+            QJsonObject crt_ = colors_.at(j).toObject();
+            int4 color_; // ARGB
+            color_.w = crt_["a"].toInt();
+            color_.x = crt_["r"].toInt();
+            color_.y = crt_["g"].toInt();
+            color_.z = crt_["b"].toInt();
+            palettes[i].add(j, color_);
+        }
+    }
+    n_palettes = palettes_.size();
 }

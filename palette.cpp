@@ -4,11 +4,7 @@
 Palette::Palette()
 {
     strcpy(name, "New palette");
-    n = 1;
-    colors[0].x = 255;
-    colors[0].y = 255;
-    colors[0].z = 255;
-    colors[0].w = 255;
+    n = 0;
 }
 
 void Palette::getName(char* name_)

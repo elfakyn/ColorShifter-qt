@@ -3,6 +3,12 @@
 
 
 #include <QMainWindow>
+#include <QJsonObject>
+#include <QJsonArray>
+#include <QJsonValue>
+#include <QJsonDocument>
+#include <QFile>
+
 #include "colorTools.h"
 #include "palette.h"
 
@@ -61,6 +67,7 @@ private:
     void updateColor(void);
     void updateColorTableRowBackground(int row);
     void updateColorTable(int index);
+    void loadPalettesFromJSON(QJsonObject json);
 };
 
 #endif // MAINWINDOW_H

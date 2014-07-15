@@ -1,3 +1,5 @@
 <RCC>
-    <qresource prefix="/palettes"/>
+    <qresource prefix="/">
+        <file>palettes.json</file>
+    </qresource>
 </RCC>
