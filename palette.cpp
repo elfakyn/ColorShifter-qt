@@ -33,6 +33,21 @@ int4 Palette::getColorAt(int i)
     return colors[i];
 }
 
+unsigned long Palette::getMergedAt(int i)
+{
+    if (i >= n || i < 0) { // out of bounds
+#ifdef QT_DEBUG
+        std::cout<<"ERR: Palette::getMergedAt index out of bounds"<<std::endl;
+#endif
+        exit(EXIT_PALETTE_OUT_OF_BOUNDS);
+    }
+
+    return (colors[i].w << 24) |
+        (colors[i].x << 16) |
+        (colors[i].y << 8) |
+        colors[i].z;
+}
+
 void Palette::setColorAt(int i, int4 color)
 {
     if (i >= n || i < 0) { // out of bounds

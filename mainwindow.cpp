@@ -12,8 +12,6 @@
 #include "dllTools.h"
 #include "flags.h"
 
-#include "palette.h"
-
 #ifdef QT_DEBUG
 #include <iostream>
 #endif
@@ -29,13 +27,18 @@ HRESULT(WINAPI *getDwmColors) (DwmColor *color);
 #include "dllTools.h"
 #endif
 
-#define PALETTE_MAX_PALETTES 30
-
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
+    // UI initialization
     ui->setupUi(this);
+    ui->paletteTable->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
+
+
+
+    // Variable initialization
+
     getDwmColors(&initialDwmColor);
 
     currentARGB.x = 0;
@@ -43,9 +46,10 @@ MainWindow::MainWindow(QWidget *parent) :
     currentARGB.z = 0;
     currentARGB.w = 0;
 
-    Palette palettes[PALETTE_MAX_PALETTES];
+    n_palettes = 0; // TODO: replace with loading palettes from JSON
 
-    ui->paletteTable->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
+    // UI values initialization
+    ui->balanceBox->setValue(initialDwmColor.colorBalance);
 }
 
 MainWindow::~MainWindow()
@@ -126,7 +130,11 @@ void MainWindow::updateColor()
 
     Color myColor;
     myColor.SetARGB(this->currentARGB);
-    myColor.SetBalance(80); // to be overridden
+    if (ui->overrideCheckbox->isChecked()) {
+        myColor.SetBalance(ui->balanceBox->value());
+    } else {
+        myColor.SetBalance(initialDwmColor.colorBalance);
+    }
 
 #ifdef QT_DEBUG
     std::cout << std::hex << myColor.GetMerged() << std::endl;
@@ -351,15 +359,36 @@ void MainWindow::on_colorTable_itemSelectionChanged()
 
 void MainWindow::on_quitButton_clicked()
 {
-    // FIXME: TEMPORARY
-    for (int i = 0; i < ui->colorTable->rowCount(); i++) {
+    // Exit and revert
+}
 
-        if(ui->colorTable->item(i, 0)) {
-            ui->colorTable->item(i,0)->setText(QString::number(i+1));
-        } else {
-            QTableWidgetItem *item = new QTableWidgetItem;
-            item->setText(QString::number(i+1));
-            ui->colorTable->setItem(i,0,item);
-        }
+void MainWindow::on_overrideCheckbox_toggled(bool checked)
+{
+    ui->balanceBox->setEnabled(checked);
+    updateColor();
+}
+
+void MainWindow::on_balanceBox_valueChanged(int arg1)
+{
+    updateColor();
+}
+
+void MainWindow::updateColorTableRowBackground(int row)
+{
+    // set the background of the specified row as the value of the color thingie stuff
+}
+
+void MainWindow::updateColorTable(int index)
+{
+    // clear the table
+    for (int i = ui->colorTable->rowCount() - 1; i >= 0; i--) {
+        ui->colorTable->removeRow(i);
+    }
+
+    for (int i = 0; i < palettes[index].getN(); i++) {
+        QTableWidgetItem *item = new QTableWidgetItem;
+        item->setText(QString::number(palettes[index].getMergedAt(i),16).leftJustified(8, '0'));
+        ui->colorTable->setItem(i, 0, item);
+        updateColorTableRowBackground(i);
     }
 }

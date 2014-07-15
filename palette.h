@@ -1,14 +1,14 @@
-#pragma once
+#ifndef PALETTE_H
+#define PALETTE_H
+
 #define PALETTE_MAX_NAME 50
 #define PALETTE_MAX_COLORS 100
 
 #include "exitCodes.h"
 #include "colorTools.h"
 
-// DELETE ME
 #ifdef QT_DEBUG
 #include <iostream>
-#define private public // cutting corners
 #endif
 
 class Palette
@@ -25,6 +25,7 @@ public:
     void setName(char* name_);
 
     int4 getColorAt(int i);
+    unsigned long getMergedAt(int i);
     void setColorAt(int i, int4 color);
 
     void moveInternal(int dest, int src);
@@ -33,3 +34,5 @@ public:
 
     int getN(void);
 };
+
+#endif

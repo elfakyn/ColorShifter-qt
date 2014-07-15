@@ -32,3 +32,6 @@ HEADERS  += \
     palette.h
 
 FORMS    += mainwindow.ui
+
+RESOURCES += \
+    defaultpalettes.qrc

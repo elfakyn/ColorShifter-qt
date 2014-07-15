@@ -1,8 +1,12 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+
 #include <QMainWindow>
 #include "colorTools.h"
+#include "palette.h"
+
+#define PALETTE_MAX_PALETTES 30
 
 namespace Ui {
 class MainWindow;
@@ -43,11 +47,20 @@ private slots:
 
     void on_quitButton_clicked();
 
+    void on_overrideCheckbox_toggled(bool checked);
+
+    void on_balanceBox_valueChanged(int arg1);
+
 private:
     Ui::MainWindow *ui;
-    void updateColor(void);
     DwmColor initialDwmColor;
     int4 currentARGB;
+    Palette palettes[PALETTE_MAX_PALETTES];
+    int n_palettes;
+
+    void updateColor(void);
+    void updateColorTableRowBackground(int row);
+    void updateColorTable(int index);
 };
 
 #endif // MAINWINDOW_H
