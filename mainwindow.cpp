@@ -51,13 +51,17 @@ MainWindow::MainWindow(QWidget *parent) :
     // UI values initialization
     ui->balanceBox->setValue(initialDwmColor.colorBalance);
 
-    /////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////
     // TEMPORARY FOR TESTING
 
     QFile paletteFile(":/palettes.json");
+#ifdef QT_DEBUG
     if (paletteFile.open(QIODevice::ReadOnly)) {
         std::cout<<"Open OK"<<std::endl;
+    } else {
+        std::cout<<"ERR: Open fail!"<<std::endl;
     }
+#endif
     loadPalettesFromJSON(QJsonDocument::fromJson(paletteFile.readAll()).object());
 #ifdef QT_DEBUG
     for (int i = 0; i < n_palettes; i++) {
@@ -70,8 +74,15 @@ MainWindow::MainWindow(QWidget *parent) :
         std::cout<<std::endl;
     }
 #endif
+
+
+    QJsonDocument doc(savePalettesToJSON());
+    QFile paletteOut("testPalette.json");
+    paletteOut.open(QIODevice::WriteOnly);
+    paletteOut.write(doc.toJson());
+    paletteOut.close();
     // END TEMPORARY FOR TESTING
-    /////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////
 }
 
 MainWindow::~MainWindow()
@@ -438,4 +449,33 @@ void MainWindow::loadPalettesFromJSON(QJsonObject json)
         }
     }
     n_palettes = palettes_.size();
+}
+
+QJsonObject MainWindow::savePalettesToJSON()
+{
+    QJsonArray paletteArray;
+    for (int i = 0; i < n_palettes; i++) {
+        QJsonArray colorArray;
+        for (int j = 0; j < palettes[i].getN(); j++) {
+            QJsonObject crt_;
+            int4 color_ = palettes[i].getColorAt(j);
+            crt_["a"] = color_.w;
+            crt_["r"] = color_.x;
+            crt_["g"] = color_.y;
+            crt_["b"] = color_.z;
+            colorArray.append(crt_);
+        }
+        QJsonObject crt;
+        char name[50];
+        palettes[i].getName(name);
+        crt["name"] = name;
+        crt["colors"] = colorArray;
+
+        paletteArray.append(crt);
+    }
+
+    QJsonObject json;
+    json["palettes"] = paletteArray;
+
+    return json;
 }

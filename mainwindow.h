@@ -68,6 +68,7 @@ private:
     void updateColorTableRowBackground(int row);
     void updateColorTable(int index);
     void loadPalettesFromJSON(QJsonObject json);
+    QJsonObject savePalettesToJSON(void);
 };
 
 #endif // MAINWINDOW_H
