@@ -188,7 +188,7 @@
       <number>1</number>
      </property>
      <property name="immutableRows" stdset="0">
-      <number>2</number>
+      <number>0</number>
      </property>
      <attribute name="horizontalHeaderVisible">
       <bool>false</bool>
@@ -203,7 +203,7 @@
       <bool>true</bool>
      </attribute>
      <attribute name="verticalHeaderVisible">
-      <bool>false</bool>
+      <bool>true</bool>
      </attribute>
      <row/>
      <row/>
@@ -700,11 +700,26 @@
      <property name="horizontalScrollBarPolicy">
       <enum>Qt::ScrollBarAlwaysOff</enum>
      </property>
+     <property name="editTriggers">
+      <set>QAbstractItemView::AnyKeyPressed|QAbstractItemView::DoubleClicked|QAbstractItemView::EditKeyPressed|QAbstractItemView::SelectedClicked</set>
+     </property>
+     <property name="dragDropOverwriteMode">
+      <bool>false</bool>
+     </property>
+     <property name="dragDropMode">
+      <enum>QAbstractItemView::DragDrop</enum>
+     </property>
+     <property name="defaultDropAction">
+      <enum>Qt::MoveAction</enum>
+     </property>
      <property name="selectionMode">
       <enum>QAbstractItemView::SingleSelection</enum>
      </property>
      <property name="selectionBehavior">
       <enum>QAbstractItemView::SelectRows</enum>
+     </property>
+     <property name="sortingEnabled">
+      <bool>false</bool>
      </property>
      <property name="cornerButtonEnabled">
       <bool>false</bool>
@@ -714,6 +729,9 @@
      </property>
      <property name="columnCount">
       <number>8</number>
+     </property>
+     <property name="immutableRows" stdset="0">
+      <number>0</number>
      </property>
      <attribute name="horizontalHeaderVisible">
       <bool>false</bool>

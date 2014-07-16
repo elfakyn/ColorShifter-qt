@@ -75,6 +75,12 @@ private:
     void loadPalettes(QString loadFileName);
     void savePalettes(QString saveFileName);
     QJsonObject savePalettesToJSON(void);
+
+public:
+    void updateColorTableDragDrop(int dest, int src);
+    void updatePaletteTableDragDrop(int dest, int src);
+
+
 };
 
 #endif // MAINWINDOW_H

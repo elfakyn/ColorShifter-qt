@@ -32,7 +32,7 @@ public:
     void add(int i, int4 color);
     void remove(int i);
 
-    int getN(void);
+    int size(void);
 };
 
 #endif

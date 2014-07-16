@@ -95,7 +95,6 @@ void Palette::remove(int i)
     }
 }
 
-
 void Palette::moveInternal(int dest, int src)
 {
     // TODO: out of bounds check
@@ -115,7 +114,7 @@ void Palette::moveInternal(int dest, int src)
     colors[dest] = tmp;
 }
 
-int Palette::getN(void)
+int Palette::size(void)
 {
     return n;
 }

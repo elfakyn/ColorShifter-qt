@@ -73,6 +73,10 @@ MainWindow::~MainWindow()
 // override the drag-and-drop handler to swap instead of overwrite
 void QTableWidget::dropEvent(QDropEvent *event)
 {
+#ifdef QT_DEBUG
+    std::cout<<this->objectName().toLocal8Bit().data()<<": ";
+#endif
+
 
     if (!event->source()) {
 #ifdef QT_DEBUG
@@ -88,14 +92,25 @@ void QTableWidget::dropEvent(QDropEvent *event)
     int destRow = destIndex.row();
     int scrollValue = verticalScrollBar()->value();
 
-    if (destRow < 0) { // all the way to the bottom
+    if (destRow < 0) { // all the way to the bottom; assumes rows are populated with items
         destIndex = indexFromItem(item(rowCount()-1, 0));
         destRow = destIndex.row();
+
+        if (destRow < 0) { // destination row still not correct
+#ifdef QT_DEBUG
+            std::cout<<"destinaton row still not updated. Are all cells populated?"<<std::endl;
+#endif
+            return;
+        }
     }
 
 #ifdef QT_DEBUG
-    std::cout<<"Table move: "<<srcRow<<" "<<destRow;
+    std::cout<<"Table move: "<<std::dec<<srcRow<<" "<<destRow;
 #endif
+
+    // to be used by ugly hack
+    int srcRow_ = srcRow;
+    int destRow_ = destRow;
 
     // Cutting corners
     // Without this if statement the drag and drops are offset by one.
@@ -132,6 +147,19 @@ void QTableWidget::dropEvent(QDropEvent *event)
     std::cout<<" (ok)"<<std::endl;
 #endif
     event->ignore(); // override default handler
+
+    // Ugly hack.
+    // Check which table is performing the movement and call the appropriate function to update
+    // the indexes inside the arrays.
+    if (this->objectName() == "colorTable") {
+        ((MainWindow*)parent()->parent()->parent())->updateColorTableDragDrop(destRow_, srcRow_);
+    } else if (this->objectName() == "paletteTable") {
+        ((MainWindow*)parent()->parent()->parent())->updatePaletteTableDragDrop(destRow_, srcRow_);
+    } else {
+#ifdef QT_DEBUG
+        std::cout<<"WARN: undefined drag-drop behavior for "<<this->objectName().toLocal8Bit().data()<<std::endl;
+#endif
+    }
 }
 
 void MainWindow::updateColor()
@@ -397,7 +425,7 @@ void MainWindow::updateColorTable(int index)
         ui->colorTable->removeRow(i);
     }
 
-    for (int i = 0; i < palettes[index].getN(); i++) {
+    for (int i = 0; i < palettes[index].size(); i++) {
         QTableWidgetItem *item = new QTableWidgetItem;
         item->setText(QString::number(palettes[index].getMergedAt(i),16).leftJustified(8, '0'));
         ui->colorTable->setItem(i, 0, item);
@@ -421,7 +449,7 @@ void MainWindow::loadPalettesFromJSON(QJsonObject json)
         QJsonArray colors_ = crt["colors"].toArray();
 
         // clear palette before loading colors
-        for (int j = palettes[i].getN() - 1; j >= 0; j--) {
+        for (int j = palettes[i].size() - 1; j >= 0; j--) {
             palettes[i].remove(j);
         }
 
@@ -443,7 +471,7 @@ QJsonObject MainWindow::savePalettesToJSON()
     QJsonArray paletteArray;
     for (int i = 0; i < n_palettes; i++) {
         QJsonArray colorArray;
-        for (int j = 0; j < palettes[i].getN(); j++) {
+        for (int j = 0; j < palettes[i].size(); j++) {
             QJsonObject crt_;
             int4 color_ = palettes[i].getColorAt(j);
             crt_["a"] = color_.w;
@@ -495,8 +523,8 @@ void MainWindow::loadPalettes(QString loadFileName)
         char crt[50];
         palettes[i].getName(crt);
         std::cout<<"Palette loaded: "<<crt<<": ";
-        for (int j = 0; j < palettes[i].getN(); j++) {
-            std::cout<<std::hex<<palettes[i].getMergedAt(j)<<" ";
+        for (int j = 0; j < palettes[i].size(); j++) {
+            std::cout<<std::hex<<palettes[i].getMergedAt(j)<<std::dec<<" ";
         }
         std::cout<<std::endl;
     }
@@ -530,4 +558,30 @@ void MainWindow::savePalettes(QString saveFileName)
 
     saveFile.write(doc.toJson());
     saveFile.close();
+}
+
+void MainWindow::updateColorTableDragDrop(int dest, int src)
+{
+    if (ui->paletteTable->selectedItems().empty()) {
+#ifdef QT_DEBUG
+        std::cout<<"WARN: updateColorTableDragDrop: no palette selected"<<std::endl;
+#endif
+        return;
+    }
+
+    int crt = ui->paletteTable->selectedItems().first()->row();
+
+    if (crt >= n_palettes || crt < 0) {
+#ifdef QT_DEBUG
+        std::cout<<"WARN: updateColorTableDragDrop: palette index out of bounds"<<std::endl;
+#endif
+        return;
+    }
+
+    palettes[crt].moveInternal(dest, src);
+}
+
+void MainWindow::updatePaletteTableDragDrop(int dest, int src)
+{
+    //FIXME
 }
