@@ -29,7 +29,9 @@ HEADERS  += \
     colorTools.h \
     exitCodes.h \
     flags.h \
-    palette.h
+    palette.h \
+    table.ipp \
+    table.hpp
 
 FORMS    += mainwindow.ui
 

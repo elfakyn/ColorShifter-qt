@@ -182,7 +182,7 @@
       <bool>false</bool>
      </property>
      <property name="rowCount">
-      <number>3</number>
+      <number>0</number>
      </property>
      <property name="columnCount">
       <number>1</number>
@@ -205,25 +205,7 @@
      <attribute name="verticalHeaderVisible">
       <bool>true</bool>
      </attribute>
-     <row/>
-     <row/>
-     <row/>
      <column/>
-     <item row="0" column="0">
-      <property name="text">
-       <string>FFFF0000</string>
-      </property>
-     </item>
-     <item row="1" column="0">
-      <property name="text">
-       <string>FF00FF00</string>
-      </property>
-     </item>
-     <item row="2" column="0">
-      <property name="text">
-       <string>FF0000FF</string>
-      </property>
-     </item>
     </widget>
     <widget class="QSlider" name="valueBlueSlider">
      <property name="geometry">
@@ -725,7 +707,7 @@
       <bool>false</bool>
      </property>
      <property name="rowCount">
-      <number>5</number>
+      <number>0</number>
      </property>
      <property name="columnCount">
       <number>8</number>
@@ -751,11 +733,6 @@
      <attribute name="verticalHeaderVisible">
       <bool>false</bool>
      </attribute>
-     <row/>
-     <row/>
-     <row/>
-     <row/>
-     <row/>
      <column/>
      <column/>
      <column/>

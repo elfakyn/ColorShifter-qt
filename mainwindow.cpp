@@ -47,7 +47,6 @@ MainWindow::MainWindow(QWidget *parent) :
     currentARGB.z = 0;
     currentARGB.w = 0;
 
-    n_palettes = 0; // TODO: replace with loading palettes from JSON
 
     // Misc initialization
     loadPalettes(":/palettes.json");
@@ -425,9 +424,9 @@ void MainWindow::updateColorTable(int index)
         ui->colorTable->removeRow(i);
     }
 
-    for (int i = 0; i < palettes[index].size(); i++) {
+    for (int i = 0; i < palettes.at(index)->size(); i++) {
         QTableWidgetItem *item = new QTableWidgetItem;
-        item->setText(QString::number(palettes[index].getMergedAt(i),16).leftJustified(8, '0'));
+        item->setText(QString::number(palettes.at(index)->getMergedAt(i),16).leftJustified(8, '0'));
         ui->colorTable->setItem(i, 0, item);
         updateColorTableRowBackground(i);
     }
@@ -437,21 +436,18 @@ void MainWindow::updateColorTable(int index)
 
 void MainWindow::loadPalettesFromJSON(QJsonObject json)
 {
+    palettes.clear();
 
-    QJsonArray palettes_ = json["palettes"].toArray();
+    QJsonArray paletteArray = json["palettes"].toArray();
 
-    for (int i = 0; i < palettes_.size(); i++) {
-        QJsonObject crt = palettes_.at(i).toObject();
+    for (int i = 0; i < paletteArray.size(); i++) {
+        QJsonObject crt = paletteArray.at(i).toObject();
         QByteArray name_ = crt["name"].toString().toLocal8Bit();
         char *name__ = name_.data();
-        palettes[i].setName(name__);
+        Palette toAdd;
+        toAdd.setName(name__);
 
         QJsonArray colors_ = crt["colors"].toArray();
-
-        // clear palette before loading colors
-        for (int j = palettes[i].size() - 1; j >= 0; j--) {
-            palettes[i].remove(j);
-        }
 
         for (int j = 0; j < colors_.size(); j++) {
             QJsonObject crt_ = colors_.at(j).toObject();
@@ -460,20 +456,21 @@ void MainWindow::loadPalettesFromJSON(QJsonObject json)
             color_.x = crt_["r"].toInt();
             color_.y = crt_["g"].toInt();
             color_.z = crt_["b"].toInt();
-            palettes[i].add(j, color_);
+            toAdd.addAt(j, color_);
         }
+
+        palettes.addAt(i, toAdd);
     }
-    n_palettes = palettes_.size();
 }
 
 QJsonObject MainWindow::savePalettesToJSON()
 {
     QJsonArray paletteArray;
-    for (int i = 0; i < n_palettes; i++) {
+    for (int i = 0; i < palettes.size(); i++) {
         QJsonArray colorArray;
-        for (int j = 0; j < palettes[i].size(); j++) {
+        for (int j = 0; j < palettes.at(i)->size(); j++) {
             QJsonObject crt_;
-            int4 color_ = palettes[i].getColorAt(j);
+            int4 color_ = palettes.at(i)->getAt(j);
             crt_["a"] = color_.w;
             crt_["r"] = color_.x;
             crt_["g"] = color_.y;
@@ -482,7 +479,7 @@ QJsonObject MainWindow::savePalettesToJSON()
         }
         QJsonObject crt;
         char name[50];
-        palettes[i].getName(name);
+        palettes.at(i)->getName(name);
         crt["name"] = name;
         crt["colors"] = colorArray;
 
@@ -519,12 +516,12 @@ void MainWindow::loadPalettes(QString loadFileName)
 
     loadPalettesFromJSON(QJsonDocument::fromJson(loadFile.readAll()).object());
 #ifdef QT_DEBUG
-    for (int i = 0; i < n_palettes; i++) {
+    for (int i = 0; i < palettes.size(); i++) {
         char crt[50];
-        palettes[i].getName(crt);
+        palettes.at(i)->getName(crt);
         std::cout<<"Palette loaded: "<<crt<<": ";
-        for (int j = 0; j < palettes[i].size(); j++) {
-            std::cout<<std::hex<<palettes[i].getMergedAt(j)<<std::dec<<" ";
+        for (int j = 0; j < palettes.at(i)->size(); j++) {
+            std::cout<<std::hex<<palettes.at(i)->getMergedAt(j)<<std::dec<<" ";
         }
         std::cout<<std::endl;
     }
@@ -571,14 +568,7 @@ void MainWindow::updateColorTableDragDrop(int dest, int src)
 
     int crt = ui->paletteTable->selectedItems().first()->row();
 
-    if (crt >= n_palettes || crt < 0) {
-#ifdef QT_DEBUG
-        std::cout<<"WARN: updateColorTableDragDrop: palette index out of bounds"<<std::endl;
-#endif
-        return;
-    }
-
-    palettes[crt].moveInternal(dest, src);
+    palettes.at(crt)->moveInternal(dest, src);
 }
 
 void MainWindow::updatePaletteTableDragDrop(int dest, int src)

@@ -65,7 +65,7 @@ private:
     Ui::MainWindow *ui;
     DwmColor initialDwmColor;
     int4 currentARGB;
-    Palette palettes[PALETTE_MAX_PALETTES];
+    table <Palette> palettes;
     int n_palettes;
 
     void updateColor(void);
