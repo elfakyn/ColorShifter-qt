@@ -35,8 +35,8 @@ MainWindow::MainWindow(QWidget *parent) :
     // UI initialization
     ui->setupUi(this);
     ui->paletteTable->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
-
-
+    ui->paletteTable->setItemDelegate(new TableBorderSelection(this));
+    ui->colorTable->setItemDelegate(new TableBorderSelection(this));
 
     // Variable initialization
 
@@ -57,7 +57,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ////////////////////////////////////////////////////////////////////////////
     // TEMPORARY FOR TESTING
 
-
+    ui->colorGroup->setEnabled(false); // TODO: move this out of testing area when done
 
     // END TEMPORARY FOR TESTING
     ////////////////////////////////////////////////////////////////////////////
@@ -69,125 +69,10 @@ MainWindow::~MainWindow()
     setDwmColors(&initialDwmColor, 0);
 }
 
-// override the drag-and-drop handler to swap instead of overwrite
-void QTableWidget::dropEvent(QDropEvent *event)
-{
-#ifdef QT_DEBUG
-    std::cout<<this->objectName().toLocal8Bit().data()<<": ";
-#endif
-
-
-    if (!event->source()) {
-#ifdef QT_DEBUG
-        std::cout<< "Table move: external (ignored)" << std::endl;
-#endif
-        event->ignore();
-        return;
-    }
-
-    QModelIndex srcIndex = selectedIndexes().first();
-    QModelIndex destIndex = indexAt(event->pos());
-    int srcRow = srcIndex.row();
-    int destRow = destIndex.row();
-    int scrollValue = verticalScrollBar()->value();
-
-    if (destRow < 0) { // all the way to the bottom; assumes rows are populated with items
-        destIndex = indexFromItem(item(rowCount()-1, 0));
-        destRow = destIndex.row();
-
-        if (destRow < 0) { // destination row still not correct
-#ifdef QT_DEBUG
-            std::cout<<"destinaton row still not updated. Are all cells populated?"<<std::endl;
-#endif
-            return;
-        }
-    }
-
-#ifdef QT_DEBUG
-    std::cout<<"Table move: "<<std::dec<<srcRow<<" "<<destRow;
-#endif
-
-    // to be used by ugly hack
-    int srcRow_ = srcRow;
-    int destRow_ = destRow;
-
-    // Cutting corners
-    // Without this if statement the drag and drops are offset by one.
-    if (srcRow > destRow) {
-        srcRow++;
-    } else {
-        destRow++;
-    }
-
-    if (srcRow < property("immutableRows").toInt() || destRow < property("immutableRows").toInt()) {
-        // move into forbidden area
-#ifdef QT_DEBUG
-        std::cout<<", immutable (ignored)"<<std::endl;
-#endif
-        event->ignore();
-        return;
-    }
-
-    // copy data over to new row
-    insertRow(destRow);
-    for (int i = 0; i < columnCount(); i++) {
-        QTableWidgetItem *item = takeItem(srcRow, i);
-        setItem(destRow, i, item);
-    }
-    removeRow(srcRow);
-
-    // scroll to correct position and select destination
-    selectionModel()->select(destIndex, QItemSelectionModel::ClearAndSelect);
-    update();
-    verticalScrollBar()->setValue(scrollValue);
-    scrollTo(destIndex, QAbstractItemView::EnsureVisible);
-
-#ifdef QT_DEBUG
-    std::cout<<" (ok)"<<std::endl;
-#endif
-    event->ignore(); // override default handler
-
-    // Ugly hack.
-    // Check which table is performing the movement and call the appropriate function to update
-    // the indexes inside the arrays.
-    if (this->objectName() == "colorTable") {
-        ((MainWindow*)parent()->parent()->parent())->updateColorTableDragDrop(destRow_, srcRow_);
-    } else if (this->objectName() == "paletteTable") {
-        ((MainWindow*)parent()->parent()->parent())->updatePaletteTableDragDrop(destRow_, srcRow_);
-    } else {
-#ifdef QT_DEBUG
-        std::cout<<"WARN: undefined drag-drop behavior for "<<this->objectName().toLocal8Bit().data()<<std::endl;
-#endif
-    }
-}
-
-void MainWindow::updateColor()
-{
-    if (!ui->previewColorCheckbox->isChecked()) { // preview is disabled
-        return;
-    }
-
-    Color myColor;
-    myColor.SetARGB(this->currentARGB);
-    if (ui->overrideCheckbox->isChecked()) {
-        myColor.SetBalance(ui->balanceBox->value());
-    } else {
-        myColor.SetBalance(initialDwmColor.colorBalance);
-    }
-
-#ifdef QT_DEBUG
-    std::cout << std::hex << myColor.GetMerged() << std::endl;
-#endif
-
-    DwmColor myDwmColor = exportColor(myColor);
-    setDwmColors(&myDwmColor, 0);
-}
-
-
 void MainWindow::on_previewColorCheckbox_stateChanged(int arg1)
 {
     if (arg1) { // checkbox checked
-        updateColor();
+        refreshDwmColor();
     } else {
         setDwmColors(&initialDwmColor, 0); // revert to original colors
     }
@@ -202,7 +87,7 @@ void MainWindow::on_hueRedSlider_valueChanged(int position)
     } else {
         currentARGB.x = position;
     }
-    updateColor();
+    refreshDwmColor();
 }
 
 void MainWindow::on_satGreenSlider_valueChanged(int position)
@@ -214,7 +99,7 @@ void MainWindow::on_satGreenSlider_valueChanged(int position)
     } else {
         currentARGB.y = position;
     }
-    updateColor();
+    refreshDwmColor();
 }
 
 void MainWindow::on_valueBlueSlider_valueChanged(int position)
@@ -226,13 +111,13 @@ void MainWindow::on_valueBlueSlider_valueChanged(int position)
     } else {
         currentARGB.z = position;
     }
-    updateColor();
+    refreshDwmColor();
 }
 
 void MainWindow::on_alphaSlider_valueChanged(int position)
 {
     currentARGB.w = position; // AHSV and ARGB have same alpha channel
-    updateColor();
+    refreshDwmColor();
 }
 
 void MainWindow::on_hsvRadio_toggled(bool checked)
@@ -252,7 +137,6 @@ void MainWindow::on_hsvRadio_toggled(bool checked)
     ui->satGreenSlider->setValue(ahsv.y);
     ui->valueBlueSlider->setValue(ahsv.z);
 }
-
 
 void MainWindow::on_rgbRadio_toggled(bool checked)
 {
@@ -404,38 +288,94 @@ void MainWindow::on_quitButton_clicked()
 void MainWindow::on_overrideCheckbox_toggled(bool checked)
 {
     ui->balanceBox->setEnabled(checked);
-    updateColor();
+    refreshDwmColor();
 }
 
 void MainWindow::on_balanceBox_valueChanged(int arg1)
 {
-    updateColor();
+    refreshDwmColor();
 }
 
-void MainWindow::updateColorTableRowBackground(int row)
+
+
+void MainWindow::on_loadPalettesButton_clicked()
 {
-    // set the background of the specified row as the value of the color thingie stuff
+    QFileDialog loadDialog(this);
+    loadDialog.setFileMode(QFileDialog::ExistingFile);
+    loadPalettes(loadDialog.getOpenFileName(this, "Load palette file", QDir::homePath(), "Palette files (*.json);;All files (*.*)"));
 }
 
-void MainWindow::updateColorTable(int index)
+void MainWindow::on_savePalettesButton_clicked()
 {
-    // clear the table
-    for (int i = ui->colorTable->rowCount() - 1; i >= 0; i--) {
-        ui->colorTable->removeRow(i);
+    QFileDialog saveDialog(this);
+    saveDialog.setFileMode(QFileDialog::AnyFile);
+    saveDialog.setAcceptMode(QFileDialog::AcceptSave);
+    savePalettes(saveDialog.getSaveFileName(this, "Save palette file", QDir::homePath(), "Palette files (*.json);;All files (*.*)"));
+}
+
+void MainWindow::updateColorTableDragDrop(int dest, int src)
+{
+    if (ui->paletteTable->selectedItems().empty()) {
+#ifdef QT_DEBUG
+        std::cout<<"WARN: updateColorTableDragDrop: no palette selected"<<std::endl;
+#endif
+        return;
     }
 
-    for (int i = 0; i < palettes.at(index)->size(); i++) {
-        QTableWidgetItem *item = new QTableWidgetItem;
-        item->setText(QString::number(palettes.at(index)->getMergedAt(i),16).leftJustified(8, '0'));
-        ui->colorTable->setItem(i, 0, item);
-        updateColorTableRowBackground(i);
-    }
+    int crt = ui->paletteTable->selectedItems().first()->row();
+
+    palettes.at(crt)->moveInternal(dest, src);
 }
 
+void MainWindow::updatePaletteTableDragDrop(int dest, int src)
+{
+    palettes.moveInternal(dest, src);
+}
 
+void MainWindow::on_paletteTable_itemSelectionChanged()
+{
+
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Save/load helper functions
+
+void MainWindow::loadPalettes(QString loadFileName)
+{
+    QFile loadFile(loadFileName);
+
+    if (loadFile.open(QIODevice::ReadOnly)) {
+#ifdef QT_DEBUG
+        std::cout<<"Load OK: "<<loadFileName.toLocal8Bit().data()<<std::endl;
+#endif
+    } else {
+#ifdef QT_DEBUG
+        std::cout<<"WARN: Load fail: "<<loadFileName.toLocal8Bit().data()<<std::endl;
+#endif
+        return;
+    }
+
+    loadPalettesFromJSON(QJsonDocument::fromJson(loadFile.readAll()).object());
+
+#ifdef QT_DEBUG
+    for (int i = 0; i < palettes.size(); i++) {
+        char crt[50];
+        palettes.at(i)->getName(crt);
+        std::cout<<"Palette loaded: "<<crt<<": ";
+        for (int j = 0; j < palettes.at(i)->size(); j++) {
+            std::cout<<std::hex<<palettes.at(i)->getMergedAt(j)<<std::dec<<" ";
+        }
+        std::cout<<std::endl;
+    }
+#endif
+
+    loadFile.close();
+}
 
 void MainWindow::loadPalettesFromJSON(QJsonObject json)
 {
+    // TODO: only clear when user checks box or other sane behavior
+    ui->paletteTable->clearContents();
     palettes.clear();
 
     QJsonArray paletteArray = json["palettes"].toArray();
@@ -460,7 +400,27 @@ void MainWindow::loadPalettesFromJSON(QJsonObject json)
         }
 
         palettes.addAt(i, toAdd);
+        addAtPaletteTable(i);
     }
+}
+
+void MainWindow::savePalettes(QString saveFileName)
+{
+    QJsonDocument doc(savePalettesToJSON());
+    QFile saveFile(saveFileName);
+    if (saveFile.open(QIODevice::WriteOnly)) {
+#ifdef QT_DEBUG
+        std::cout<<"Save OK: "<<saveFileName.toLocal8Bit().data()<<std::endl;
+#endif
+    } else {
+#ifdef QT_DEBUG
+        std::cout<<"WARN: Save fail: "<<saveFileName.toLocal8Bit().data()<<std::endl;
+#endif
+        return;
+    }
+
+    saveFile.write(doc.toJson());
+    saveFile.close();
 }
 
 QJsonObject MainWindow::savePalettesToJSON()
@@ -492,86 +452,195 @@ QJsonObject MainWindow::savePalettesToJSON()
     return json;
 }
 
-void MainWindow::on_loadPalettesButton_clicked()
+////////////////////////////////////////////////////////////////////////////////
+// Palette table helper functions
+
+void MainWindow::clearPaletteTable()
 {
-    QFileDialog loadDialog(this);
-    loadDialog.setFileMode(QFileDialog::ExistingFile);
-    loadPalettes(loadDialog.getOpenFileName(this, "Load palette file", QDir::homePath(), "Palette files (*.json);;All files (*.*)"));
+    ui->paletteTable->clearContents();
 }
 
-void MainWindow::loadPalettes(QString loadFileName)
+void MainWindow::addAtPaletteTable(int row)
 {
-    QFile loadFile(loadFileName);
+    ui->paletteTable->insertRow(row);
 
-    if (loadFile.open(QIODevice::ReadOnly)) {
-#ifdef QT_DEBUG
-        std::cout<<"Load OK: "<<loadFileName.toLocal8Bit().data()<<std::endl;
-#endif
-    } else {
-#ifdef QT_DEBUG
-        std::cout<<"WARN: Load fail: "<<loadFileName.toLocal8Bit().data()<<std::endl;
-#endif
-        return;
-    }
+    // populate cells with items
+    for (int i = 0; i < ui->paletteTable->columnCount(); i++) {
+        QTableWidgetItem *item = new QTableWidgetItem();
 
-    loadPalettesFromJSON(QJsonDocument::fromJson(loadFile.readAll()).object());
-#ifdef QT_DEBUG
-    for (int i = 0; i < palettes.size(); i++) {
-        char crt[50];
-        palettes.at(i)->getName(crt);
-        std::cout<<"Palette loaded: "<<crt<<": ";
-        for (int j = 0; j < palettes.at(i)->size(); j++) {
-            std::cout<<std::hex<<palettes.at(i)->getMergedAt(j)<<std::dec<<" ";
+        // disable all cells except one that contains name
+        if (i) {
+            item->setFlags(item->flags() & ~Qt::ItemIsEditable);
         }
-        std::cout<<std::endl;
+
+        ui->paletteTable->setItem(row, i, item);
     }
-#endif
 
-    loadFile.close();
+    updateAtPaletteTable(row);
 }
 
-void MainWindow::on_savePalettesButton_clicked()
+void MainWindow::updateAtPaletteTable(int row)
 {
-    QFileDialog saveDialog(this);
-    saveDialog.setFileMode(QFileDialog::AnyFile);
-    saveDialog.setAcceptMode(QFileDialog::AcceptSave);
-    savePalettes(saveDialog.getSaveFileName(this, "Save palette file", QDir::homePath(), "Palette files (*.json);;All files (*.*)"));
+    // update name
+    char name[50];
+    palettes.at(row)->getName(name);
+    ui->paletteTable->item(row, 0)->setText(name);
+    for (int i = 0; i < ui->paletteTable->columnCount()-1; i++) {
+        if (i < palettes.at(row)->size()) {
+            // within bounds, set color that's in the palette
+            ui->paletteTable->item(row,i+1)->setBackgroundColor(QColor(
+                                                                  palettes.at(row)->at(i)->x,
+                                                                  palettes.at(row)->at(i)->y,
+                                                                  palettes.at(row)->at(i)->z));
+        } else {
+            ui->paletteTable->item(row,i+1)->setBackgroundColor(QColor(255,255,255,0));
+        }
+    }
 }
 
-void MainWindow::savePalettes(QString saveFileName)
+////////////////////////////////////////////////////////////////////////////////
+// Color table helper functions
+
+void MainWindow::clearColorTable()
 {
-    QJsonDocument doc(savePalettesToJSON());
-    QFile saveFile(saveFileName);
-    if (saveFile.open(QIODevice::WriteOnly)) {
+    ui->colorTable->clearContents();
+}
+
+void MainWindow::fillColorTable(int index)
+{
+    // clear the table
+    for (int i = ui->colorTable->rowCount() - 1; i >= 0; i--) {
+        ui->colorTable->removeRow(i);
+    }
+
+    for (int i = 0; i < palettes.at(index)->size(); i++) {
+        QTableWidgetItem *item = new QTableWidgetItem;
+        item->setText(QString::number(palettes.at(index)->getMergedAt(i),16).leftJustified(8, '0'));
+        ui->colorTable->setItem(i, 0, item);
+        updateAtColorTable(i);
+    }
+}
+
+void MainWindow::updateAtColorTable(int row)
+{
+    // FIXME
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Misc helper functions
+
+void MainWindow::refreshDwmColor()
+{
+    if (!ui->previewColorCheckbox->isChecked()) { // preview is disabled
+        return;
+    }
+
+    Color myColor;
+    myColor.SetARGB(this->currentARGB);
+    if (ui->overrideCheckbox->isChecked()) {
+        myColor.SetBalance(ui->balanceBox->value());
+    } else {
+        myColor.SetBalance(initialDwmColor.colorBalance);
+    }
+
 #ifdef QT_DEBUG
-        std::cout<<"Save OK: "<<saveFileName.toLocal8Bit().data()<<std::endl;
+    std::cout << std::hex << myColor.GetMerged() << std::endl;
 #endif
+
+    DwmColor myDwmColor = exportColor(myColor);
+    setDwmColors(&myDwmColor, 0);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Override drag and drop behavior
+
+// override the drag-and-drop handler to swap instead of overwrite
+void QTableWidget::dropEvent(QDropEvent *event)
+{
+#ifdef QT_DEBUG
+    std::cout<<this->objectName().toLocal8Bit().data()<<": ";
+#endif
+
+    if (!event->source() || event->source()->objectName() != this->objectName()) {
+#ifdef QT_DEBUG
+        std::cout<< "Table move: external (ignored)" << std::endl;
+#endif
+        event->ignore();
+        return;
+    }
+
+    QModelIndex srcIndex = selectedIndexes().first();
+    QModelIndex destIndex = indexAt(event->pos());
+    int srcRow = srcIndex.row();
+    int destRow = destIndex.row();
+    int scrollValue = verticalScrollBar()->value();
+
+    if (destRow < 0) { // all the way to the bottom; assumes rows are populated with items
+        destIndex = indexFromItem(item(rowCount()-1, 0));
+        destRow = destIndex.row();
+
+        if (destRow < 0) { // destination row still not correct
+#ifdef QT_DEBUG
+            std::cout<<"destinaton row still not updated. Are all cells populated?"<<std::endl;
+#endif
+            return;
+        }
+    }
+
+#ifdef QT_DEBUG
+    std::cout<<"Table move: "<<std::dec<<srcRow<<" "<<destRow;
+#endif
+
+    // to be used by ugly hack
+    int srcRow_ = srcRow;
+    int destRow_ = destRow;
+
+    // Cutting corners
+    // Without this if statement the drag and drops are offset by one.
+    if (srcRow > destRow) {
+        srcRow++;
+    } else {
+        destRow++;
+    }
+
+    if (srcRow < property("immutableRows").toInt() || destRow < property("immutableRows").toInt()) {
+        // move into forbidden area
+#ifdef QT_DEBUG
+        std::cout<<", immutable (ignored)"<<std::endl;
+#endif
+        event->ignore();
+        return;
+    }
+
+    // copy data over to new row
+    insertRow(destRow);
+    for (int i = 0; i < columnCount(); i++) {
+        QTableWidgetItem *item = takeItem(srcRow, i);
+        setItem(destRow, i, item);
+    }
+    removeRow(srcRow);
+
+    // scroll to correct position and select destination
+    selectionModel()->select(destIndex, QItemSelectionModel::ClearAndSelect);
+    update();
+    verticalScrollBar()->setValue(scrollValue);
+    scrollTo(destIndex, QAbstractItemView::EnsureVisible);
+
+#ifdef QT_DEBUG
+    std::cout<<" (ok)"<<std::endl;
+#endif
+    event->ignore(); // override default handler
+
+    // Ugly hack.
+    // Check which table is performing the movement and call the appropriate function to update
+    // the indexes inside the arrays.
+    if (this->objectName() == "colorTable") {
+        ((MainWindow*)parent()->parent()->parent())->updateColorTableDragDrop(destRow_, srcRow_);
+    } else if (this->objectName() == "paletteTable") {
+        ((MainWindow*)parent()->parent()->parent())->updatePaletteTableDragDrop(destRow_, srcRow_);
     } else {
 #ifdef QT_DEBUG
-        std::cout<<"WARN: Save fail: "<<saveFileName.toLocal8Bit().data()<<std::endl;
+        std::cout<<"WARN: undefined drag-drop behavior for "<<this->objectName().toLocal8Bit().data()<<std::endl;
 #endif
-        return;
     }
-
-    saveFile.write(doc.toJson());
-    saveFile.close();
-}
-
-void MainWindow::updateColorTableDragDrop(int dest, int src)
-{
-    if (ui->paletteTable->selectedItems().empty()) {
-#ifdef QT_DEBUG
-        std::cout<<"WARN: updateColorTableDragDrop: no palette selected"<<std::endl;
-#endif
-        return;
-    }
-
-    int crt = ui->paletteTable->selectedItems().first()->row();
-
-    palettes.at(crt)->moveInternal(dest, src);
-}
-
-void MainWindow::updatePaletteTableDragDrop(int dest, int src)
-{
-    //FIXME
 }

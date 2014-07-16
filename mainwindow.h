@@ -1,6 +1,4 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
-
+#pragma once
 
 #include <QMainWindow>
 #include <QJsonObject>
@@ -8,6 +6,8 @@
 #include <QJsonValue>
 #include <QJsonDocument>
 #include <QFile>
+#include <QPainter>
+#include <QStyledItemDelegate>
 
 #include "colorTools.h"
 #include "palette.h"
@@ -61,6 +61,8 @@ private slots:
 
     void on_savePalettesButton_clicked();
 
+    void on_paletteTable_itemSelectionChanged();
+
 private:
     Ui::MainWindow *ui;
     DwmColor initialDwmColor;
@@ -68,13 +70,23 @@ private:
     table <Palette> palettes;
     int n_palettes;
 
-    void updateColor(void);
-    void updateColorTableRowBackground(int row);
-    void updateColorTable(int index);
-    void loadPalettesFromJSON(QJsonObject json);
+    void refreshDwmColor(void);
+
     void loadPalettes(QString loadFileName);
+    void loadPalettesFromJSON(QJsonObject json);
     void savePalettes(QString saveFileName);
     QJsonObject savePalettesToJSON(void);
+
+    void clearPaletteTable(void);
+    void addAtPaletteTable(int row);
+    void updateAtPaletteTable(int row);
+
+    void clearColorTable(void);
+    void fillColorTable(int index);
+    void updateAtColorTable(int row);
+
+
+
 
 public:
     void updateColorTableDragDrop(int dest, int src);
@@ -83,4 +95,39 @@ public:
 
 };
 
-#endif // MAINWINDOW_H
+class TableBorderSelection : public QStyledItemDelegate
+{
+public:
+    explicit TableBorderSelection(QObject *parent = 0) : QStyledItemDelegate(parent)
+    {
+    }
+
+    void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
+    {
+        // keep background of colors
+        QVariant background = index.data(Qt::BackgroundRole);
+        if (background.canConvert<QBrush>()) {
+            painter->fillRect(option.rect, background.value<QBrush>());
+        }
+
+        const QRect rect(option.rect);
+
+        if(option.state & QStyle::State_Selected) {
+            painter->save();
+            QPen pen(Qt::black, 1, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin);
+            painter->setPen(pen);
+            painter->drawLine(rect.topLeft(), rect.topRight());
+            painter->drawLine(rect.bottomLeft(), rect.bottomRight());
+
+            if (index.column() == 0) { // leftmost
+                painter->drawLine(rect.topLeft(), rect.bottomLeft());
+            }
+            if (index.column() == index.model()->columnCount()-1) {
+                painter->drawLine(rect.topRight(), rect.bottomRight());
+            }
+            painter->restore();
+        }
+
+        QStyledItemDelegate::paint(painter, option, index);
+    }
+};
