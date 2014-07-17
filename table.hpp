@@ -5,7 +5,7 @@
 
 template <class T> class table
 {
-protected:
+public: // FIXME
     T elements[TABLE_MAX_ELEMENTS];
     int n;
 
@@ -13,7 +13,7 @@ public:
     table();
 
     T* at(int i);
-    T getAt(int i);
+    T getAt(int i) const;
     void setAt(int i, T element);
 
     void moveInternal(int dest, int src);
@@ -22,7 +22,7 @@ public:
 
     void clear(void);
 
-    int size(void);
+    int size(void) const;
 };
 
 #endif // TABLE_H

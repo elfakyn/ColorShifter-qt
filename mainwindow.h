@@ -11,8 +11,9 @@
 
 #include "colorTools.h"
 #include "palette.h"
+#include "flags.h"
 
-#define PALETTE_MAX_PALETTES 30
+#define PALETTE_MAX_PALETTES 30 // not used anymore
 
 namespace Ui {
 class MainWindow;
@@ -63,14 +64,24 @@ private slots:
 
     void on_paletteTable_itemSelectionChanged();
 
+    void on_paletteTable_cellChanged(int row, int column);
+
+    void on_removePaletteButton_clicked();
+
+    void on_addPaletteButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     DwmColor initialDwmColor;
     int4 currentARGB;
     table <Palette> palettes;
     int n_palettes;
+#ifdef ARR_HACK
+    char globalNames[TABLE_MAX_ELEMENTS][PALETTE_MAX_NAME]; // ARR_HACK
+#endif
+    bool inhibitColorTableUpdate_; // massive hack, prelude
 
-    void refreshDwmColor(void);
+    void updateColorAndPreview(void);
 
     void loadPalettes(QString loadFileName);
     void loadPalettesFromJSON(QJsonObject json);
@@ -83,14 +94,16 @@ private:
 
     void clearColorTable(void);
     void fillColorTable(int index);
-    void updateAtColorTable(int row);
+    void updateAtColorTable(int index, int row);
 
-
+    int4 AHSVfromSliders(void);
 
 
 public:
     void updateColorTableDragDrop(int dest, int src);
     void updatePaletteTableDragDrop(int dest, int src);
+
+    void inhibitColorTableUpdate(bool value); // massive, massive hack
 
 
 };

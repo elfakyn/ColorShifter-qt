@@ -20,11 +20,12 @@ private:
 
 public:
     Palette();
+    Palette& operator=(const Palette &in);
 
-    void getName(char* name_);
-    void setName(char* name_);
+    void getName(char* name_) const; // deprecated, use global name array hack (search for ARR_HACK)
+    void setName(char* name_); // deprecated, use global name array hack (ARR_HACK)
 
-    unsigned long getMergedAt(int i);
+    unsigned long getMergedAt(int i) const;
 };
 
 #endif

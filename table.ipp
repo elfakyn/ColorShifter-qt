@@ -15,7 +15,7 @@ template <class T> T* table<T>::at(int i)
 {
     if (i >= n || i < 0) { // out of bounds
 #ifdef QT_DEBUG
-        std::cout<<"ERR: table<T>::getAt index out of bounds"<<std::endl;
+        std::cout<<"ERR: table<T>::at index out of bounds: "<<i<<" "<<n<<std::endl;
 #endif
         exit(EXIT_TABLE_OUT_OF_BOUNDS);
     }
@@ -23,7 +23,7 @@ template <class T> T* table<T>::at(int i)
     return &elements[i];
 }
 
-template <class T> T table<T>::getAt(int i)
+template <class T> T table<T>::getAt(int i) const
 {
     if (i >= n || i < 0) { // out of bounds
 #ifdef QT_DEBUG
@@ -112,12 +112,15 @@ template <class T> void table<T>::moveInternal(int dest, int src)
 
 template <class T> void table<T>::clear()
 {
+    /*
     for (int i = n-1; i >= 0; i--) {
         removeAt(i);
     }
+    */
+    n = 0;
 }
 
-template <class T> int table<T>::size()
+template <class T> int table<T>::size() const
 {
     return n;
 }

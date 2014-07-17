@@ -1,5 +1,7 @@
 #include <string>
-
+#ifdef QT_DEBUG
+#include <iostream>
+#endif
 #include "palette.h"
 
 Palette::Palette()
@@ -8,7 +10,19 @@ Palette::Palette()
     n = 0;
 }
 
-void Palette::getName(char* name_)
+Palette& Palette::operator=(const Palette &in)
+{
+    in.getName(name);
+
+    this->clear();
+    for (int i = 0; i < in.size(); i++) {
+        this->addAt(i, in.getAt(i));
+    }
+
+    return *this;
+}
+
+void Palette::getName(char* name_) const
 {
     strcpy(name_, name);
 }
@@ -18,7 +32,7 @@ void Palette::setName(char* name_)
     strcpy(name, name_);
 }
 
-unsigned long Palette::getMergedAt(int i)
+unsigned long Palette::getMergedAt(int i) const
 {
     if (i >= n || i < 0) { // out of bounds
 #ifdef QT_DEBUG
