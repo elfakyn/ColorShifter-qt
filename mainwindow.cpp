@@ -793,8 +793,6 @@ void QTableWidget::dropEvent(QDropEvent *event)
 ////////////////////////////////////////////////////////////////////////////////
 // more slot stuff
 
-#ifdef BIG_HACK2
-#define itemAt(...) selectedItems().first()
 void MainWindow::on_paletteTable_cellChanged(int row, int column)
 {
     if (column) {
@@ -809,9 +807,9 @@ void MainWindow::on_paletteTable_cellChanged(int row, int column)
     std::cout<<"palette name changed "<<row<<" "<<column<<": ";
 #endif
 
-    QByteArray name = ui->paletteTable->itemAt(row, column)->text().toLocal8Bit();
+    QByteArray name = ui->paletteTable->item(row, column)->text().toLocal8Bit();
 #ifdef QT_DEBUG
-    std::cout<<ui->paletteTable->itemAt(row, column)->text().toLocal8Bit().data()<<std::endl;
+    std::cout<<ui->paletteTable->item(row, column)->text().toLocal8Bit().data()<<std::endl;
 #endif
     name.truncate(PALETTE_MAX_NAME - 1);
     palettes.at(row)->setName(name.data());
@@ -819,9 +817,6 @@ void MainWindow::on_paletteTable_cellChanged(int row, int column)
     strcpy(globalNames[row], name.data()); // ARR_HACK
 #endif
 }
-
-#undef itemAt
-#endif // BIG_HACK2
 
 void MainWindow::on_removePaletteButton_clicked()
 {
