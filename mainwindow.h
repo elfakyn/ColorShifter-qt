@@ -8,10 +8,12 @@
 #include <QFile>
 #include <QPainter>
 #include <QStyledItemDelegate>
+#include <QSystemTrayIcon>
+#include <QMenu>
 
 #include "colorTools.h"
 #include "palette.h"
-#include "flags.h"
+#include "hacks.h"
 
 #define PALETTE_MAX_PALETTES 30 // not used anymore
 
@@ -70,8 +72,13 @@ private slots:
 
     void on_addPaletteButton_clicked();
 
+    void on_smoothnessSlider_valueChanged(int value);
+
+    void on_timeSlider_valueChanged(int value);
+
 private:
     Ui::MainWindow *ui;
+
     DwmColor initialDwmColor;
     int4 currentARGB;
     table <Palette> palettes;
@@ -79,7 +86,6 @@ private:
 #ifdef ARR_HACK
     char globalNames[TABLE_MAX_ELEMENTS][PALETTE_MAX_NAME]; // ARR_HACK
 #endif
-    bool inhibitColorTableUpdate_; // massive hack, prelude
 
     void updateColorAndPreview(void);
 
@@ -98,12 +104,13 @@ private:
 
     int4 AHSVfromSliders(void);
 
+    // System tray stuff
+    QAction *minimizeAction;
+    QAction *restoreAction;
 
 public:
     void updateColorTableDragDrop(int dest, int src);
     void updatePaletteTableDragDrop(int dest, int src);
-
-    void inhibitColorTableUpdate(bool value); // massive, massive hack
 
 
 };

@@ -11,7 +11,6 @@
 
 #include "colorTools.h"
 #include "dllTools.h"
-#include "flags.h"
 
 #ifdef QT_DEBUG
 #include <iostream>
@@ -26,6 +25,7 @@ HRESULT(WINAPI *setDwmColors) (DwmColor *color, UINT unknown);
 HRESULT(WINAPI *getDwmColors) (DwmColor *color);
 #include "dllTools.cpp" // Don't ask, don't tell
 #include "dllTools.h"
+#include "hacks.h"
 #endif
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -39,7 +39,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->paletteTable->setItemDelegate(new TableBorderSelection(this));
     ui->colorTable->setItemDelegate(new TableBorderSelection(this));
 
-    ui->colorGroup->setEnabled(false); // TODO: move this out of testing area when done
+    ui->sliderGroup->setEnabled(false);
+    ui->colorGroup->setEnabled(false);
 
     // Variable initialization
 
@@ -50,7 +51,6 @@ MainWindow::MainWindow(QWidget *parent) :
     currentARGB.z = 0;
     currentARGB.w = 0;
 
-    inhibitColorTableUpdate_ = false;
 
 
     // Misc initialization
@@ -58,6 +58,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // UI values initialization
     ui->balanceBox->setValue(initialDwmColor.colorBalance);
+
+    // System tray icon initialization
+
 
     ////////////////////////////////////////////////////////////////////////////
     // TEMPORARY FOR TESTING
@@ -277,12 +280,14 @@ void MainWindow::on_addColorButton_clicked()
 
 void MainWindow::on_colorTable_itemSelectionChanged()
 {
-    if (inhibitColorTableUpdate_) {
+
+    if (HACK_FLAG(HACK_INHIBIT_COLOR_TABLE_UPDATE)) {
         return; // massive hack, grand finale
     }
 
     if(ui->colorTable->selectedItems().empty()) {
-        return; // FIXME: make sure thing is stuff.
+        ui->sliderGroup->setEnabled(false);
+        return;
     }
     if (ui->colorTable->selectedItems().first()->row() < ui->colorTable->property("immutableRows").toInt()) {
         // cannot delete immutable object
@@ -292,9 +297,17 @@ void MainWindow::on_colorTable_itemSelectionChanged()
         ui->removeColorButton->setEnabled(true);
     }
 
+    if (ui->colorTable->rowCount() < TABLE_MAX_ELEMENTS - 1) {
+        ui->addColorButton->setEnabled(true);
+    } else {
+        ui->addColorButton->setEnabled(false);
+    }
+
     if (ui->colorTable->selectedItems().first()->row() >= ui->colorTable->rowCount()) {
         return; // should never happen
     }
+
+    ui->sliderGroup->setEnabled(true);
 
     // speed hack
     int paletteIndex = ui->paletteTable->selectedItems().first()->row();
@@ -371,7 +384,7 @@ void MainWindow::updatePaletteTableDragDrop(int dest, int src)
 
 void MainWindow::on_paletteTable_itemSelectionChanged()
 {
-    if(inhibitColorTableUpdate_) {
+    if(HACK_FLAG(HACK_INHIBIT_DWM_TABLE_UPDATE)) {
         return; // massive hack reloaded
     }
 
@@ -620,7 +633,7 @@ void MainWindow::fillColorTable(int index)
         ui->colorTable->insertRow(i);
 
         QTableWidgetItem *item = new QTableWidgetItem;
-        item->setText(QString::number(palettes.at(index)->getMergedAt(i),16).leftJustified(8, '0'));
+        item->setText(QString::number(palettes.at(index)->getMergedAt(i),16).rightJustified(8, '0'));
         ui->colorTable->setItem(i, 0, item);
 
         QTableWidgetItem *item_ = new QTableWidgetItem;
@@ -641,6 +654,7 @@ void MainWindow::updateAtColorTable(int index, int row)
                                                          palettes.at(index)->at(row)->x,
                                                          palettes.at(index)->at(row)->y,
                                                          palettes.at(index)->at(row)->z));
+    ui->colorTable->item(row, 0)->setText(QString::number(palettes.at(index)->getMergedAt(row),16).rightJustified(8, '0'));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -648,6 +662,9 @@ void MainWindow::updateAtColorTable(int index, int row)
 
 void MainWindow::updateColorAndPreview()
 {
+    if (HACK_FLAG(HACK_INHIBIT_COLOR_TABLE_UPDATE)) {
+        return;
+    }
     if(ui->paletteTable->selectedItems().empty() || ui->colorTable->selectedItems().empty()) {
         // should never happen.
     } else {
@@ -658,7 +675,14 @@ void MainWindow::updateColorAndPreview()
         updateAtPaletteTable(paletteIndex);
     }
 
-    if (!ui->previewColorCheckbox->isChecked()) { // preview is disabled
+    if (!ui->previewColorCheckbox->isChecked() ||
+           // !ui->paletteGroup->isEnabled() ||
+           // !ui->sliderGroup->isEnabled() ||
+            !ui->previewColorCheckbox->isEnabled()) { // preview is disabled
+#ifdef QT_DEBUG
+        std::cout<<"preview disabled, reset initial colors"<<std::endl;
+#endif
+        setDwmColors(&initialDwmColor, 0);
         return;
     }
 
@@ -676,11 +700,6 @@ void MainWindow::updateColorAndPreview()
 
     DwmColor myDwmColor = exportColor(myColor);
     setDwmColors(&myDwmColor, 0);
-}
-
-void MainWindow::inhibitColorTableUpdate(bool value)
-{
-    inhibitColorTableUpdate_ = value;
 }
 
 int4 MainWindow::AHSVfromSliders()
@@ -754,7 +773,7 @@ void QTableWidget::dropEvent(QDropEvent *event)
         return;
     }
 
-    ((MainWindow*)parent()->parent()->parent())->inhibitColorTableUpdate(true); // massive hack, act 1
+    SET_HACK_FLAG(HACK_INHIBIT_COLOR_TABLE_UPDATE); // massive hack, act 1
     // copy data over to new row
     insertRow(destRow);
     for (int i = 0; i < columnCount(); i++) {
@@ -769,7 +788,7 @@ void QTableWidget::dropEvent(QDropEvent *event)
     verticalScrollBar()->setValue(scrollValue);
     scrollTo(destIndex, QAbstractItemView::EnsureVisible);
 
-    ((MainWindow*)parent()->parent()->parent())->inhibitColorTableUpdate(false); // massive hack, act 2
+    CLEAR_HACK_FLAG(HACK_INHIBIT_COLOR_TABLE_UPDATE); // massive hack, act 2
 
 #ifdef QT_DEBUG
     std::cout<<" (ok)"<<std::endl;
@@ -833,6 +852,7 @@ void MainWindow::on_removePaletteButton_clicked()
 
 void MainWindow::on_addPaletteButton_clicked()
 {
+    SET_HACK_FLAG(HACK_INHIBIT_DWM_TABLE_UPDATE);
     ui->removePaletteButton->setEnabled(true);
     if (ui->paletteTable->rowCount() >= TABLE_MAX_ELEMENTS - 1) {
         ui->addPaletteButton->setEnabled(false);
@@ -850,4 +870,53 @@ void MainWindow::on_addPaletteButton_clicked()
     palettes.addAt(row, palettes.getAt(row - 1));
 
     ui->paletteTable->selectRow(row);
+
+    CLEAR_HACK_FLAG(HACK_INHIBIT_DWM_TABLE_UPDATE);
+    updateColorAndPreview();
+}
+
+void MainWindow::on_smoothnessSlider_valueChanged(int value)
+{
+    switch(value) {
+    case 0:
+        ui->smoothnessStatusLabel->setText("Disco!");
+        break;
+    case 1:
+        ui->smoothnessStatusLabel->setText("Choppy");
+        break;
+    case 2:
+        ui->smoothnessStatusLabel->setText("Very rough");
+        break;
+    case 3:
+        ui->smoothnessStatusLabel->setText("Rough");
+        break;
+    case 4:
+        ui->smoothnessStatusLabel->setText("Coarse");
+        break;
+    case 5:
+        ui->smoothnessStatusLabel->setText("Average");
+        break;
+    case 6:
+        ui->smoothnessStatusLabel->setText("Decent");
+        break;
+    case 7:
+        ui->smoothnessStatusLabel->setText("Smooth");
+        break;
+    case 8:
+        ui->smoothnessStatusLabel->setText("Very smooth");
+        break;
+    case 9:
+        ui->smoothnessStatusLabel->setText("Seamless");
+        break;
+    case 10:
+        ui->smoothnessStatusLabel->setText("Perfect");
+        break;
+    }
+
+    // do some other stuff
+}
+
+void MainWindow::on_timeSlider_valueChanged(int value)
+{
+
 }

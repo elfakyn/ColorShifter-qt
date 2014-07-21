@@ -20,7 +20,8 @@ main.cpp\
     colorTools.cpp \
     interpolate.cpp \
     main2.cpp \
-    palette.cpp
+    palette.cpp \
+    hacks.cpp
 
 
 HEADERS  += \
@@ -28,10 +29,10 @@ HEADERS  += \
     mainwindow.h \
     colorTools.h \
     exitCodes.h \
-    flags.h \
     palette.h \
     table.ipp \
-    table.hpp
+    table.hpp \
+    hacks.h
 
 FORMS    += mainwindow.ui
 
