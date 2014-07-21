@@ -918,5 +918,19 @@ void MainWindow::on_smoothnessSlider_valueChanged(int value)
 
 void MainWindow::on_timeSlider_valueChanged(int value)
 {
+    if(HACK_FLAG(HACK_INHIBIT_TIME_SLIDER)) {
+        return;
+    }
 
+    ui->timeEdit->setTime(QTime(value/3600, value/60 % 60, value % 60));
+}
+
+
+void MainWindow::on_timeEdit_timeChanged(const QTime &time)
+{
+    SET_HACK_FLAG(HACK_INHIBIT_TIME_SLIDER);
+
+    ui->timeSlider->setValue(3600 * time.hour() + 60 * time.minute() + time.second());
+
+    CLEAR_HACK_FLAG(HACK_INHIBIT_TIME_SLIDER);
 }

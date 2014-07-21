@@ -76,6 +76,8 @@ private slots:
 
     void on_timeSlider_valueChanged(int value);
 
+    void on_timeEdit_timeChanged(const QTime &time);
+
 private:
     Ui::MainWindow *ui;
 
