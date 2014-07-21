@@ -21,7 +21,7 @@ void TOGGLE_HACK_FLAG(int position)
     GLOBAL_HACKS &= ~GLOBAL_HACKS_DISABLE;
 }
 
-int HACK_FLAG(int position)
+bool HACK_FLAG(int position)
 {
     return GLOBAL_HACKS >> position & 1;
 }

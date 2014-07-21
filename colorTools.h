@@ -38,9 +38,13 @@ public:
 };
 
 Color interpolate(Color, Color, double);
+int4 interpolate_(int4, int4, double);
 
 int4 AHSVfromARGB(int4);
 int4 ARGBfromAHSV(int4);
 
 Color importColor(DwmColor);
 DwmColor exportColor(Color);
+
+int mergedFromInt4(int4);
+int4 int4FromMerged(int);

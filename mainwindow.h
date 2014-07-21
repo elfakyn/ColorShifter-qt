@@ -10,6 +10,7 @@
 #include <QStyledItemDelegate>
 #include <QSystemTrayIcon>
 #include <QMenu>
+#include <QTimer>
 
 #include "colorTools.h"
 #include "palette.h"
@@ -78,13 +79,19 @@ private slots:
 
     void on_timeEdit_timeChanged(const QTime &time);
 
+    void on_mainButton_clicked();
+
+    void next_color();
+
 private:
     Ui::MainWindow *ui;
 
     DwmColor initialDwmColor;
+    DwmColor currentDwmColor;
     int4 currentARGB;
     table <Palette> palettes;
     int n_palettes;
+
 #ifdef ARR_HACK
     char globalNames[TABLE_MAX_ELEMENTS][PALETTE_MAX_NAME]; // ARR_HACK
 #endif
@@ -109,6 +116,13 @@ private:
     // System tray stuff
     QAction *minimizeAction;
     QAction *restoreAction;
+
+    // timer and update stuff
+    void startShifting(void);
+    void stopShifting(void);
+    int getTimerValue();
+    QTimer *timer;
+    int tsh[TSH_LENGTH]; // Timer speed hack
 
 public:
     void updateColorTableDragDrop(int dest, int src);

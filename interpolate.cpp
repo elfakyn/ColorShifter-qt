@@ -22,3 +22,13 @@ Color interpolate(Color color1, Color color2, double xvalue)
 
 	return colorOut;
 }
+
+int4 interpolate_(int4 ahsv1, int4 ahsv2, double xvalue)
+{
+    return int4 {
+        INTERPOLATE(ahsv1.w, ahsv2.w, xvalue),
+        INTERPOLATE(ahsv1.x, ahsv2.x, xvalue),
+        INTERPOLATE(ahsv1.y, ahsv2.y, xvalue),
+        INTERPOLATE(ahsv1.z, ahsv2.z, xvalue)
+    };
+}

@@ -103,3 +103,21 @@ DwmColor exportColor(Color in)
 	out.colorBalance = in.GetBalance();
 	return out;
 }
+
+int mergedFromInt4(int4 argb)
+{
+    return (argb.w << 24) |
+        (argb.x << 16) |
+        (argb.y << 8) |
+        argb.z;
+}
+
+int4 int4FromMerged(int merged)
+{
+    return int4 {
+        (merged >> 24) & 0xFF,
+        (merged >> 16) & 0xFF,
+        (merged >> 8) & 0xFF,
+        merged & 0xFF
+    };
+}

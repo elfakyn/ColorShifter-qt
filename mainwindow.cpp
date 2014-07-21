@@ -41,10 +41,12 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->sliderGroup->setEnabled(false);
     ui->colorGroup->setEnabled(false);
+    ui->mainButton->setEnabled(false);
 
     // Variable initialization
 
     getDwmColors(&initialDwmColor);
+    currentDwmColor = initialDwmColor;
 
     currentARGB.x = 0;
     currentARGB.y = 0;
@@ -55,6 +57,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // Misc initialization
     loadPalettes(":/palettes.json");
+
+    timer = new(QTimer);
+    connect(timer, SIGNAL(timeout()), this, SLOT(next_color()));
 
     // UI values initialization
     ui->balanceBox->setValue(initialDwmColor.colorBalance);
@@ -276,6 +281,8 @@ void MainWindow::on_addColorButton_clicked()
     palettes.at(paletteIndex)->addAt(row - 1, palettes.at(paletteIndex)->getAt(row - 1));
 
     updateAtPaletteTable(paletteIndex);
+
+    ui->sliderGroup->setEnabled(true);
 }
 
 void MainWindow::on_colorTable_itemSelectionChanged()
@@ -331,6 +338,9 @@ void MainWindow::on_colorTable_itemSelectionChanged()
 
 void MainWindow::on_quitButton_clicked()
 {
+    stopShifting();
+    exit(EXIT_OK);
+
     // exit and revert
 }
 
@@ -391,6 +401,7 @@ void MainWindow::on_paletteTable_itemSelectionChanged()
     if(ui->paletteTable->selectedItems().empty()) {
         clearColorTable();
         ui->colorGroup->setEnabled(false);
+        ui->mainButton->setEnabled(false);
         ui->addPaletteButton->setEnabled(false);
         ui->removePaletteButton->setEnabled(false);
         ui->previewPaletteButton->setEnabled(false);
@@ -411,6 +422,7 @@ void MainWindow::on_paletteTable_itemSelectionChanged()
 
     fillColorTable(ui->paletteTable->selectedItems().first()->row());
     ui->colorGroup->setEnabled(true);
+    ui->mainButton->setEnabled(true);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -686,20 +698,18 @@ void MainWindow::updateColorAndPreview()
         return;
     }
 
-    Color myColor;
-    myColor.SetARGB(this->currentARGB);
+    currentDwmColor.color = mergedFromInt4(this->currentARGB);
     if (ui->overrideCheckbox->isChecked()) {
-        myColor.SetBalance(ui->balanceBox->value());
+        currentDwmColor.colorBalance = ui->balanceBox->value();
     } else {
-        myColor.SetBalance(initialDwmColor.colorBalance);
+        currentDwmColor.colorBalance = initialDwmColor.colorBalance;
     }
 
 #ifdef QT_DEBUG
-    std::cout << std::hex << myColor.GetMerged() << std::endl;
+    std::cout << std::hex << currentDwmColor.color << std::endl;
 #endif
 
-    DwmColor myDwmColor = exportColor(myColor);
-    setDwmColors(&myDwmColor, 0);
+    setDwmColors(&currentDwmColor, 0);
 }
 
 int4 MainWindow::AHSVfromSliders()
@@ -934,3 +944,134 @@ void MainWindow::on_timeEdit_timeChanged(const QTime &time)
 
     CLEAR_HACK_FLAG(HACK_INHIBIT_TIME_SLIDER);
 }
+
+// hackity hack
+#define SAVE_GROUP_STATE_AND_DISABLE(group) if(ui->##group##Group->isEnabled()) { \
+        SET_HACK_FLAG(HACK_##group##_GROUP_ENABLED); \
+    } else { \
+        CLEAR_HACK_FLAG(HACK_##group##_GROUP_ENABLED); \
+    } \
+    ui->##group##Group->setEnabled(false)
+#define RESTORE_GROUP_STATE(group) ui->##group##Group->setEnabled(HACK_FLAG(HACK_##group##_GROUP_ENABLED))
+
+void MainWindow::on_mainButton_clicked()
+{
+    TOGGLE_HACK_FLAG(HACK_MAIN_BUTTON_ON);
+
+    if (HACK_FLAG(HACK_MAIN_BUTTON_ON)) {
+#ifdef QT_DEBUG
+        std::cout<<"Started shifting"<<std::endl;
+#endif
+
+        ui->mainButton->setText("Stop shifting");
+
+        SAVE_GROUP_STATE_AND_DISABLE(color);
+        SAVE_GROUP_STATE_AND_DISABLE(palette);
+        SAVE_GROUP_STATE_AND_DISABLE(settings);
+
+        startShifting();
+
+    } else {
+#ifdef QT_DEBUG
+        std::cout<<"Stopped shifting"<<std::endl;
+#endif
+
+        ui->mainButton->setText("Shift the colors!");
+
+        RESTORE_GROUP_STATE(color);
+        RESTORE_GROUP_STATE(palette);
+        RESTORE_GROUP_STATE(settings);
+
+        stopShifting();
+    }
+
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Shifting the colors
+
+void MainWindow::startShifting()
+{
+    // FIXME: replace with actual values from interface
+    TSH(MAX_IDX) = 100;
+    TSH(CRT_PAL) = ui->paletteTable->selectedItems().first()->row();
+    TSH(MAX_CLR) = ui->colorTable->rowCount();
+    TSH(CRT_IDX) = 0;
+    TSH(CRT_CIX) = 1 % TSH(MAX_CLR);
+    TSH(PRV_CLR) = palettes.at(TSH(CRT_PAL))->getMergedAt(0 % TSH(MAX_CLR));
+    TSH(NXT_CLR) = palettes.at(TSH(CRT_PAL))->getMergedAt(1 % TSH(MAX_CLR));
+    TSH(IS_RAND) = 0;
+    TSH(IS_AHSV) = 0;
+
+    if (HACK_FLAG(HACK_PREVIEW_ENABLED)) {
+        SET_HACK_FLAG(HACK_PREVIEW_FIRST_PASS);
+    }
+
+    timer->start(getTimerValue());
+}
+
+void MainWindow::stopShifting()
+{
+    timer->stop();
+
+    updateColorAndPreview();
+}
+
+int MainWindow::getTimerValue()
+{
+    if (HACK_FLAG(HACK_PREVIEW_ENABLED)) {
+        return 100;
+    }
+    return 50; // replace with something sensible
+}
+
+void MainWindow::next_color()
+{
+#ifdef QT_DEBUG
+    std::cout<<"Color updated: ";
+#endif
+
+    // this will contain lots of speed hacks because it's called so often
+    // you have been warned
+
+    // FIXME: if preview stop after first pass
+    ++TSH(CRT_IDX) %= TSH(MAX_IDX); // increment the current color index
+    if (!(TSH(CRT_IDX) % TSH(MAX_IDX))) { // reached a new color
+        ++TSH(CRT_CIX) %= TSH(MAX_CLR); // increment the current color
+        TSH(PRV_CLR) = TSH(NXT_CLR); // update old color
+        if (TSH(IS_RAND)) { // update new color with random value
+            TSH(NXT_CLR) = palettes.at(TSH(CRT_PAL))->getMergedAt(rand() % TSH(MAX_CLR));
+        } else { // update new color with next value
+            TSH(NXT_CLR) = palettes.at(TSH(CRT_PAL))->getMergedAt(TSH(CRT_CIX));
+        }
+    }
+
+#ifdef QT_DEBUG
+    std::cout<<"TSH: ";
+    for (int i = 0; i < TSH_LENGTH; i++) {
+        std::cout<<std::hex<<tsh[i]<<"\t";
+    }
+    std::cout<<std::endl;
+#endif
+
+    if (TSH(IS_AHSV)) {
+        currentDwmColor.color = mergedFromInt4(
+                    ARGBfromAHSV(
+                        interpolate_(
+                            AHSVfromARGB(int4FromMerged(TSH(PRV_CLR))),
+                            AHSVfromARGB(int4FromMerged(TSH(NXT_CLR))),
+                            (double)TSH(CRT_IDX) / TSH(MAX_IDX))));
+    } else {
+        currentDwmColor.color = mergedFromInt4(
+                    interpolate_(
+                        int4FromMerged(TSH(PRV_CLR)),
+                        int4FromMerged(TSH(NXT_CLR)),
+                        (double)TSH(CRT_IDX) / TSH(MAX_IDX)));
+    }
+
+    setDwmColors(&currentDwmColor, 0);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// More slot stuff
+
