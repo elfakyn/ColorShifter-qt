@@ -38,7 +38,7 @@ public:
 };
 
 Color interpolate(Color, Color, double);
-int4 interpolate_(int4, int4, double);
+int4 interpolate_(int4, int4, double, bool hsv = false);
 
 int4 AHSVfromARGB(int4);
 int4 ARGBfromAHSV(int4);

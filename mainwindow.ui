@@ -508,7 +508,7 @@
       <number>10</number>
      </property>
      <property name="maximum">
-      <number>7200</number>
+      <number>3600</number>
      </property>
      <property name="singleStep">
       <number>10</number>
@@ -517,7 +517,7 @@
       <number>300</number>
      </property>
      <property name="value">
-      <number>1200</number>
+      <number>60</number>
      </property>
      <property name="tracking">
       <bool>true</bool>
@@ -593,11 +593,21 @@
      <property name="buttonSymbols">
       <enum>QAbstractSpinBox::NoButtons</enum>
      </property>
+     <property name="dateTime">
+      <datetime>
+       <hour>0</hour>
+       <minute>1</minute>
+       <second>0</second>
+       <year>2000</year>
+       <month>1</month>
+       <day>1</day>
+      </datetime>
+     </property>
      <property name="minimumTime">
       <time>
        <hour>0</hour>
        <minute>0</minute>
-       <second>10</second>
+       <second>1</second>
       </time>
      </property>
      <property name="displayFormat">
@@ -606,7 +616,7 @@
      <property name="time">
       <time>
        <hour>0</hour>
-       <minute>20</minute>
+       <minute>1</minute>
        <second>0</second>
       </time>
      </property>

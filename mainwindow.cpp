@@ -5,6 +5,7 @@
 #include <QScrollBar>
 #include <QHeaderView>
 #include <QFileDialog>
+#include <QMessageBox>
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -465,54 +466,71 @@ void MainWindow::loadPalettes(QString loadFileName)
 
 void MainWindow::loadPalettesFromJSON(QJsonObject json)
 {
-    // TODO: only clear when user checks box or other sane behavior
-    clearPaletteTable();
-    palettes.clear();
+    try {
+        // TODO: only clear when user checks box or other sane behavior
+        clearPaletteTable();
+        palettes.clear();
 
-    QJsonArray paletteArray = json["palettes"].toArray();
+        QJsonArray paletteArray = json["palettes"].toArray();
 
-    bool buttonsReenabled = false;
-    for (int i = 0; i < paletteArray.size(); i++) {
-        if (i >= TABLE_MAX_ELEMENTS) {
-            break; // can't add any more palettes
-        }
-
-        QJsonObject crt = paletteArray.at(i).toObject();
-        QByteArray name_ = crt["name"].toString().toLocal8Bit();
-        char *name__ = name_.data();
-        Palette toAdd;
-        toAdd.setName(name__);
-#ifdef ARR_HACK
-        strcpy(globalNames[i], name__); // ARR_HACK
-#endif
-
-        QJsonArray colors_ = crt["colors"].toArray();
-
-        for (int j = 0; j < colors_.size(); j++) {
-            if (j >= TABLE_MAX_ELEMENTS) {
-                break; // can't add any more colors
+        bool buttonsReenabled = false;
+        for (int i = 0; i < paletteArray.size(); i++) {
+            if (i >= TABLE_MAX_ELEMENTS) {
+                break; // can't add any more palettes
             }
 
-            QJsonObject crt_ = colors_.at(j).toObject();
-            int4 color_; // ARGB
-            color_.w = crt_["a"].toInt();
-            color_.x = crt_["r"].toInt();
-            color_.y = crt_["g"].toInt();
-            color_.z = crt_["b"].toInt();
-            toAdd.addAt(j, color_);
+            QJsonObject crt = paletteArray.at(i).toObject();
+            QByteArray name_ = crt["name"].toString().toLocal8Bit();
+            char *name__ = name_.data();
+            Palette toAdd;
+            toAdd.setName(name__);
+#ifdef ARR_HACK
+            strcpy(globalNames[i], name__); // ARR_HACK
+#endif
+
+            QJsonArray colors_ = crt["colors"].toArray();
+
+            for (int j = 0; j < colors_.size(); j++) {
+                if (j >= TABLE_MAX_ELEMENTS) {
+                    break; // can't add any more colors
+                }
+
+                QJsonObject crt_ = colors_.at(j).toObject();
+                int4 color_; // ARGB
+                color_.w = crt_["a"].toInt();
+                color_.x = crt_["r"].toInt();
+                color_.y = crt_["g"].toInt();
+                color_.z = crt_["b"].toInt();
+                toAdd.addAt(j, color_);
+            }
+
+            if (toAdd.size() == 0) { // empty palette
+                continue;
+            }
+
+            palettes.addAt(i, toAdd);
+            addAtPaletteTable(i);
+
+            if (i >= 0 && !buttonsReenabled) {
+                ui->savePalettesButton->setEnabled(true);
+                buttonsReenabled = true;
+            }
         }
 
-        if (toAdd.size() == 0) { // empty palette
-            continue;
-        }
-
-        palettes.addAt(i, toAdd);
-        addAtPaletteTable(i);
-
-        if (i >= 0 && !buttonsReenabled) {
-            ui->savePalettesButton->setEnabled(true);
-            buttonsReenabled = true;
-        }
+        QJsonObject settings = json["settings"].toObject();
+        QJsonObject time = settings["time"].toObject();
+        ui->timeEdit->time().setHMS(time["h"].toInt(), time["m"].toInt(), time["s"].toInt());
+        ui->smoothnessSlider->setValue(settings["smoothness"].toInt());
+        ui->randomCheckbox->setChecked(settings["random"].toBool());
+        ui->smartCheckbox->setChecked(settings["smart"].toBool());
+        ui->overrideCheckbox->setChecked(settings["override"].toBool());
+        ui->balanceBox->setValue(settings["balance"].toInt());
+    } catch (...) {
+        QMessageBox couldntLoad;
+        couldntLoad.setIcon(QMessageBox::Critical);
+        couldntLoad.setWindowTitle("Uh-oh");
+        couldntLoad.setText("Could not load file.");
+        couldntLoad.exec();
     }
 }
 
@@ -537,6 +555,7 @@ void MainWindow::savePalettes(QString saveFileName)
 
 QJsonObject MainWindow::savePalettesToJSON()
 {
+    try {
     QJsonArray paletteArray;
     for (int i = 0; i < palettes.size(); i++) {
         QJsonArray colorArray;
@@ -564,7 +583,31 @@ QJsonObject MainWindow::savePalettesToJSON()
     QJsonObject json;
     json["palettes"] = paletteArray;
 
+    // save the settings
+    QJsonObject settings;
+    settings["smoothness"] = ui->smoothnessSlider->value();
+    QJsonObject time;
+    time["h"] = ui->timeEdit->time().hour();
+    time["m"] = ui->timeEdit->time().minute();
+    time["s"] = ui->timeEdit->time().second();
+    settings["time"] = time;
+    settings["random"] = ui->randomCheckbox->isChecked();
+    settings["smart"] = ui->smartCheckbox->isChecked();
+    settings["override"] = ui->overrideCheckbox->isChecked();
+    settings["balance"] = ui->balanceBox->value();
+    json["settings"] = settings;
+
     return json;
+    } catch (...) {
+        QMessageBox couldntSave;
+        couldntSave.setIcon(QMessageBox::Critical);
+        couldntSave.setText("Could not save file");
+        couldntSave.setWindowTitle("Uh-oh");
+        couldntSave.exec();
+
+        QJsonObject x;
+        return x;
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -957,6 +1000,7 @@ void MainWindow::on_timeEdit_timeChanged(const QTime &time)
 void MainWindow::on_mainButton_clicked()
 {
     TOGGLE_HACK_FLAG(HACK_MAIN_BUTTON_ON);
+    CLEAR_HACK_FLAG(HACK_PREVIEW_ENABLED);
 
     if (HACK_FLAG(HACK_MAIN_BUTTON_ON)) {
 #ifdef QT_DEBUG
@@ -994,8 +1038,7 @@ void MainWindow::startShifting()
 {
     // FIXME: replace with actual values from interface
     TSH(MAX_IDX) = ui->smoothnessSlider->value() ?
-                256 / (11 - ui->smoothnessSlider->value() +
-                       (ui->smoothnessSlider->value() < 5 ? 0 : 6 - ui->smoothnessSlider->value())) :
+                256 / (21 - 2 * ui->smoothnessSlider->value()) :
                 1;
     TSH(CRT_PAL) = ui->paletteTable->selectedItems().first()->row();
     TSH(MAX_CLR) = ui->colorTable->rowCount();
@@ -1082,7 +1125,8 @@ void MainWindow::next_color()
                         interpolate_(
                             AHSVfromARGB(int4FromMerged(TSH(PRV_CLR))),
                             AHSVfromARGB(int4FromMerged(TSH(NXT_CLR))),
-                            (double)TSH(CRT_IDX) / TSH(MAX_IDX))));
+                            (double)TSH(CRT_IDX) / TSH(MAX_IDX),
+                            true)));
     } else {
         currentDwmColor.color = mergedFromInt4(
                     interpolate_(
@@ -1096,7 +1140,6 @@ void MainWindow::next_color()
 
 ////////////////////////////////////////////////////////////////////////////////
 // More slot stuff
-
 
 void MainWindow::on_previewPaletteButton_clicked()
 {
