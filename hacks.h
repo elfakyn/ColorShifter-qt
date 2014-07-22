@@ -13,6 +13,9 @@
 #define HACK_palette_GROUP_ENABLED 6 // WARNING: case sensitive!
 #define HACK_PREVIEW_ENABLED 7
 #define HACK_PREVIEW_FIRST_PASS 8
+#define HACK_PREVIEW_BUTTON_ON 9
+#define HACK_saveLoad_GROUP_ENABLED 10 // WARNING: case sensitive!
+#define HACK_plusMinus_GROUP_ENABLED 11 // WARNING: case sensitive!
 
 void SET_HACK_FLAG(int position);
 void CLEAR_HACK_FLAG(int position);

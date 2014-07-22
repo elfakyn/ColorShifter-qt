@@ -408,7 +408,7 @@ void MainWindow::on_paletteTable_itemSelectionChanged()
         return;
     }
 
-    ui->previewPaletteButton->setEnabled(false); // FIXME
+    ui->previewPaletteButton->setEnabled(true);
 
     int rows = ui->paletteTable->rowCount();
 
@@ -993,57 +993,79 @@ void MainWindow::on_mainButton_clicked()
 void MainWindow::startShifting()
 {
     // FIXME: replace with actual values from interface
-    TSH(MAX_IDX) = 100;
+    TSH(MAX_IDX) = ui->smoothnessSlider->value() ?
+                256 / (11 - ui->smoothnessSlider->value() +
+                       (ui->smoothnessSlider->value() < 5 ? 0 : 6 - ui->smoothnessSlider->value())) :
+                1;
     TSH(CRT_PAL) = ui->paletteTable->selectedItems().first()->row();
     TSH(MAX_CLR) = ui->colorTable->rowCount();
     TSH(CRT_IDX) = 0;
     TSH(CRT_CIX) = 1 % TSH(MAX_CLR);
     TSH(PRV_CLR) = palettes.at(TSH(CRT_PAL))->getMergedAt(0 % TSH(MAX_CLR));
     TSH(NXT_CLR) = palettes.at(TSH(CRT_PAL))->getMergedAt(1 % TSH(MAX_CLR));
-    TSH(IS_RAND) = 0;
-    TSH(IS_AHSV) = 0;
+    TSH(IS_RAND) = ui->randomCheckbox->isChecked();
+    TSH(IS_AHSV) = ui->smartCheckbox->isChecked();
 
+    next_color();
     if (HACK_FLAG(HACK_PREVIEW_ENABLED)) {
         SET_HACK_FLAG(HACK_PREVIEW_FIRST_PASS);
+        TSH(MAX_IDX) = 64;
+        timer->start(15);
+    } else {
+        timer->start((ui->timeEdit->time().hour() * 3600 +
+                     ui->timeEdit->time().minute() * 60 +
+                     ui->timeEdit->time().second()) * 1000 / (TSH(MAX_IDX) * TSH(MAX_CLR)));
     }
-
-    timer->start(getTimerValue());
 }
 
 void MainWindow::stopShifting()
 {
     timer->stop();
 
-    updateColorAndPreview();
-}
-
-int MainWindow::getTimerValue()
-{
     if (HACK_FLAG(HACK_PREVIEW_ENABLED)) {
-        return 100;
+        RESTORE_GROUP_STATE(color);
+        RESTORE_GROUP_STATE(settings);
+        RESTORE_GROUP_STATE(saveLoad);
+        RESTORE_GROUP_STATE(plusMinus);
+        ui->previewPaletteButton->setText("Preview");
+        ui->paletteTable->setEnabled(true);
+        ui->mainButton->setEnabled(true);
+        CLEAR_HACK_FLAG(HACK_PREVIEW_FIRST_PASS);
+        CLEAR_HACK_FLAG(HACK_PREVIEW_BUTTON_ON);
     }
-    return 50; // replace with something sensible
+
+    updateColorAndPreview();
 }
 
 void MainWindow::next_color()
 {
-#ifdef QT_DEBUG
-    std::cout<<"Color updated: ";
-#endif
-
     // this will contain lots of speed hacks because it's called so often
+    // see hacks.h
     // you have been warned
 
     // FIXME: if preview stop after first pass
     ++TSH(CRT_IDX) %= TSH(MAX_IDX); // increment the current color index
     if (!(TSH(CRT_IDX) % TSH(MAX_IDX))) { // reached a new color
         ++TSH(CRT_CIX) %= TSH(MAX_CLR); // increment the current color
+        if (!TSH(CRT_CIX)) { // rolled over
+#ifdef QT_DEBUG
+            std::cout<<"Rolled over!"<<std::endl;
+#endif
+            if(HACK_FLAG(HACK_PREVIEW_ENABLED)) {
+                CLEAR_HACK_FLAG(HACK_PREVIEW_FIRST_PASS);
+            }
+        }
+
         TSH(PRV_CLR) = TSH(NXT_CLR); // update old color
         if (TSH(IS_RAND)) { // update new color with random value
             TSH(NXT_CLR) = palettes.at(TSH(CRT_PAL))->getMergedAt(rand() % TSH(MAX_CLR));
         } else { // update new color with next value
             TSH(NXT_CLR) = palettes.at(TSH(CRT_PAL))->getMergedAt(TSH(CRT_CIX));
         }
+    }
+    if (HACK_FLAG(HACK_PREVIEW_ENABLED) && TSH(CRT_CIX) && !HACK_FLAG(HACK_PREVIEW_FIRST_PASS)) {
+        stopShifting();
+        return;
     }
 
 #ifdef QT_DEBUG
@@ -1075,3 +1097,23 @@ void MainWindow::next_color()
 ////////////////////////////////////////////////////////////////////////////////
 // More slot stuff
 
+
+void MainWindow::on_previewPaletteButton_clicked()
+{
+    TOGGLE_HACK_FLAG(HACK_PREVIEW_BUTTON_ON);
+
+    SET_HACK_FLAG(HACK_PREVIEW_ENABLED);
+    SET_HACK_FLAG(HACK_PREVIEW_FIRST_PASS);
+
+    if (HACK_FLAG(HACK_PREVIEW_BUTTON_ON)) {
+        SAVE_GROUP_STATE_AND_DISABLE(color);
+        SAVE_GROUP_STATE_AND_DISABLE(settings);
+        SAVE_GROUP_STATE_AND_DISABLE(saveLoad);
+        SAVE_GROUP_STATE_AND_DISABLE(plusMinus);
+        ui->previewPaletteButton->setText("Stop");
+        ui->mainButton->setEnabled(false);
+        startShifting();
+    } else {
+        stopShifting();
+    }
+}

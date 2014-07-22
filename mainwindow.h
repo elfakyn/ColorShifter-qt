@@ -83,6 +83,8 @@ private slots:
 
     void next_color();
 
+    void on_previewPaletteButton_clicked();
+
 private:
     Ui::MainWindow *ui;
 
@@ -120,7 +122,6 @@ private:
     // timer and update stuff
     void startShifting(void);
     void stopShifting(void);
-    int getTimerValue();
     QTimer *timer;
     int tsh[TSH_LENGTH]; // Timer speed hack
 

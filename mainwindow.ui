@@ -575,10 +575,10 @@
       </rect>
      </property>
      <property name="text">
-      <string>Smart transitions (by hue)</string>
+      <string>Transition by hue</string>
      </property>
      <property name="checked">
-      <bool>true</bool>
+      <bool>false</bool>
      </property>
     </widget>
     <widget class="QTimeEdit" name="timeEdit">
@@ -666,38 +666,6 @@
     <property name="title">
      <string>Palettes</string>
     </property>
-    <widget class="QPushButton" name="addPaletteButton">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>250</y>
-       <width>41</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>+</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="removePaletteButton">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
-     <property name="geometry">
-      <rect>
-       <x>60</x>
-       <y>250</y>
-       <width>41</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>–</string>
-     </property>
-    </widget>
     <widget class="QPushButton" name="previewPaletteButton">
      <property name="enabled">
       <bool>false</bool>
@@ -798,32 +766,88 @@
      <column/>
      <column/>
     </widget>
-    <widget class="QPushButton" name="savePalettesButton">
+    <widget class="QWidget" name="plusMinusGroup" native="true">
      <property name="geometry">
       <rect>
-       <x>240</x>
-       <y>250</y>
-       <width>51</width>
-       <height>21</height>
+       <x>10</x>
+       <y>240</y>
+       <width>91</width>
+       <height>41</height>
       </rect>
      </property>
-     <property name="text">
-      <string>Save</string>
-     </property>
+     <widget class="QPushButton" name="removePaletteButton">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>10</y>
+        <width>41</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>–</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="addPaletteButton">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>10</y>
+        <width>41</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>+</string>
+      </property>
+     </widget>
     </widget>
-    <widget class="QPushButton" name="loadPalettesButton">
+    <widget class="QWidget" name="saveLoadGroup" native="true">
      <property name="geometry">
       <rect>
-       <x>300</x>
-       <y>250</y>
-       <width>51</width>
-       <height>21</height>
+       <x>230</x>
+       <y>240</y>
+       <width>131</width>
+       <height>41</height>
       </rect>
      </property>
-     <property name="text">
-      <string>Load</string>
-     </property>
+     <widget class="QPushButton" name="loadPalettesButton">
+      <property name="geometry">
+       <rect>
+        <x>70</x>
+        <y>10</y>
+        <width>51</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Load</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="savePalettesButton">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>10</y>
+        <width>51</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Save</string>
+      </property>
+     </widget>
     </widget>
+    <zorder>saveLoadGroup</zorder>
+    <zorder>plusMinusGroup</zorder>
+    <zorder>previewPaletteButton</zorder>
+    <zorder>paletteTable</zorder>
    </widget>
    <widget class="QPushButton" name="aboutButton">
     <property name="geometry">
