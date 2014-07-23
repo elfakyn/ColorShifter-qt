@@ -103,6 +103,13 @@ private slots:
 
     void on_alphaSlider_sliderReleased();
 
+    // system tray slots
+
+    void trayIconActivated(QSystemTrayIcon::ActivationReason reason);
+
+protected:
+    void closeEvent(QCloseEvent *event);
+
 private:
     Ui::MainWindow *ui;
 
@@ -136,6 +143,11 @@ private:
     // System tray stuff
     QAction *minimizeAction;
     QAction *restoreAction;
+    QAction *startStopAction;
+    QAction *quitAction;
+
+    QSystemTrayIcon *trayIcon;
+    QMenu *trayIconMenu;
 
     // timer and update stuff
     void startShifting(void);
@@ -155,6 +167,7 @@ class TableBorderSelection : public QStyledItemDelegate
 public:
     explicit TableBorderSelection(QObject *parent = 0) : QStyledItemDelegate(parent)
     {
+        // nothing to see here
     }
 
     void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const

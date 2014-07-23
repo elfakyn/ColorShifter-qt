@@ -66,7 +66,33 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->balanceBox->setValue(initialDwmColor.colorBalance);
 
     // System tray icon initialization
+    minimizeAction = new QAction(tr("Minimize"), this);
+    restoreAction = new QAction(tr("Restore"), this);
+    startStopAction = new QAction(tr("Start shifting"), this);
+    quitAction = new QAction(tr("Stop and quit"), this);
 
+    connect(minimizeAction, SIGNAL(triggered()), this, SLOT(hide()));
+    connect(restoreAction, SIGNAL(triggered()), this, SLOT(showNormal()));
+    connect(startStopAction, SIGNAL(triggered()), this, SLOT(on_mainButton_clicked()));
+    connect(quitAction, SIGNAL(triggered()), this, SLOT(on_quitButton_clicked()));
+
+    trayIconMenu = new QMenu(this);
+    trayIconMenu->addAction(minimizeAction);
+    trayIconMenu->addAction(restoreAction);
+    trayIconMenu->addAction(startStopAction);
+    trayIconMenu->addSeparator();
+    trayIconMenu->addAction(quitAction);
+
+    trayIcon = new QSystemTrayIcon(this);
+    trayIcon->setContextMenu(trayIconMenu);
+    trayIcon->setIcon(QIcon(":/icon.png"));
+
+    connect(trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
+            this, SLOT(trayIconActivated(QSystemTrayIcon::ActivationReason)));
+
+    startStopAction->setEnabled(false);
+
+    trayIcon->show();
 
     ////////////////////////////////////////////////////////////////////////////
     // TEMPORARY FOR TESTING
@@ -415,6 +441,7 @@ void MainWindow::on_paletteTable_itemSelectionChanged()
         clearColorTable();
         ui->colorGroup->setEnabled(false);
         ui->mainButton->setEnabled(false);
+        startStopAction->setEnabled(false);
         ui->addPaletteButton->setEnabled(false);
         ui->removePaletteButton->setEnabled(false);
         ui->previewPaletteButton->setEnabled(false);
@@ -438,6 +465,7 @@ void MainWindow::on_paletteTable_itemSelectionChanged()
     fillColorTable(ui->paletteTable->selectedItems().first()->row());
     ui->colorGroup->setEnabled(true);
     ui->mainButton->setEnabled(true);
+    startStopAction->setEnabled(true);
 
     CLEAR_HACK_FLAG(HACK_INHIBIT_DWM_TABLE_UPDATE2);
 }
@@ -949,6 +977,7 @@ void MainWindow::on_addPaletteButton_clicked()
         placeholder.addAt(0, int4 {255, 0, 0, 0});
         palettes.addAt(row, placeholder);
     }
+
     ui->paletteTable->selectRow(row);
     ui->colorTable->selectRow(0);
 
@@ -1036,6 +1065,7 @@ void MainWindow::on_mainButton_clicked()
 #endif
 
         ui->mainButton->setText("Stop shifting");
+        startStopAction->setText("Stop shifting");
 
         SAVE_GROUP_STATE_AND_DISABLE(color);
         SAVE_GROUP_STATE_AND_DISABLE(palette);
@@ -1049,6 +1079,7 @@ void MainWindow::on_mainButton_clicked()
 #endif
 
         ui->mainButton->setText("Shift the colors!");
+        startStopAction->setText("Start shifting");
 
         RESTORE_GROUP_STATE(color);
         RESTORE_GROUP_STATE(palette);
@@ -1101,6 +1132,7 @@ void MainWindow::stopShifting()
         ui->previewPaletteButton->setText("Preview");
         ui->paletteTable->setEnabled(true);
         ui->mainButton->setEnabled(true);
+        startStopAction->setEnabled(true);
         CLEAR_HACK_FLAG(HACK_PREVIEW_FIRST_PASS);
         CLEAR_HACK_FLAG(HACK_PREVIEW_BUTTON_ON);
     }
@@ -1183,6 +1215,7 @@ void MainWindow::on_previewPaletteButton_clicked()
         SAVE_GROUP_STATE_AND_DISABLE(plusMinus);
         ui->previewPaletteButton->setText("Stop");
         ui->mainButton->setEnabled(false);
+        startStopAction->setEnabled(false);
         startShifting();
     } else {
         stopShifting();
@@ -1265,3 +1298,44 @@ void MainWindow::on_alphaSlider_sliderReleased()
 {
     CLEAR_HACK_FLAG(HACK_INHIBIT_COLOR_CELL_CHANGE);
 }
+
+////////////////////////////////////////////////////////////////////////////////
+// Tray stuff
+
+void MainWindow::trayIconActivated(QSystemTrayIcon::ActivationReason reason)
+{
+    switch (reason) {
+    case QSystemTrayIcon::Trigger:
+        break;
+    case QSystemTrayIcon::DoubleClick:
+        if (this->isHidden()) {
+            this->showNormal();
+            this->raise();
+            this->activateWindow();
+        } else {
+            this->hide();
+        }
+        break;
+    case QSystemTrayIcon::MiddleClick:
+        if (ui->mainButton->isEnabled()) {
+            this->on_mainButton_clicked();
+        }
+        break;
+    }
+}
+
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+    if (trayIcon->isVisible()) {
+        this->hide();
+        event->ignore();
+    } else {
+#ifdef QT_DEBUG
+        std::cout<<"WARN: close window: tray icon not visible"<<std::endl;
+#endif
+        event->accept();
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Even more slots
