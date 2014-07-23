@@ -26,7 +26,7 @@ Color interpolate(Color color1, Color color2, double xvalue) // don't use this
 
 int4 interpolate_(int4 ahsv1, int4 ahsv2, double xvalue, bool hsv)
 {
-    int x, offset;
+    int x, offset = 0;
     if (hsv) {
         if (ahsv1.x - ahsv2.x > 127) {
             offset = 255 - ahsv1.x;
@@ -39,7 +39,7 @@ int4 interpolate_(int4 ahsv1, int4 ahsv2, double xvalue, bool hsv)
         }
         x = INTERPOLATE(ahsv1.x, ahsv2.x, xvalue) - offset;
         if (x < 0) {
-            x = 255 + x;
+            x = 256 + x;
         }
     } else {
         x = INTERPOLATE(ahsv1.x, ahsv2.x, xvalue);

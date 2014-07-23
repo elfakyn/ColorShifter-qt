@@ -399,19 +399,25 @@
       </property>
      </widget>
      <widget class="QCheckBox" name="copyColorCheckbox">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
       <property name="geometry">
        <rect>
         <x>180</x>
         <y>0</y>
-        <width>61</width>
+        <width>51</width>
         <height>21</height>
        </rect>
       </property>
       <property name="text">
        <string>Copy</string>
       </property>
-      <property name="checked">
+      <property name="checkable">
        <bool>true</bool>
+      </property>
+      <property name="checked">
+       <bool>false</bool>
       </property>
      </widget>
     </widget>
@@ -870,10 +876,30 @@
       </property>
      </widget>
     </widget>
+    <widget class="QCheckBox" name="copyPaletteCheckbox">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>180</x>
+       <y>250</y>
+       <width>51</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Copy</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+    </widget>
     <zorder>saveLoadGroup</zorder>
     <zorder>plusMinusGroup</zorder>
     <zorder>previewPaletteButton</zorder>
     <zorder>paletteTable</zorder>
+    <zorder>copyPaletteCheckbox</zorder>
    </widget>
    <widget class="QPushButton" name="aboutButton">
     <property name="geometry">

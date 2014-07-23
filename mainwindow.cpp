@@ -367,9 +367,13 @@ void MainWindow::on_balanceBox_valueChanged(int arg1)
 
 void MainWindow::on_loadPalettesButton_clicked()
 {
+    SET_HACK_FLAG(HACK_INHIBIT_DWM_TABLE_UPDATE2);
+
     QFileDialog loadDialog(this);
     loadDialog.setFileMode(QFileDialog::ExistingFile);
     loadPalettes(loadDialog.getOpenFileName(this, "Load palette file", QDir::homePath(), "Palette files (*.json);;All files (*.*)"));
+
+    CLEAR_HACK_FLAG(HACK_INHIBIT_DWM_TABLE_UPDATE2);
 }
 
 void MainWindow::on_savePalettesButton_clicked()
@@ -402,6 +406,7 @@ void MainWindow::updatePaletteTableDragDrop(int dest, int src)
 
 void MainWindow::on_paletteTable_itemSelectionChanged()
 {
+
     if(HACK_FLAG(HACK_INHIBIT_DWM_TABLE_UPDATE)) {
         return; // massive hack reloaded
     }
@@ -415,6 +420,8 @@ void MainWindow::on_paletteTable_itemSelectionChanged()
         ui->previewPaletteButton->setEnabled(false);
         return;
     }
+
+    SET_HACK_FLAG(HACK_INHIBIT_DWM_TABLE_UPDATE2);
 
     ui->previewPaletteButton->setEnabled(true);
 
@@ -431,6 +438,8 @@ void MainWindow::on_paletteTable_itemSelectionChanged()
     fillColorTable(ui->paletteTable->selectedItems().first()->row());
     ui->colorGroup->setEnabled(true);
     ui->mainButton->setEnabled(true);
+
+    CLEAR_HACK_FLAG(HACK_INHIBIT_DWM_TABLE_UPDATE2);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -899,6 +908,8 @@ void MainWindow::on_paletteTable_cellChanged(int row, int column)
 
 void MainWindow::on_removePaletteButton_clicked()
 {
+    SET_HACK_FLAG(HACK_INHIBIT_DWM_TABLE_UPDATE2);
+
     int row = ui->paletteTable->selectedItems().first()->row();
     ui->paletteTable->removeRow(row);
 
@@ -908,6 +919,8 @@ void MainWindow::on_removePaletteButton_clicked()
     }
 
     palettes.removeAt(row);
+
+    CLEAR_HACK_FLAG(HACK_INHIBIT_DWM_TABLE_UPDATE2);
 }
 
 void MainWindow::on_addPaletteButton_clicked()
@@ -923,14 +936,21 @@ void MainWindow::on_addPaletteButton_clicked()
     ui->paletteTable->insertRow(row);
 
     // copy contents over from previously selected row
+
     for (int i = 0; i < ui->paletteTable->columnCount(); i++) {
         QTableWidgetItem *item = new QTableWidgetItem(*ui->paletteTable->item(row - 1, i));
         ui->paletteTable->setItem(row, i, item);
     }
 
-    palettes.addAt(row, palettes.getAt(row - 1));
-
+    if (ui->copyPaletteCheckbox->isChecked()) {
+        palettes.addAt(row, palettes.getAt(row - 1));
+    } else {
+        Palette placeholder;
+        placeholder.addAt(0, int4 {255, 0, 0, 0});
+        palettes.addAt(row, placeholder);
+    }
     ui->paletteTable->selectRow(row);
+    ui->colorTable->selectRow(0);
 
     CLEAR_HACK_FLAG(HACK_INHIBIT_DWM_TABLE_UPDATE2);
     updateColorAndPreview();

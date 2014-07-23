@@ -111,7 +111,7 @@ int mergedFromInt4(int4 argb)
         (argb.y << 8) |
         argb.z;
 }
-
+// 0xFF00FF00
 int4 int4FromMerged(int merged)
 {
     return int4 {
