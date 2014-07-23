@@ -87,6 +87,22 @@ private slots:
 
     void on_colorTable_cellChanged(int row, int column);
 
+    void on_hueRedSlider_sliderPressed();
+
+    void on_satGreenSlider_sliderPressed();
+
+    void on_valueBlueSlider_sliderPressed();
+
+    void on_alphaSlider_sliderPressed();
+
+    void on_hueRedSlider_sliderReleased();
+
+    void on_satGreenSlider_sliderReleased();
+
+    void on_valueBlueSlider_sliderReleased();
+
+    void on_alphaSlider_sliderReleased();
+
 private:
     Ui::MainWindow *ui;
 

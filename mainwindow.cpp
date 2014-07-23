@@ -1170,9 +1170,7 @@ void MainWindow::on_previewPaletteButton_clicked()
 }
 
 void MainWindow::on_colorTable_cellChanged(int row, int column)
-{
-    // not working because of cascading side effects that crash the program
-    /*
+{ 
     if (column) {
         return; // not text area
     }
@@ -1183,6 +1181,12 @@ void MainWindow::on_colorTable_cellChanged(int row, int column)
 
     if (HACK_FLAG(HACK_INHIBIT_COLOR_CELL_CHANGE) || HACK_FLAG(HACK_INHIBIT_COLOR_TABLE_UPDATE)) {
         return;
+    }
+
+    for (int i = 0; i < ui->colorTable->columnCount(); i++) {
+        if (!ui->colorTable->item(row, i)) {
+            return; // just created
+        }
     }
 
 #ifdef QT_DEBUG
@@ -1196,7 +1200,48 @@ void MainWindow::on_colorTable_cellChanged(int row, int column)
         palettes.at(ui->paletteTable->selectedItems().first()->row())->setAt(row, int4FromMerged(hex));
     }
 
-    CLEAR_HACK_FLAG(HACK_COLOR_EDITING_OK);
     this->on_colorTable_itemSelectionChanged(); // hack
-    */
+}
+
+void MainWindow::on_hueRedSlider_sliderPressed()
+{
+    SET_HACK_FLAG(HACK_INHIBIT_COLOR_CELL_CHANGE);
+}
+
+
+void MainWindow::on_satGreenSlider_sliderPressed()
+{
+    SET_HACK_FLAG(HACK_INHIBIT_COLOR_CELL_CHANGE);
+}
+
+void MainWindow::on_valueBlueSlider_sliderPressed()
+{
+    SET_HACK_FLAG(HACK_INHIBIT_COLOR_CELL_CHANGE);
+}
+
+
+void MainWindow::on_alphaSlider_sliderPressed()
+{
+    SET_HACK_FLAG(HACK_INHIBIT_COLOR_CELL_CHANGE);
+}
+
+
+void MainWindow::on_hueRedSlider_sliderReleased()
+{
+    CLEAR_HACK_FLAG(HACK_INHIBIT_COLOR_CELL_CHANGE);
+}
+
+void MainWindow::on_satGreenSlider_sliderReleased()
+{
+    CLEAR_HACK_FLAG(HACK_INHIBIT_COLOR_CELL_CHANGE);
+}
+
+void MainWindow::on_valueBlueSlider_sliderReleased()
+{
+    CLEAR_HACK_FLAG(HACK_INHIBIT_COLOR_CELL_CHANGE);
+}
+
+void MainWindow::on_alphaSlider_sliderReleased()
+{
+    CLEAR_HACK_FLAG(HACK_INHIBIT_COLOR_CELL_CHANGE);
 }
