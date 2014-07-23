@@ -16,6 +16,8 @@
 #define HACK_PREVIEW_BUTTON_ON 9
 #define HACK_saveLoad_GROUP_ENABLED 10 // WARNING: case sensitive!
 #define HACK_plusMinus_GROUP_ENABLED 11 // WARNING: case sensitive!
+#define HACK_INHIBIT_COLOR_CELL_CHANGE 12
+#define HACK_INHIBIT_DWM_TABLE_UPDATE2 13
 
 void SET_HACK_FLAG(int position);
 void CLEAR_HACK_FLAG(int position);

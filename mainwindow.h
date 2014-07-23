@@ -85,6 +85,8 @@ private slots:
 
     void on_previewPaletteButton_clicked();
 
+    void on_colorTable_cellChanged(int row, int column);
+
 private:
     Ui::MainWindow *ui;
 

@@ -284,17 +284,23 @@ void MainWindow::on_addColorButton_clicked()
     updateAtPaletteTable(paletteIndex);
 
     ui->sliderGroup->setEnabled(true);
+
+    if (!(ui->copyColorCheckbox->isChecked())) {
+        on_randomizeColorButton_clicked();
+    }
+
 }
 
 void MainWindow::on_colorTable_itemSelectionChanged()
 {
-
+    SET_HACK_FLAG(HACK_INHIBIT_COLOR_CELL_CHANGE);
     if (HACK_FLAG(HACK_INHIBIT_COLOR_TABLE_UPDATE)) {
         return; // massive hack, grand finale
     }
 
     if(ui->colorTable->selectedItems().empty()) {
         ui->sliderGroup->setEnabled(false);
+        CLEAR_HACK_FLAG(HACK_INHIBIT_COLOR_CELL_CHANGE);
         return;
     }
     if (ui->colorTable->selectedItems().first()->row() < ui->colorTable->property("immutableRows").toInt()) {
@@ -312,6 +318,7 @@ void MainWindow::on_colorTable_itemSelectionChanged()
     }
 
     if (ui->colorTable->selectedItems().first()->row() >= ui->colorTable->rowCount()) {
+        CLEAR_HACK_FLAG(HACK_INHIBIT_COLOR_CELL_CHANGE);
         return; // should never happen
     }
 
@@ -334,7 +341,7 @@ void MainWindow::on_colorTable_itemSelectionChanged()
     if (ahsvSelected) {
         ui->hsvRadio->setChecked(true);
     }
-
+    CLEAR_HACK_FLAG(HACK_INHIBIT_COLOR_CELL_CHANGE);
 }
 
 void MainWindow::on_quitButton_clicked()
@@ -717,7 +724,7 @@ void MainWindow::updateAtColorTable(int index, int row)
 
 void MainWindow::updateColorAndPreview()
 {
-    if (HACK_FLAG(HACK_INHIBIT_COLOR_TABLE_UPDATE)) {
+    if (HACK_FLAG(HACK_INHIBIT_COLOR_TABLE_UPDATE) || HACK_FLAG(HACK_INHIBIT_DWM_TABLE_UPDATE2)) {
         return;
     }
     if(ui->paletteTable->selectedItems().empty() || ui->colorTable->selectedItems().empty()) {
@@ -905,7 +912,8 @@ void MainWindow::on_removePaletteButton_clicked()
 
 void MainWindow::on_addPaletteButton_clicked()
 {
-    SET_HACK_FLAG(HACK_INHIBIT_DWM_TABLE_UPDATE);
+    SET_HACK_FLAG(HACK_INHIBIT_DWM_TABLE_UPDATE2);
+
     ui->removePaletteButton->setEnabled(true);
     if (ui->paletteTable->rowCount() >= TABLE_MAX_ELEMENTS - 1) {
         ui->addPaletteButton->setEnabled(false);
@@ -924,7 +932,7 @@ void MainWindow::on_addPaletteButton_clicked()
 
     ui->paletteTable->selectRow(row);
 
-    CLEAR_HACK_FLAG(HACK_INHIBIT_DWM_TABLE_UPDATE);
+    CLEAR_HACK_FLAG(HACK_INHIBIT_DWM_TABLE_UPDATE2);
     updateColorAndPreview();
 }
 
@@ -1159,4 +1167,36 @@ void MainWindow::on_previewPaletteButton_clicked()
     } else {
         stopShifting();
     }
+}
+
+void MainWindow::on_colorTable_cellChanged(int row, int column)
+{
+    // not working because of cascading side effects that crash the program
+    /*
+    if (column) {
+        return; // not text area
+    }
+
+    if (!ui->colorTable->isItemSelected(ui->colorTable->item(row,column))) {
+        return; // not edited by user
+    }
+
+    if (HACK_FLAG(HACK_INHIBIT_COLOR_CELL_CHANGE) || HACK_FLAG(HACK_INHIBIT_COLOR_TABLE_UPDATE)) {
+        return;
+    }
+
+#ifdef QT_DEBUG
+    std::cout<<"color hex changed " << row << " " << column << ": ";
+#endif
+
+    bool ok;
+    unsigned int hex = ui->colorTable->item(row, column)->text().toUInt(&ok, 16);
+
+    if (ok) {
+        palettes.at(ui->paletteTable->selectedItems().first()->row())->setAt(row, int4FromMerged(hex));
+    }
+
+    CLEAR_HACK_FLAG(HACK_COLOR_EDITING_OK);
+    this->on_colorTable_itemSelectionChanged(); // hack
+    */
 }
