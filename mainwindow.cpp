@@ -353,7 +353,7 @@ void MainWindow::on_colorTable_itemSelectionChanged()
         CLEAR_HACK_FLAG(HACK_INHIBIT_COLOR_CELL_CHANGE);
         return;
     }
-    if (ui->colorTable->selectedItems().first()->row() < ui->colorTable->property("immutableRows").toInt()) {
+    if (ui->colorTable->selectedItems().first()->row() < ui->colorTable->property("immutableRows").toInt() || ui->colorTable->rowCount() <= 1) {
         // cannot delete immutable object
         ui->removeColorButton->setEnabled(false);
     } else {
@@ -974,6 +974,8 @@ void MainWindow::on_removePaletteButton_clicked()
 {
     SET_HACK_FLAG(HACK_INHIBIT_DWM_TABLE_UPDATE2);
 
+    ui->colorTable->clearSelection();
+
     int row = ui->paletteTable->selectedItems().first()->row();
     ui->paletteTable->removeRow(row);
 
@@ -990,6 +992,8 @@ void MainWindow::on_removePaletteButton_clicked()
 void MainWindow::on_addPaletteButton_clicked()
 {
     SET_HACK_FLAG(HACK_INHIBIT_DWM_TABLE_UPDATE2);
+
+    ui->colorTable->clearSelection();
 
     ui->removePaletteButton->setEnabled(true);
     if (ui->paletteTable->rowCount() >= TABLE_MAX_ELEMENTS - 1) {
@@ -1092,6 +1096,8 @@ void MainWindow::on_timeEdit_timeChanged(const QTime &time)
 
 void MainWindow::on_mainButton_clicked()
 {
+    savePalettes(configFile.fileName());
+
     TOGGLE_HACK_FLAG(HACK_MAIN_BUTTON_ON);
     CLEAR_HACK_FLAG(HACK_PREVIEW_ENABLED);
 
@@ -1372,6 +1378,8 @@ void MainWindow::trayIconActivated(QSystemTrayIcon::ActivationReason reason)
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
+    savePalettes(configFile.fileName());
+
     if (trayIcon->isVisible()) {
         this->hide();
         event->ignore();

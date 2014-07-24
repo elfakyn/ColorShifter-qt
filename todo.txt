@@ -4,4 +4,4 @@ DONE! * Start with windows checkbox
 DONE! * Help
 DONE! * About
 DONE! * B/W icon when paused
-* Make preset palettes
+DONE! * Make preset palettes
