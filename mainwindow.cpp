@@ -86,7 +86,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     trayIcon = new QSystemTrayIcon(this);
     trayIcon->setContextMenu(trayIconMenu);
-    trayIcon->setIcon(QIcon(":/icon.png"));
+    trayIcon->setIcon(QIcon(":/icon-bw.png"));
+    trayIcon->setToolTip("ColorShifter (stopped)");
 
     connect(trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
             this, SLOT(trayIconActivated(QSystemTrayIcon::ActivationReason)));
@@ -1068,6 +1069,8 @@ void MainWindow::on_mainButton_clicked()
     CLEAR_HACK_FLAG(HACK_PREVIEW_ENABLED);
 
     if (HACK_FLAG(HACK_MAIN_BUTTON_ON)) {
+        trayIcon->setIcon(QIcon(":/icon.png"));
+        trayIcon->setToolTip("ColorShifter (running)");
 #ifdef QT_DEBUG
         std::cout<<"Started shifting"<<std::endl;
 #endif
@@ -1082,6 +1085,8 @@ void MainWindow::on_mainButton_clicked()
         startShifting();
 
     } else {
+        trayIcon->setIcon(QIcon(":/icon-bw.png"));
+        trayIcon->setToolTip("ColorShifter (stopped)");
 #ifdef QT_DEBUG
         std::cout<<"Stopped shifting"<<std::endl;
 #endif
@@ -1103,7 +1108,6 @@ void MainWindow::on_mainButton_clicked()
 
 void MainWindow::startShifting()
 {
-    // FIXME: replace with actual values from interface
     TSH(MAX_IDX) = ui->smoothnessSlider->value() ?
                 256 / (21 - 2 * ui->smoothnessSlider->value()) :
                 1;
@@ -1154,7 +1158,6 @@ void MainWindow::next_color()
     // see hacks.h
     // you have been warned
 
-    // FIXME: if preview stop after first pass
     ++TSH(CRT_IDX) %= TSH(MAX_IDX); // increment the current color index
     if (!(TSH(CRT_IDX) % TSH(MAX_IDX))) { // reached a new color
         ++TSH(CRT_CIX) %= TSH(MAX_CLR); // increment the current color

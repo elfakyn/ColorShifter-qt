@@ -3,3 +3,4 @@
 * Start with windows checkbox
 * Help
 * About
+DONE! * B/W icon when paused

@@ -2,5 +2,6 @@
     <qresource prefix="/">
         <file>palettes.json</file>
         <file>icon.png</file>
+        <file>icon-bw.png</file>
     </qresource>
 </RCC>
