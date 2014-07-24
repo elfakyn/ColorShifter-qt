@@ -63,6 +63,7 @@ MainWindow::MainWindow(QWidget *parent) :
     SET_HACK_FLAG(HACK_INHIBIT_START_WINDOWS_CHECKBOX);
     if (settings->contains("ColorShifter")) {
         ui->startWindowsCheckbox->setChecked(true);
+        this->on_mainButton_clicked();
     } else {
         ui->startWindowsCheckbox->setChecked(false);
     }

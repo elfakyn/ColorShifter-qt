@@ -44,6 +44,7 @@ RESOURCES += \
 
 OTHER_FILES += \
     colorshifter.rc \
-    todo.txt
+    todo.txt \
+    readme.md
 
 RC_FILE = colorshifter.rc

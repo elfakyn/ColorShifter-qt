@@ -24,7 +24,6 @@ extern HRESULT(WINAPI *getDwmColors) (DwmColor *color);
 
 int main(int argc, char *argv[])
 {
-    std::cout<<getenv("APPDATA")<<std::endl;
 
     QApplication a(argc, argv);
 
