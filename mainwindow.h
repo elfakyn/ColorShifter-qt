@@ -11,6 +11,7 @@
 #include <QSystemTrayIcon>
 #include <QMenu>
 #include <QTimer>
+#include <QSettings>
 
 #include "colorTools.h"
 #include "palette.h"
@@ -107,6 +108,8 @@ private slots:
 
     void trayIconActivated(QSystemTrayIcon::ActivationReason reason);
 
+    void on_startWindowsCheckbox_stateChanged(int arg1);
+
 protected:
     void closeEvent(QCloseEvent *event);
 
@@ -154,6 +157,11 @@ private:
     void stopShifting(void);
     QTimer *timer;
     int tsh[TSH_LENGTH]; // Timer speed hack
+
+    // misc
+    QFile configFile;
+    QSettings *settings;
+    void enableDisableStartup(bool);
 
 public:
     void updateColorTableDragDrop(int dest, int src);

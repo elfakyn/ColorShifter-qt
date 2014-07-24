@@ -24,6 +24,8 @@ extern HRESULT(WINAPI *getDwmColors) (DwmColor *color);
 
 int main(int argc, char *argv[])
 {
+    std::cout<<getenv("APPDATA")<<std::endl;
+
     QApplication a(argc, argv);
 
     OSVERSIONINFO osvi;
@@ -81,6 +83,7 @@ int main(int argc, char *argv[])
     }
 
     MainWindow w;
+    QApplication::connect(&a, SIGNAL(aboutToQuit()), &w, SLOT(on_quitButton_clicked()));
 
     // check if starts minimized
     bool minimized = false;

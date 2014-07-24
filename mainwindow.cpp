@@ -6,6 +6,7 @@
 #include <QHeaderView>
 #include <QFileDialog>
 #include <QMessageBox>
+#include <QStandardPaths>
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -54,11 +55,31 @@ MainWindow::MainWindow(QWidget *parent) :
     currentARGB.z = 0;
     currentARGB.w = 0;
 
-
+#define CONFIG_DIR QStandardPaths::standardLocations(QStandardPaths::DataLocation).first()
 
     // Misc initialization
-    loadPalettes(":/palettes.json");
+    settings = new QSettings("HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Run",QSettings::NativeFormat);
 
+    SET_HACK_FLAG(HACK_INHIBIT_START_WINDOWS_CHECKBOX);
+    if (settings->contains("ColorShifter")) {
+        ui->startWindowsCheckbox->setChecked(true);
+    } else {
+        ui->startWindowsCheckbox->setChecked(false);
+    }
+    CLEAR_HACK_FLAG(HACK_INHIBIT_START_WINDOWS_CHECKBOX);
+
+    configFile.setFileName(CONFIG_DIR + QString("/ColorShifter.json"));
+
+    if (!QDir(CONFIG_DIR).exists()) {
+        QDir().mkpath(CONFIG_DIR);
+    }
+
+    if (configFile.exists()) {
+        loadPalettes(configFile.fileName());
+    } else {
+        loadPalettes(":/palettes.json");
+        savePalettes(configFile.fileName());
+    }
 
     timer = new(QTimer);
     connect(timer, SIGNAL(timeout()), this, SLOT(next_color()));
@@ -375,6 +396,7 @@ void MainWindow::on_colorTable_itemSelectionChanged()
 void MainWindow::on_quitButton_clicked()
 {
     stopShifting();
+    savePalettes(configFile.fileName());
     delete trayIcon;
     exit(EXIT_OK);
 
@@ -1356,3 +1378,14 @@ void MainWindow::closeEvent(QCloseEvent *event)
 // Even more slots
 
 
+void MainWindow::on_startWindowsCheckbox_stateChanged(int arg1)
+{
+    if (HACK_FLAG(HACK_INHIBIT_START_WINDOWS_CHECKBOX)) {
+        return;
+    }
+    if (arg1) { // checked
+        settings->setValue("ColorShifter", QCoreApplication::applicationFilePath().replace('/','\\'));
+    } else {
+        settings->remove("ColorShifter");
+    }
+}
