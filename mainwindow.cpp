@@ -397,6 +397,10 @@ void MainWindow::on_quitButton_clicked()
 {
     stopShifting();
     savePalettes(configFile.fileName());
+    if (ui->startWindowsCheckbox->isChecked()) {
+        // update file path in case it's moved
+        settings->setValue("ColorShifter", QCoreApplication::applicationFilePath().replace('/','\\'));
+    }
     delete trayIcon;
     exit(EXIT_OK);
 
@@ -1388,4 +1392,11 @@ void MainWindow::on_startWindowsCheckbox_stateChanged(int arg1)
     } else {
         settings->remove("ColorShifter");
     }
+}
+
+void MainWindow::on_aboutButton_clicked()
+{
+    AboutWindow about;
+    about.exec();
+    about.deleteLater();
 }

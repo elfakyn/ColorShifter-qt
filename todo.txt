@@ -2,5 +2,5 @@ DONE! * Check windows version
 DONE! * Save config to file automatically (use appdata?)
 DONE! * Start with windows checkbox
 * Help
-* About
+DONE! * About
 DONE! * B/W icon when paused

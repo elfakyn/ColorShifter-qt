@@ -21,7 +21,8 @@ main.cpp\
     interpolate.cpp \
     main2.cpp \
     palette.cpp \
-    hacks.cpp
+    hacks.cpp \
+    aboutwindow.cpp
 
 
 HEADERS  += \
@@ -32,9 +33,11 @@ HEADERS  += \
     palette.h \
     table.ipp \
     table.hpp \
-    hacks.h
+    hacks.h \
+    aboutwindow.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    aboutwindow.ui
 
 RESOURCES += \
     defaultpalettes.qrc

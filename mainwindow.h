@@ -16,6 +16,7 @@
 #include "colorTools.h"
 #include "palette.h"
 #include "hacks.h"
+#include "aboutwindow.h"
 
 #define PALETTE_MAX_PALETTES 30 // not used anymore
 
@@ -110,6 +111,8 @@ private slots:
 
     void on_startWindowsCheckbox_stateChanged(int arg1);
 
+    void on_aboutButton_clicked();
+
 protected:
     void closeEvent(QCloseEvent *event);
 
@@ -162,6 +165,7 @@ private:
     QFile configFile;
     QSettings *settings;
     void enableDisableStartup(bool);
+
 
 public:
     void updateColorTableDragDrop(int dest, int src);

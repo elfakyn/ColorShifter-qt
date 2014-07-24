@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>AboutWindow</class>
+ <widget class="QDialog" name="AboutWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>240</width>
+    <height>320</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="windowTitle">
+   <string>About ColorShifter</string>
+  </property>
+  <widget class="QLabel" name="icon">
+   <property name="geometry">
+    <rect>
+     <x>50</x>
+     <y>10</y>
+     <width>141</width>
+     <height>131</height>
+    </rect>
+   </property>
+   <property name="whatsThis">
+    <string>Hire me!</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="pixmap">
+    <pixmap resource="defaultpalettes.qrc">:/icon-128.png</pixmap>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="closeButton">
+   <property name="geometry">
+    <rect>
+     <x>84</x>
+     <y>290</y>
+     <width>71</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="whatsThis">
+    <string>This kills the window.</string>
+   </property>
+   <property name="text">
+    <string>Close</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="text">
+   <property name="geometry">
+    <rect>
+     <x>15</x>
+     <y>150</y>
+     <width>211</width>
+     <height>131</height>
+    </rect>
+   </property>
+   <property name="whatsThis">
+    <string>Also check out Hacker School!</string>
+   </property>
+   <property name="text">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:12pt; font-weight:600; color:#414141;&quot;&gt;ColorShifter 1.0&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;By Mihai Radu Popescu (&lt;/span&gt;&lt;a href=&quot;https://twitter.com/elfakyn&quot;&gt;&lt;span style=&quot; font-size:10pt; text-decoration: underline; color:#414141;&quot;&gt;@elfakyn&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;)&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Browse &lt;/span&gt;&lt;a href=&quot;https://github.com/elfakyn/ColorShifter-qt&quot;&gt;&lt;span style=&quot; font-size:10pt; text-decoration: underline; color:#414141;&quot;&gt;the source code&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;!&lt;br/&gt;Explore &lt;/span&gt;&lt;a href=&quot;https://github.com/elfakyn&quot;&gt;&lt;span style=&quot; font-size:10pt; text-decoration: underline; color:#414141;&quot;&gt;my GitHub&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;!&lt;br/&gt;Check out &lt;/span&gt;&lt;a href=&quot;http://www.sthaskell.com/&quot;&gt;&lt;span style=&quot; font-size:10pt; text-decoration: underline; color:#414141;&quot;&gt;my Haskell book&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;!&lt;br/&gt;Read &lt;/span&gt;&lt;a href=&quot;https://docs.google.com/document/d/1ByVNHsiWWF6shWj5DtPqO2uFuoVD5aPw54XgHibNvz0/&quot;&gt;&lt;span style=&quot; font-size:10pt; text-decoration: underline; color:#414141;&quot;&gt;my resume&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;!&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+   <property name="textFormat">
+    <enum>Qt::RichText</enum>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+   </property>
+   <property name="openExternalLinks">
+    <bool>true</bool>
+   </property>
+  </widget>
+ </widget>
+ <resources>
+  <include location="defaultpalettes.qrc"/>
+ </resources>
+ <connections/>
+</ui>
