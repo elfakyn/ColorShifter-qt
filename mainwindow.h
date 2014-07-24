@@ -159,7 +159,6 @@ public:
     void updateColorTableDragDrop(int dest, int src);
     void updatePaletteTableDragDrop(int dest, int src);
 
-
 };
 
 class TableBorderSelection : public QStyledItemDelegate

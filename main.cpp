@@ -17,6 +17,8 @@ extern HRESULT(WINAPI *getDwmColors) (DwmColor *color);
 
 #include "mainwindow.h"
 #include <QApplication>
+#include <QSharedMemory>
+#include <QMessageBox>
 
 #include "exitCodes.h"
 
@@ -35,6 +37,22 @@ int main(int argc, char *argv[])
     }
 
     QApplication a(argc, argv);
+
+
+    QSharedMemory shared("075fa67f-eefe-43de-91dd-9c2ec23def4b");
+
+    if(!shared.create(512, QSharedMemory::ReadWrite)) {
+        QMessageBox msgBox;
+        msgBox.setText( QObject::tr("Can't start more than one instance of ColorShifter.") );
+        msgBox.setIcon( QMessageBox::Critical );
+        msgBox.exec();
+
+#ifdef QT_DEBUG
+        std::cout<<"ERR: can't start multiple instances"<<std::endl;
+#endif
+        exit(EXIT_MULTIPLE_INSTANCES);
+    }
+
     MainWindow w;
     w.show();
 

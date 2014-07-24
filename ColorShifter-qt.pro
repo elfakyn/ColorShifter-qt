@@ -38,3 +38,8 @@ FORMS    += mainwindow.ui
 
 RESOURCES += \
     defaultpalettes.qrc
+
+OTHER_FILES += \
+    colorshifter.rc
+
+RC_FILE = colorshifter.rc

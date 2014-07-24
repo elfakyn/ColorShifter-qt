@@ -59,6 +59,7 @@ MainWindow::MainWindow(QWidget *parent) :
     // Misc initialization
     loadPalettes(":/palettes.json");
 
+
     timer = new(QTimer);
     connect(timer, SIGNAL(timeout()), this, SLOT(next_color()));
 
@@ -1313,6 +1314,10 @@ void MainWindow::trayIconActivated(QSystemTrayIcon::ActivationReason reason)
 {
     switch (reason) {
     case QSystemTrayIcon::Trigger:
+        if (!this->isHidden()) {
+            this->raise();
+            this->activateWindow();
+        }
         break;
     case QSystemTrayIcon::DoubleClick:
         if (this->isHidden()) {
@@ -1346,3 +1351,5 @@ void MainWindow::closeEvent(QCloseEvent *event)
 
 ////////////////////////////////////////////////////////////////////////////////
 // Even more slots
+
+
