@@ -1,4 +1,4 @@
-* Check windows version
+DONE! * Check windows version
 * Save config to file automatically (use appdata?)
 * Start with windows checkbox
 * Help

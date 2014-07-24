@@ -24,8 +24,38 @@ extern HRESULT(WINAPI *getDwmColors) (DwmColor *color);
 
 int main(int argc, char *argv[])
 {
+    QApplication a(argc, argv);
 
+    OSVERSIONINFO osvi;
+    ZeroMemory(&osvi, sizeof(OSVERSIONINFO));
+    osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
+    GetVersionEx(&osvi);
+
+    // check windows version
+    if (!(osvi.dwMajorVersion > 6 || osvi.dwMajorVersion == 6 && osvi.dwMinorVersion >= 1))  {
+        QMessageBox msgBox;
+        msgBox.setText(QObject::tr("Unsupported windows version."));
+        msgBox.setIcon(QMessageBox::Critical);
+        msgBox.exec();
+
+#ifdef QT_DEBUG
+        std::cout<<"ERR: unsupported windows version"<<std::endl;
+#endif
+
+        exit(EXIT_UNSUPPORTED_WINDOWS_VERSION);
+    }
+
+    // attempt to load the wm dll
     if (!loadDwmDll(getDwmStatus, setDwmColors, getDwmColors)) {
+        QMessageBox msgBox;
+        msgBox.setText(QObject::tr("Could not load dwmapi.dll."));
+        msgBox.setIcon(QMessageBox::Critical);
+        msgBox.exec();
+
+#ifdef QT_DEBUG
+        std::cout<<"ERR: could not load dwmapi.dll"<<std::endl;
+#endif
+
         exit(EXIT_DLL_LOAD_FAIL);
     }
 
@@ -36,15 +66,12 @@ int main(int argc, char *argv[])
         exit(EXIT_COMPOSITION_DISABLED);
     }
 
-    QApplication a(argc, argv);
-
-
     QSharedMemory shared("075fa67f-eefe-43de-91dd-9c2ec23def4b");
 
     if(!shared.create(512, QSharedMemory::ReadWrite)) {
         QMessageBox msgBox;
-        msgBox.setText( QObject::tr("Can't start more than one instance of ColorShifter.") );
-        msgBox.setIcon( QMessageBox::Critical );
+        msgBox.setText(QObject::tr("Can't start more than one instance of ColorShifter."));
+        msgBox.setIcon(QMessageBox::Critical);
         msgBox.exec();
 
 #ifdef QT_DEBUG
@@ -54,7 +81,22 @@ int main(int argc, char *argv[])
     }
 
     MainWindow w;
-    w.show();
+
+    // check if starts minimized
+    bool minimized = false;
+    for (int i = 0; i < argc; i++) {
+        if (!(strcmp(argv[i], "--minimized"))) {
+            minimized = true;
+        }
+    }
+
+    if (!minimized) {
+        w.show();
+    } else {
+#ifdef QT_DEBUG
+        std::cout<<"Starting minimized"<<std::endl;
+#endif
+    }
 
     return a.exec();
 
