@@ -4,5 +4,6 @@
         <file>icon.png</file>
         <file>icon-bw.png</file>
         <file>icon-128.png</file>
+        <file>help.html</file>
     </qresource>
 </RCC>

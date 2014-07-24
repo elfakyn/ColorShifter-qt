@@ -1,0 +1,212 @@
+<html>
+<head/>
+<style>
+body,p,h1,h2,h3,h4,table,td,th,ul,ol,textarea,input {
+   font-family:verdana,helvetica,arial,sans-serif;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+td, th {
+    font-size: 1em;
+    border: 1px solid #414141;
+    padding: 3px 7px 2px 7px;
+}
+
+th {
+    font-size: 1em;
+    text-align: left;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    background-color: #414141;
+    color: #ffffff;
+}
+
+tr.alt td {
+    color: #000000;
+    background-color: #cccccc;
+}
+
+pre {
+    overflow: auto;
+	width: 99%;
+}
+
+</style>
+<body>
+<h1 id="colorshifter">ColorShifter</h1>
+<p>ColorShifter dynamically changes the Windows 7/8 theme colors by tapping into an undocumented API</p>
+<h2 id="usage">Usage</h2>
+<p>The main interface is split into three sections:</p>
+<ul>
+<li>Settings</li>
+<li>Palettes</li>
+<li>Colors</li>
+</ul>
+<h3 id="settings-group">Settings group</h3>
+<p>The settings group contains the following options:</p>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Smootness</td>
+<td>Changes the smoothness of the transitions. Smoother settings consume more resources. "Disco" disables transitions.</td>
+</tr>
+<tr>
+<td>Cycle time</td>
+<td>Sets the duration of a cycle, i.e. the time until the palette wraps around back to the first color. Minimum value: 00:00:01. Maximum value: 23:59:59.</td>
+</tr>
+<tr>
+<td>Shift colors in random order</td>
+<td>Picks colors at random from the palette instead of cycling between them sequentially</td>
+</tr>
+<tr>
+<td>Transition by hue</td>
+<td>Uses Hue-Saturation-Value representation when transitioning between colors, e.g. Red-&gt;Green goes through yellow instead of brown. May have a few visual glitches.</td>
+</tr>
+<tr>
+<td>Override balance</td>
+<td>Forces the colorBalance value in Window's DwmColorizationParameters to the value in the box. Play with this if colors are too washed out or jump around.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="palette-group">Palette group</h3>
+<p>Using the palette table you can rename palettes (double-click on the name) or drag and drop them around. There are also several buttons:</p>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>+</td>
+<td>Adds a new palette to the table. If "copy" is checked, it copies the currently selected palette.</td>
+</tr>
+<tr>
+<td>-</td>
+<td>Removes palette from the table. You cannot remove the last palette.</td>
+</tr>
+<tr>
+<td>Preview</td>
+<td>Displays a quick preview of how the current palette looks like in action. Click again to stop preview.</td>
+</tr>
+<tr>
+<td>Copy</td>
+<td>If this is checked, adding a new palette will copy the currently selected one.</td>
+</tr>
+<tr>
+<td>Save</td>
+<td>Saves all current palettes to a file, as well as all the settings in the settings group.</td>
+</tr>
+<tr>
+<td>Load</td>
+<td>Loads palettes and settings from a file, replacing the existing ones.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="color-group">Color group</h3>
+<p>Using the color group you can manually set the hex value of the color (double-click on the value) or drag and drop them around.</p>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>+</td>
+<td>Adds a new color to the table. If "copy" is checked, it copies the currently selected color. Otherwise it adds a random color.</td>
+</tr>
+<tr>
+<td>-</td>
+<td>Removes the selected color from the table. You cannot remove the last color.</td>
+</tr>
+<tr>
+<td>Preview</td>
+<td>If this is checked, the windows theme colors will change to the currently selected color. Useful for choosing colors that don't prevent you from reading the window titles.</td>
+</tr>
+<tr>
+<td>Hue, Sat, Value, Alpha</td>
+<td>Controls the hue, saturation, value, and transparency of the color. (HSV is checked)</td>
+</tr>
+<tr>
+<td>Red, Green, Blue, Alpha</td>
+<td>Controls the red, green, blue, and alpha channels of the color. (RGB is checked)</td>
+</tr>
+<tr>
+<td>RGB, HSV</td>
+<td>Determines whether the sliders control the RGB or the HSV components of the spectrum.</td>
+</tr>
+<tr>
+<td>Randomize</td>
+<td>Chooses a random color.</td>
+</tr>
+<tr>
+<td>Smart</td>
+<td>If this is checked, randomize will prefer nice colors over ugly ones.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="other-buttons">Other buttons</h3>
+<ul>
+<li><strong>About</strong> displays some brief information about the program and its author</li>
+<li><strong>Help</strong> displays this text</li>
+<li><strong>Stop and quit</strong> stops shifting and exits the application</li>
+<li><strong>Start with Windows</strong> controls whether or not the application will automatically run when you log into Windows.</li>
+<li><strong>Shift the colors!</strong> starts shifting the Windows theme colors according to the selected palette. You need to select a palette before this button becomes available. Click again to stop.</li>
+</ul>
+<h3 id="system-tray">System tray</h3>
+<p>When the application is loaded, it will display an icon in the system tray. Pressing "X" on the main application window will not close the application. Use "Stop and quit" instead.</p>
+<p>Double-clicking on the icon will minimize the main application if it's maximized and maximize it if it's minimized. Middle-clicking on the icon will start/stop shifting the colors. Right clicking the application will bring up a menu where you can minimize, restore, start/stop shifting the colors as well as close the application.</p>
+<h2 id="known-issues">Known Issues</h2>
+<ul>
+<li>Pressing "preview" on a palette with "shift colors in random order" checked will stop after a random amount of time instead of a single cycle.</li>
+<li>Manually typing in the hex code for a color while the HSV radio button is selected may result in small changes to the inputted value.</li>
+<li>Setting smoothness too high, cycle time too low and adding too many colors at the same time might slow down your system.</li>
+</ul>
+<h2 id="how-to-use-the-undocumented-api-for-your-own-purposes">How to use the undocumented API for your own purposes</h2>
+<p>I only know how to do this in C++. First, declare your function pointers and load the dwmapi DLL. This is Windows black magic and I won't even pretend to know what's going on here.</p>
+<pre><code class="lang-C++">hlib = LoadLibrary("dwmapi.dll"); // load the Window Manager API
+
+if (!hlib) {
+    std::cerr &lt;&lt; "Could not load dwmapi.dll" &lt;&lt; std::endl;
+    return -1;
+}
+
+*(FARPROC *)&amp;DwmGetColorizationParameters = GetProcAddress(hlib, (LPCSTR)127);
+*(FARPROC *)&amp;DwmSetColorizationParameters = GetProcAddress(hlib, (LPCSTR)131);
+</code></pre>
+<p>You then need the DwmColorizationParameters struct that will get passed to the functions:</p>
+<pre><code class="lang-C++">typedef struct { // DwmColorizationParameters
+    int color;
+    int afterglow;
+    int colorBalance;
+    int afterglowBalance;
+    int blurBalance;
+    int glassReflectionIntensity;
+    int opaqueBlend;
+} DwmColorizationParameters;
+</code></pre>
+<p>The <code>color</code> field is an 4-byte integer containing the alpha, red, green, and blue components (0xAARRGGBB). The <code>colorBalance</code> field is an integer setting some sort of saturation for the colors, between 0 and 127. I'm not really sure what the others do. They don't seem to have an effect on Windows 8, and on Windows 7 I think they control the intensity/opacity of different glass efects.</p>
+<p>Now you can use the functions.</p>
+<pre><code class="lang-C++">DwmColorizationParameters myColor; // declare the struct that we'll be using
+DwmGetColorizationParameters(&amp;myColor); // myColor now contains the current values of the Windows interface
+
+myColor.color = 0xFF00FF00; // Alpha: 255, Red: 0, Green: 255, Blue: 0
+
+DwmSetColorizationParameters(&amp;myColor, 0); // I don't know what the 0 does but you need it
+</code></pre>
+<p>By knowing this basic implementation you can do all sorts of things with the Windows theme colors. I'm not sure why Microsoft chose to leave these functions undocumented; I think they're pretty neat.</p>
+<p>One other thing: I can't take the credit for finding out how to fish into the Window Manager DLL. I realized it was possible when I was playing with the display settings and the theme color changed instantly -- surely there must be a mechanism with which to do that. After hours of intense searching, I managed to string together a few incomplete tutorials to make it work. If you were the first person to figure it out, let me know and I'll credit you and link to your tutorial/website.</p>
+</body>
+</html>

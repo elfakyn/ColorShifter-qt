@@ -1103,6 +1103,7 @@ void MainWindow::on_mainButton_clicked()
 #endif
 
         ui->mainButton->setText("Stop shifting");
+        ui->mainButton->setToolTip("Stop changing the colors and revert to current theme");
         startStopAction->setText("Stop shifting");
 
         SAVE_GROUP_STATE_AND_DISABLE(color);
@@ -1119,6 +1120,7 @@ void MainWindow::on_mainButton_clicked()
 #endif
 
         ui->mainButton->setText("Shift the colors!");
+        ui->mainButton->setToolTip("Start shifting colors");
         startStopAction->setText("Start shifting");
 
         RESTORE_GROUP_STATE(color);
@@ -1169,6 +1171,7 @@ void MainWindow::stopShifting()
         RESTORE_GROUP_STATE(saveLoad);
         RESTORE_GROUP_STATE(plusMinus);
         ui->previewPaletteButton->setText("Preview");
+        ui->previewPaletteButton->setToolTip("Preview the current palette transitions");
         ui->paletteTable->setEnabled(true);
         ui->mainButton->setEnabled(true);
         startStopAction->setEnabled(true);
@@ -1252,6 +1255,7 @@ void MainWindow::on_previewPaletteButton_clicked()
         SAVE_GROUP_STATE_AND_DISABLE(saveLoad);
         SAVE_GROUP_STATE_AND_DISABLE(plusMinus);
         ui->previewPaletteButton->setText("Stop");
+        ui->previewPaletteButton->setToolTip("Stop previewing the palette and revert to current theme");
         ui->mainButton->setEnabled(false);
         startStopAction->setEnabled(false);
         startShifting();
@@ -1400,4 +1404,11 @@ void MainWindow::on_aboutButton_clicked()
     AboutWindow about;
     about.exec();
     about.deleteLater();
+}
+
+void MainWindow::on_helpButton_clicked()
+{
+    HelpWindow help;
+    help.exec();
+    help.deleteLater();
 }
