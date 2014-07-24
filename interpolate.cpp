@@ -3,10 +3,11 @@
 #define INTERPOLATE(A1, A2, XVALUE) (int)((XVALUE) * ((A2) - (A1)) + 1.0 * (A1))
 #define ABS(x) ((x) >= 0 ? (x) : (0 - (x)))
 
-Color interpolate(Color color1, Color color2, double xvalue) // don't use this
+// don't use this, use interpolate_ instead
+Color interpolate(Color color1, Color color2, double xvalue)
 {
-	int4 ahsv1 = color1.GetAHSV();//
-	int4 ahsv2 = color2.GetAHSV();/////FIXME
+    int4 ahsv1 = color1.GetAHSV();
+    int4 ahsv2 = color2.GetAHSV();
 	int4 ahsvOut;
 	int balanceOut;
 

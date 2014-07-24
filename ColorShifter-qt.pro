@@ -40,6 +40,7 @@ RESOURCES += \
     defaultpalettes.qrc
 
 OTHER_FILES += \
-    colorshifter.rc
+    colorshifter.rc \
+    todo.txt
 
 RC_FILE = colorshifter.rc
