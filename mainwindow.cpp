@@ -373,6 +373,7 @@ void MainWindow::on_colorTable_itemSelectionChanged()
 void MainWindow::on_quitButton_clicked()
 {
     stopShifting();
+    delete trayIcon;
     exit(EXIT_OK);
 
     // exit and revert
@@ -719,8 +720,14 @@ void MainWindow::clearColorTable()
 {
     ui->colorTable->selectionModel()->clearSelection();
 
+    /* // for some reason this doesn't work
     for (int i = ui->colorTable->rowCount() - 1; i >= 0; i--) {
         ui->colorTable->removeRow(i);
+    }
+    */
+
+    while (ui->colorTable->rowCount()) {
+        ui->colorTable->removeRow(0);
     }
 }
 
