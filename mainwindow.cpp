@@ -400,7 +400,7 @@ void MainWindow::on_quitButton_clicked()
     savePalettes(configFile.fileName());
     if (ui->startWindowsCheckbox->isChecked()) {
         // update file path in case it's moved
-        settings->setValue("ColorShifter", QCoreApplication::applicationFilePath().replace('/','\\'));
+        settings->setValue("ColorShifter", QString("\"") + QCoreApplication::applicationFilePath().replace('/','\\') + "\" --minimized");
     }
     delete trayIcon;
     exit(EXIT_OK);
@@ -1096,6 +1096,10 @@ void MainWindow::on_timeEdit_timeChanged(const QTime &time)
 
 void MainWindow::on_mainButton_clicked()
 {
+    if (!ui->mainButton->isEnabled()) {
+        return; // do nothing
+    }
+
     savePalettes(configFile.fileName());
 
     TOGGLE_HACK_FLAG(HACK_MAIN_BUTTON_ON);
@@ -1401,7 +1405,7 @@ void MainWindow::on_startWindowsCheckbox_stateChanged(int arg1)
         return;
     }
     if (arg1) { // checked
-        settings->setValue("ColorShifter", QCoreApplication::applicationFilePath().replace('/','\\'));
+        settings->setValue("ColorShifter", QString("\"") + QCoreApplication::applicationFilePath().replace('/','\\') + "\" --minimized");
     } else {
         settings->remove("ColorShifter");
     }
