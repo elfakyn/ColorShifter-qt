@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>240</width>
-    <height>320</height>
+    <height>360</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -19,13 +19,13 @@
   <property name="minimumSize">
    <size>
     <width>240</width>
-    <height>320</height>
+    <height>360</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
     <width>240</width>
-    <height>320</height>
+    <height>360</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -56,9 +56,9 @@
   <widget class="QPushButton" name="closeButton">
    <property name="geometry">
     <rect>
-     <x>84</x>
-     <y>290</y>
-     <width>71</width>
+     <x>80</x>
+     <y>330</y>
+     <width>81</width>
      <height>21</height>
     </rect>
    </property>
@@ -75,14 +75,14 @@
      <x>15</x>
      <y>150</y>
      <width>211</width>
-     <height>131</height>
+     <height>171</height>
     </rect>
    </property>
    <property name="whatsThis">
     <string>Also check out Hacker School!</string>
    </property>
    <property name="text">
-    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:12pt; font-weight:600; color:#414141;&quot;&gt;ColorShifter 1.0&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;By Mihai Radu Popescu (&lt;/span&gt;&lt;a href=&quot;https://twitter.com/elfakyn&quot;&gt;&lt;span style=&quot; font-size:10pt; text-decoration: underline; color:#414141;&quot;&gt;@elfakyn&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;)&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Browse &lt;/span&gt;&lt;a href=&quot;https://github.com/elfakyn/ColorShifter-qt&quot;&gt;&lt;span style=&quot; font-size:10pt; text-decoration: underline; color:#414141;&quot;&gt;the source code&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;!&lt;br/&gt;Explore &lt;/span&gt;&lt;a href=&quot;https://github.com/elfakyn&quot;&gt;&lt;span style=&quot; font-size:10pt; text-decoration: underline; color:#414141;&quot;&gt;my GitHub&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;!&lt;br/&gt;Check out &lt;/span&gt;&lt;a href=&quot;http://www.sthaskell.com/&quot;&gt;&lt;span style=&quot; font-size:10pt; text-decoration: underline; color:#414141;&quot;&gt;my Haskell book&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;!&lt;br/&gt;Read &lt;/span&gt;&lt;a href=&quot;https://docs.google.com/document/d/1ByVNHsiWWF6shWj5DtPqO2uFuoVD5aPw54XgHibNvz0/&quot;&gt;&lt;span style=&quot; font-size:10pt; text-decoration: underline; color:#414141;&quot;&gt;my resume&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;!&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:12pt; font-weight:600; color:#414141;&quot;&gt;ColorShifter 1.0&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;By Mihai Radu Popescu (&lt;/span&gt;&lt;a href=&quot;https://twitter.com/elfakyn&quot;&gt;&lt;span style=&quot; font-size:10pt; text-decoration: underline; color:#414141;&quot;&gt;@elfakyn&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;)&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Browse &lt;/span&gt;&lt;a href=&quot;https://github.com/elfakyn/ColorShifter-qt&quot;&gt;&lt;span style=&quot; font-size:10pt; text-decoration: underline; color:#414141;&quot;&gt;the source code&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;!&lt;br/&gt;Explore &lt;/span&gt;&lt;a href=&quot;https://github.com/elfakyn&quot;&gt;&lt;span style=&quot; font-size:10pt; text-decoration: underline; color:#414141;&quot;&gt;my GitHub&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;!&lt;br/&gt;Check out &lt;/span&gt;&lt;a href=&quot;http://www.sthaskell.com/&quot;&gt;&lt;span style=&quot; font-size:10pt; text-decoration: underline; color:#414141;&quot;&gt;my Haskell book&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;!&lt;br/&gt;Read &lt;/span&gt;&lt;a href=&quot;https://docs.google.com/document/d/1ByVNHsiWWF6shWj5DtPqO2uFuoVD5aPw54XgHibNvz0/&quot;&gt;&lt;span style=&quot; font-size:10pt; text-decoration: underline; color:#414141;&quot;&gt;my resume&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;!&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;This application uses Qt 5, which is&lt;/span&gt;&lt;br/&gt;&lt;a href=&quot;http://qt-project.org/doc/qt-5/lgpl.html&quot;&gt;&lt;span style=&quot; font-size:10pt; text-decoration: underline; color:#414141;&quot;&gt;licensed under the LGPL&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
    <property name="textFormat">
     <enum>Qt::RichText</enum>
