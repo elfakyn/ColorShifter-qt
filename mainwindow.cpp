@@ -60,15 +60,6 @@ MainWindow::MainWindow(QWidget *parent) :
     // Misc initialization
     settings = new QSettings("HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Run",QSettings::NativeFormat);
 
-    SET_HACK_FLAG(HACK_INHIBIT_START_WINDOWS_CHECKBOX);
-    if (settings->contains("ColorShifter")) {
-        ui->startWindowsCheckbox->setChecked(true);
-        this->on_mainButton_clicked();
-    } else {
-        ui->startWindowsCheckbox->setChecked(false);
-    }
-    CLEAR_HACK_FLAG(HACK_INHIBIT_START_WINDOWS_CHECKBOX);
-
     configFile.setFileName(CONFIG_DIR + QString("/ColorShifter.json"));
 
     if (!QDir(CONFIG_DIR).exists()) {
@@ -117,6 +108,21 @@ MainWindow::MainWindow(QWidget *parent) :
     startStopAction->setEnabled(false);
 
     trayIcon->show();
+
+    SET_HACK_FLAG(HACK_INHIBIT_START_WINDOWS_CHECKBOX);
+    if (settings->contains("ColorShifter")) {
+        if (currentPaletteLoaded >= 0 && currentPaletteLoaded < ui->paletteTable->rowCount()) {
+            //SET_HACK_FLAG(HACK_INHIBIT_PALETTE_TABLE_UPDATE);
+            ui->paletteTable->selectionModel()->clearSelection();
+            ui->paletteTable->selectRow(currentPaletteLoaded);
+            //CLEAR_HACK_FLAG(HACK_INHIBIT_PALETTE_TABLE_UPDATE);
+        }
+        ui->startWindowsCheckbox->setChecked(true);
+        this->on_mainButton_clicked();
+    } else {
+        ui->startWindowsCheckbox->setChecked(false);
+    }
+    CLEAR_HACK_FLAG(HACK_INHIBIT_START_WINDOWS_CHECKBOX);
 
     ////////////////////////////////////////////////////////////////////////////
     // TEMPORARY FOR TESTING
@@ -603,6 +609,8 @@ void MainWindow::loadPalettesFromJSON(QJsonObject json)
         ui->smartCheckbox->setChecked(settings["smart"].toBool());
         ui->overrideCheckbox->setChecked(settings["override"].toBool());
         ui->balanceBox->setValue(settings["balance"].toInt());
+        currentPaletteLoaded = settings["current-palette"].toInt();
+
     } catch (...) {
         QMessageBox couldntLoad;
         couldntLoad.setIcon(QMessageBox::Critical);
@@ -673,6 +681,13 @@ QJsonObject MainWindow::savePalettesToJSON()
     settings["smart"] = ui->smartCheckbox->isChecked();
     settings["override"] = ui->overrideCheckbox->isChecked();
     settings["balance"] = ui->balanceBox->value();
+
+    if (ui->paletteTable->selectedItems().empty()) {
+        settings["current-palette"] = -1;
+    } else {
+        settings["current-palette"] = ui->paletteTable->selectedItems().first()->row();
+    }
+
     json["settings"] = settings;
 
     return json;

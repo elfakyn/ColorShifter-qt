@@ -121,6 +121,7 @@ protected:
 
 private:
     Ui::MainWindow *ui;
+    int currentPaletteLoaded;
 
     DwmColor initialDwmColor;
     DwmColor currentDwmColor;

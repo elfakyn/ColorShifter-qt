@@ -8,9 +8,11 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
+QMAKE_LFLAGS_WINDOWS += /FORCE
 TARGET = ColorShifter-qt
 TEMPLATE = app
-
+CONFIG += static
+DEFINES += STATIC
 
 SOURCES += \
     mainwindow.cpp \
