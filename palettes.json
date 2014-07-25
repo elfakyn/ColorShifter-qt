@@ -348,8 +348,8 @@
         }
     ],
     "settings": {
-	    "current-palette": -1,
         "balance": 89,
+        "current-palette": 2,
         "override": false,
         "random": false,
         "smart": false,
