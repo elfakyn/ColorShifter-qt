@@ -3,6 +3,20 @@ ColorShifter
 
 ColorShifter dynamically changes the Windows 7/8 theme colors by tapping into an undocumented API
 
+##Not working?
+
+If you have your theme set to very transparent, ColorShifter's changes will not be too visible. Try the following:
+
+* Press "Stop and quit" on ColorShifter
+* Right click on your Desktop, select Personalize
+* Click "Color" on the bottom, move the color intensity slider to the right
+* You can also uncheck "transparency" if you're using Windows 7
+* Start ColorShifter
+
+This works because ColorShifter takes the color intensity and transparency settings from what you set in "Personalize".
+
+Alternatively, check the "Override balance" checkbox in ColorShifter and increase the value to about 80-100. This manually sets the color intensity settings.
+
 ##Usage
 
 The main interface is split into three sections:

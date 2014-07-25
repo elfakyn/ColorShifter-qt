@@ -31,13 +31,24 @@ tr.alt td {
 
 pre {
     overflow: auto;
-	width: 99%;
+        width: 99%;
 }
 
 </style>
 <body>
 <h1 id="colorshifter">ColorShifter</h1>
 <p>ColorShifter dynamically changes the Windows 7/8 theme colors by tapping into an undocumented API</p>
+<h2 id="notworking">Not working?</h2>
+<p> If you have your theme set to very transparent, ColorShifter's changes will not be too visible. Try the following:</p>
+<ul>
+<li>Press "Stop and quit" on ColorShifter</li>
+<li>Right click on your Desktop, select Personalize</li>
+<li>Click "Color" on the bottom, move the color intensity slider to the right</li>
+<li>You can also uncheck "transparency" if you're using Windows 7</li>
+<li>Start ColorShifter</li>
+</ul>
+<p>This works because ColorShifter takes the color intensity and transparency settings from what you set in "Personalize".</p>
+<p>Alternatively, check the "Override balance" checkbox in ColorShifter and increase the value to about 80-100. This manually sets the color intensity settings.</p>
 <h2 id="usage">Usage</h2>
 <p>The main interface is split into three sections:</p>
 <ul>
