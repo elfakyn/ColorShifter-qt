@@ -1157,6 +1157,7 @@ void MainWindow::on_mainButton_clicked()
         SAVE_GROUP_STATE_AND_DISABLE(color);
         SAVE_GROUP_STATE_AND_DISABLE(palette);
         SAVE_GROUP_STATE_AND_DISABLE(settings);
+        ui->resetButton->setEnabled(false);
 
         startShifting();
 
@@ -1174,6 +1175,7 @@ void MainWindow::on_mainButton_clicked()
         RESTORE_GROUP_STATE(color);
         RESTORE_GROUP_STATE(palette);
         RESTORE_GROUP_STATE(settings);
+        ui->resetButton->setEnabled(true);
 
         stopShifting();
     }
@@ -1223,6 +1225,7 @@ void MainWindow::stopShifting()
         ui->paletteTable->setEnabled(true);
         ui->mainButton->setEnabled(true);
         startStopAction->setEnabled(true);
+        ui->resetButton->setEnabled(true);
         CLEAR_HACK_FLAG(HACK_PREVIEW_FIRST_PASS);
         CLEAR_HACK_FLAG(HACK_PREVIEW_BUTTON_ON);
     }
@@ -1306,6 +1309,7 @@ void MainWindow::on_previewPaletteButton_clicked()
         ui->previewPaletteButton->setToolTip("Stop previewing the palette and revert to current theme");
         ui->mainButton->setEnabled(false);
         startStopAction->setEnabled(false);
+        ui->resetButton->setEnabled(false);
         startShifting();
     } else {
         stopShifting();
