@@ -1,7 +1,11 @@
 ColorShifter
 ============
 
-ColorShifter dynamically changes the Windows 7/8 theme colors by tapping into an undocumented API
+ColorShifter dynamically changes the Windows 7/8 theme colors by tapping into an undocumented API.
+
+**Gif demonstration here:** http://www.gfycat.com/EqualMeagerAnglerfish
+
+##[Download it here](https://github.com/elfakyn/ColorShifter-qt/releases/latest)
 
 ##Not working?
 
