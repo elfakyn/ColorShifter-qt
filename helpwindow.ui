@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>640</width>
+    <height>480</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -27,29 +27,190 @@
     <number>0</number>
    </property>
    <item row="0" column="0">
-    <widget class="QWebView" name="webView">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="url">
-      <url>
-       <string>qrc:/help.html</string>
-      </url>
+    <widget class="QTextBrowser" name="textBrowser">
+     <property name="html">
+      <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:18px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a name=&quot;colorshifter&quot;&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'verdana,helvetica,arial,sans-serif'; font-size:xx-large; font-weight:600;&quot;&gt;C&lt;/span&gt;&lt;span style=&quot; font-family:'verdana,helvetica,arial,sans-serif'; font-size:xx-large; font-weight:600;&quot;&gt;olorShifter&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'verdana,helvetica,arial,sans-serif';&quot;&gt;ColorShifter dynamically changes the Windows 7/8 theme colors by tapping into an undocumented API&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:16px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a name=&quot;usage&quot;&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'verdana,helvetica,arial,sans-serif'; font-size:x-large; font-weight:600;&quot;&gt;U&lt;/span&gt;&lt;span style=&quot; font-family:'verdana,helvetica,arial,sans-serif'; font-size:x-large; font-weight:600;&quot;&gt;sage&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'verdana,helvetica,arial,sans-serif';&quot;&gt;The main interface is split into three sections:&lt;/span&gt;&lt;/p&gt;
+&lt;ul style=&quot;margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;&quot;&gt;&lt;li style=&quot; font-family:'verdana,helvetica,arial,sans-serif';&quot; style=&quot; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Settings&lt;/li&gt;
+&lt;li style=&quot; font-family:'verdana,helvetica,arial,sans-serif';&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Palettes&lt;/li&gt;
+&lt;li style=&quot; font-family:'verdana,helvetica,arial,sans-serif';&quot; style=&quot; margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Colors&lt;/li&gt;&lt;/ul&gt;
+&lt;p style=&quot; margin-top:14px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a name=&quot;settings-group&quot;&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'verdana,helvetica,arial,sans-serif'; font-size:large; font-weight:600;&quot;&gt;S&lt;/span&gt;&lt;span style=&quot; font-family:'verdana,helvetica,arial,sans-serif'; font-size:large; font-weight:600;&quot;&gt;ettings group&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'verdana,helvetica,arial,sans-serif';&quot;&gt;The settings group contains the following options:&lt;/span&gt;&lt;/p&gt;
+&lt;table border=&quot;0&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px;&quot; cellspacing=&quot;2&quot; cellpadding=&quot;0&quot;&gt;&lt;thead&gt;
+&lt;tr&gt;
+&lt;td bgcolor=&quot;#414141&quot; style=&quot; padding-left:7; padding-right:7; padding-top:4; padding-bottom:4;&quot;&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'verdana,helvetica,arial,sans-serif'; font-weight:600; color:#ffffff; background-color:#414141;&quot;&gt;Item&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td bgcolor=&quot;#414141&quot; style=&quot; padding-left:7; padding-right:7; padding-top:4; padding-bottom:4;&quot;&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'verdana,helvetica,arial,sans-serif'; font-weight:600; color:#ffffff; background-color:#414141;&quot;&gt;Description&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/thead&gt;
+&lt;tr&gt;
+&lt;td style=&quot; padding-left:7; padding-right:7; padding-top:3; padding-bottom:2;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'verdana,helvetica,arial,sans-serif';&quot;&gt;Smootness&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td style=&quot; padding-left:7; padding-right:7; padding-top:3; padding-bottom:2;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'verdana,helvetica,arial,sans-serif';&quot;&gt;Changes the smoothness of the transitions. Smoother settings consume more resources. &amp;quot;Disco&amp;quot; disables transitions.&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&quot; padding-left:7; padding-right:7; padding-top:3; padding-bottom:2;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'verdana,helvetica,arial,sans-serif';&quot;&gt;Cycle time&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td style=&quot; padding-left:7; padding-right:7; padding-top:3; padding-bottom:2;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'verdana,helvetica,arial,sans-serif';&quot;&gt;Sets the duration of a cycle, i.e. the time until the palette wraps around back to the first color. Minimum value: 00:00:01. Maximum value: 23:59:59.&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&quot; padding-left:7; padding-right:7; padding-top:3; padding-bottom:2;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'verdana,helvetica,arial,sans-serif';&quot;&gt;Shift colors in random order&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td style=&quot; padding-left:7; padding-right:7; padding-top:3; padding-bottom:2;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'verdana,helvetica,arial,sans-serif';&quot;&gt;Picks colors at random from the palette instead of cycling between them sequentially&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&quot; padding-left:7; padding-right:7; padding-top:3; padding-bottom:2;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'verdana,helvetica,arial,sans-serif';&quot;&gt;Transition by hue&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td style=&quot; padding-left:7; padding-right:7; padding-top:3; padding-bottom:2;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'verdana,helvetica,arial,sans-serif';&quot;&gt;Uses Hue-Saturation-Value representation when transitioning between colors, e.g. Red-&amp;gt;Green goes through yellow instead of brown. May have a few visual glitches.&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&quot; padding-left:7; padding-right:7; padding-top:3; padding-bottom:2;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'verdana,helvetica,arial,sans-serif';&quot;&gt;Override balance&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td style=&quot; padding-left:7; padding-right:7; padding-top:3; padding-bottom:2;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'verdana,helvetica,arial,sans-serif';&quot;&gt;Forces the colorBalance value in Window's DwmColorizationParameters to the value in the box. Play with this if colors are too washed out or jump around.&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;p style=&quot; margin-top:14px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a name=&quot;palette-group&quot;&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'verdana,helvetica,arial,sans-serif'; font-size:large; font-weight:600;&quot;&gt;P&lt;/span&gt;&lt;span style=&quot; font-family:'verdana,helvetica,arial,sans-serif'; font-size:large; font-weight:600;&quot;&gt;alette group&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'verdana,helvetica,arial,sans-serif';&quot;&gt;Using the palette table you can rename palettes (double-click on the name) or drag and drop them around. There are also several buttons:&lt;/span&gt;&lt;/p&gt;
+&lt;table border=&quot;0&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px;&quot; cellspacing=&quot;2&quot; cellpadding=&quot;0&quot;&gt;&lt;thead&gt;
+&lt;tr&gt;
+&lt;td bgcolor=&quot;#414141&quot; style=&quot; padding-left:7; padding-right:7; padding-top:4; padding-bottom:4;&quot;&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'verdana,helvetica,arial,sans-serif'; font-weight:600; color:#ffffff; background-color:#414141;&quot;&gt;Item&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td bgcolor=&quot;#414141&quot; style=&quot; padding-left:7; padding-right:7; padding-top:4; padding-bottom:4;&quot;&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'verdana,helvetica,arial,sans-serif'; font-weight:600; color:#ffffff; background-color:#414141;&quot;&gt;Description&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/thead&gt;
+&lt;tr&gt;
+&lt;td style=&quot; padding-left:7; padding-right:7; padding-top:3; padding-bottom:2;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'verdana,helvetica,arial,sans-serif';&quot;&gt;+&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td style=&quot; padding-left:7; padding-right:7; padding-top:3; padding-bottom:2;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'verdana,helvetica,arial,sans-serif';&quot;&gt;Adds a new palette to the table. If &amp;quot;copy&amp;quot; is checked, it copies the currently selected palette.&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&quot; padding-left:7; padding-right:7; padding-top:3; padding-bottom:2;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'verdana,helvetica,arial,sans-serif';&quot;&gt;-&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td style=&quot; padding-left:7; padding-right:7; padding-top:3; padding-bottom:2;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'verdana,helvetica,arial,sans-serif';&quot;&gt;Removes palette from the table. You cannot remove the last palette.&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&quot; padding-left:7; padding-right:7; padding-top:3; padding-bottom:2;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'verdana,helvetica,arial,sans-serif';&quot;&gt;Preview&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td style=&quot; padding-left:7; padding-right:7; padding-top:3; padding-bottom:2;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'verdana,helvetica,arial,sans-serif';&quot;&gt;Displays a quick preview of how the current palette looks like in action. Click again to stop preview.&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&quot; padding-left:7; padding-right:7; padding-top:3; padding-bottom:2;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'verdana,helvetica,arial,sans-serif';&quot;&gt;Copy&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td style=&quot; padding-left:7; padding-right:7; padding-top:3; padding-bottom:2;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'verdana,helvetica,arial,sans-serif';&quot;&gt;If this is checked, adding a new palette will copy the currently selected one.&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&quot; padding-left:7; padding-right:7; padding-top:3; padding-bottom:2;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'verdana,helvetica,arial,sans-serif';&quot;&gt;Save&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td style=&quot; padding-left:7; padding-right:7; padding-top:3; padding-bottom:2;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'verdana,helvetica,arial,sans-serif';&quot;&gt;Saves all current palettes to a file, as well as all the settings in the settings group.&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&quot; padding-left:7; padding-right:7; padding-top:3; padding-bottom:2;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'verdana,helvetica,arial,sans-serif';&quot;&gt;Load&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td style=&quot; padding-left:7; padding-right:7; padding-top:3; padding-bottom:2;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'verdana,helvetica,arial,sans-serif';&quot;&gt;Loads palettes and settings from a file, replacing the existing ones.&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;p style=&quot; margin-top:14px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a name=&quot;color-group&quot;&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'verdana,helvetica,arial,sans-serif'; font-size:large; font-weight:600;&quot;&gt;C&lt;/span&gt;&lt;span style=&quot; font-family:'verdana,helvetica,arial,sans-serif'; font-size:large; font-weight:600;&quot;&gt;olor group&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'verdana,helvetica,arial,sans-serif';&quot;&gt;Using the color group you can manually set the hex value of the color (double-click on the value) or drag and drop them around.&lt;/span&gt;&lt;/p&gt;
+&lt;table border=&quot;0&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px;&quot; cellspacing=&quot;2&quot; cellpadding=&quot;0&quot;&gt;&lt;thead&gt;
+&lt;tr&gt;
+&lt;td bgcolor=&quot;#414141&quot; style=&quot; padding-left:7; padding-right:7; padding-top:4; padding-bottom:4;&quot;&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'verdana,helvetica,arial,sans-serif'; font-weight:600; color:#ffffff; background-color:#414141;&quot;&gt;Item&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td bgcolor=&quot;#414141&quot; style=&quot; padding-left:7; padding-right:7; padding-top:4; padding-bottom:4;&quot;&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'verdana,helvetica,arial,sans-serif'; font-weight:600; color:#ffffff; background-color:#414141;&quot;&gt;Description&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/thead&gt;
+&lt;tr&gt;
+&lt;td style=&quot; padding-left:7; padding-right:7; padding-top:3; padding-bottom:2;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'verdana,helvetica,arial,sans-serif';&quot;&gt;+&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td style=&quot; padding-left:7; padding-right:7; padding-top:3; padding-bottom:2;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'verdana,helvetica,arial,sans-serif';&quot;&gt;Adds a new color to the table. If &amp;quot;copy&amp;quot; is checked, it copies the currently selected color. Otherwise it adds a random color.&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&quot; padding-left:7; padding-right:7; padding-top:3; padding-bottom:2;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'verdana,helvetica,arial,sans-serif';&quot;&gt;-&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td style=&quot; padding-left:7; padding-right:7; padding-top:3; padding-bottom:2;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'verdana,helvetica,arial,sans-serif';&quot;&gt;Removes the selected color from the table. You cannot remove the last color.&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&quot; padding-left:7; padding-right:7; padding-top:3; padding-bottom:2;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'verdana,helvetica,arial,sans-serif';&quot;&gt;Preview&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td style=&quot; padding-left:7; padding-right:7; padding-top:3; padding-bottom:2;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'verdana,helvetica,arial,sans-serif';&quot;&gt;If this is checked, the windows theme colors will change to the currently selected color. Useful for choosing colors that don't prevent you from reading the window titles.&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&quot; padding-left:7; padding-right:7; padding-top:3; padding-bottom:2;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'verdana,helvetica,arial,sans-serif';&quot;&gt;Hue, Sat, Value, Alpha&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td style=&quot; padding-left:7; padding-right:7; padding-top:3; padding-bottom:2;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'verdana,helvetica,arial,sans-serif';&quot;&gt;Controls the hue, saturation, value, and transparency of the color. (HSV is checked)&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&quot; padding-left:7; padding-right:7; padding-top:3; padding-bottom:2;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'verdana,helvetica,arial,sans-serif';&quot;&gt;Red, Green, Blue, Alpha&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td style=&quot; padding-left:7; padding-right:7; padding-top:3; padding-bottom:2;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'verdana,helvetica,arial,sans-serif';&quot;&gt;Controls the red, green, blue, and alpha channels of the color. (RGB is checked)&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&quot; padding-left:7; padding-right:7; padding-top:3; padding-bottom:2;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'verdana,helvetica,arial,sans-serif';&quot;&gt;RGB, HSV&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td style=&quot; padding-left:7; padding-right:7; padding-top:3; padding-bottom:2;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'verdana,helvetica,arial,sans-serif';&quot;&gt;Determines whether the sliders control the RGB or the HSV components of the spectrum.&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&quot; padding-left:7; padding-right:7; padding-top:3; padding-bottom:2;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'verdana,helvetica,arial,sans-serif';&quot;&gt;Randomize&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td style=&quot; padding-left:7; padding-right:7; padding-top:3; padding-bottom:2;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'verdana,helvetica,arial,sans-serif';&quot;&gt;Chooses a random color.&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&quot; padding-left:7; padding-right:7; padding-top:3; padding-bottom:2;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'verdana,helvetica,arial,sans-serif';&quot;&gt;Smart&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td style=&quot; padding-left:7; padding-right:7; padding-top:3; padding-bottom:2;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'verdana,helvetica,arial,sans-serif';&quot;&gt;If this is checked, randomize will prefer nice colors over ugly ones.&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;p style=&quot; margin-top:14px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a name=&quot;other-buttons&quot;&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'verdana,helvetica,arial,sans-serif'; font-size:large; font-weight:600;&quot;&gt;O&lt;/span&gt;&lt;span style=&quot; font-family:'verdana,helvetica,arial,sans-serif'; font-size:large; font-weight:600;&quot;&gt;ther buttons&lt;/span&gt;&lt;/p&gt;
+&lt;ul style=&quot;margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;&quot;&gt;&lt;li style=&quot; font-family:'verdana,helvetica,arial,sans-serif';&quot; style=&quot; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;About&lt;/span&gt; displays some brief information about the program and its author&lt;/li&gt;
+&lt;li style=&quot; font-family:'verdana,helvetica,arial,sans-serif';&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Help&lt;/span&gt; displays this text&lt;/li&gt;
+&lt;li style=&quot; font-family:'verdana,helvetica,arial,sans-serif';&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Stop and quit&lt;/span&gt; stops shifting and exits the application&lt;/li&gt;
+&lt;li style=&quot; font-family:'verdana,helvetica,arial,sans-serif';&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Start with Windows&lt;/span&gt; controls whether or not the application will automatically run when you log into Windows.&lt;/li&gt;
+&lt;li style=&quot; font-family:'verdana,helvetica,arial,sans-serif';&quot; style=&quot; margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Shift the colors!&lt;/span&gt; starts shifting the Windows theme colors according to the selected palette. You need to select a palette before this button becomes available. Click again to stop.&lt;/li&gt;&lt;/ul&gt;
+&lt;p style=&quot; margin-top:14px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a name=&quot;system-tray&quot;&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'verdana,helvetica,arial,sans-serif'; font-size:large; font-weight:600;&quot;&gt;S&lt;/span&gt;&lt;span style=&quot; font-family:'verdana,helvetica,arial,sans-serif'; font-size:large; font-weight:600;&quot;&gt;ystem tray&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'verdana,helvetica,arial,sans-serif';&quot;&gt;When the application is loaded, it will display an icon in the system tray. Pressing &amp;quot;X&amp;quot; on the main application window will not close the application. Use &amp;quot;Stop and quit&amp;quot; instead.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'verdana,helvetica,arial,sans-serif';&quot;&gt;Double-clicking on the icon will minimize the main application if it's maximized and maximize it if it's minimized. Middle-clicking on the icon will start/stop shifting the colors. Right clicking the application will bring up a menu where you can minimize, restore, start/stop shifting the colors as well as close the application.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:16px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a name=&quot;known-issues&quot;&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'verdana,helvetica,arial,sans-serif'; font-size:x-large; font-weight:600;&quot;&gt;K&lt;/span&gt;&lt;span style=&quot; font-family:'verdana,helvetica,arial,sans-serif'; font-size:x-large; font-weight:600;&quot;&gt;nown Issues&lt;/span&gt;&lt;/p&gt;
+&lt;ul style=&quot;margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;&quot;&gt;&lt;li style=&quot; font-family:'verdana,helvetica,arial,sans-serif';&quot; style=&quot; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Pressing &amp;quot;preview&amp;quot; on a palette with &amp;quot;shift colors in random order&amp;quot; checked will stop after a random amount of time instead of a single cycle.&lt;/li&gt;
+&lt;li style=&quot; font-family:'verdana,helvetica,arial,sans-serif';&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Manually typing in the hex code for a color while the HSV radio button is selected may result in small changes to the inputted value.&lt;/li&gt;
+&lt;li style=&quot; font-family:'verdana,helvetica,arial,sans-serif';&quot; style=&quot; margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Setting smoothness too high, cycle time too low and adding too many colors at the same time might slow down your system.&lt;/li&gt;&lt;/ul&gt;
+&lt;p style=&quot; margin-top:16px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a name=&quot;how-to-use-the-undocumented-api-for-your-own-purposes&quot;&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'verdana,helvetica,arial,sans-serif'; font-size:x-large; font-weight:600;&quot;&gt;H&lt;/span&gt;&lt;span style=&quot; font-family:'verdana,helvetica,arial,sans-serif'; font-size:x-large; font-weight:600;&quot;&gt;ow to use the undocumented API for your own purposes&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'verdana,helvetica,arial,sans-serif';&quot;&gt;I only know how to do this in C++. First, declare your function pointers and load the dwmapi DLL. This is Windows black magic and I won't even pretend to know what's going on here.&lt;/span&gt;&lt;/p&gt;
+&lt;pre style=&quot; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New,courier';&quot;&gt;hlib = LoadLibrary(&amp;quot;dwmapi.dll&amp;quot;); // load the Window Manager API&lt;/span&gt;&lt;/pre&gt;
+&lt;pre style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Courier New,courier';&quot;&gt;&lt;br /&gt;&lt;/pre&gt;
+&lt;pre style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New,courier';&quot;&gt;if (!hlib) {&lt;/span&gt;&lt;/pre&gt;
+&lt;pre style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New,courier';&quot;&gt;    std::cerr &amp;lt;&amp;lt; &amp;quot;Could not load dwmapi.dll&amp;quot; &amp;lt;&amp;lt; std::endl;&lt;/span&gt;&lt;/pre&gt;
+&lt;pre style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New,courier';&quot;&gt;    return -1;&lt;/span&gt;&lt;/pre&gt;
+&lt;pre style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New,courier';&quot;&gt;}&lt;/span&gt;&lt;/pre&gt;
+&lt;pre style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Courier New,courier';&quot;&gt;&lt;br /&gt;&lt;/pre&gt;
+&lt;pre style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New,courier';&quot;&gt;*(FARPROC *)&amp;amp;DwmGetColorizationParameters = GetProcAddress(hlib, (LPCSTR)127);&lt;/span&gt;&lt;/pre&gt;
+&lt;pre style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New,courier';&quot;&gt;*(FARPROC *)&amp;amp;DwmSetColorizationParameters = GetProcAddress(hlib, (LPCSTR)131);&lt;/span&gt;&lt;/pre&gt;
+&lt;pre style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Courier New,courier';&quot;&gt;&lt;br /&gt;&lt;/pre&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'verdana,helvetica,arial,sans-serif';&quot;&gt;You then need the DwmColorizationParameters struct that will get passed to the functions:&lt;/span&gt;&lt;/p&gt;
+&lt;pre style=&quot; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New,courier';&quot;&gt;typedef struct { // DwmColorizationParameters&lt;/span&gt;&lt;/pre&gt;
+&lt;pre style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New,courier';&quot;&gt;    int color;&lt;/span&gt;&lt;/pre&gt;
+&lt;pre style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New,courier';&quot;&gt;    int afterglow;&lt;/span&gt;&lt;/pre&gt;
+&lt;pre style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New,courier';&quot;&gt;    int colorBalance;&lt;/span&gt;&lt;/pre&gt;
+&lt;pre style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New,courier';&quot;&gt;    int afterglowBalance;&lt;/span&gt;&lt;/pre&gt;
+&lt;pre style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New,courier';&quot;&gt;    int blurBalance;&lt;/span&gt;&lt;/pre&gt;
+&lt;pre style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New,courier';&quot;&gt;    int glassReflectionIntensity;&lt;/span&gt;&lt;/pre&gt;
+&lt;pre style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New,courier';&quot;&gt;    int opaqueBlend;&lt;/span&gt;&lt;/pre&gt;
+&lt;pre style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New,courier';&quot;&gt;} DwmColorizationParameters;&lt;/span&gt;&lt;/pre&gt;
+&lt;pre style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Courier New,courier';&quot;&gt;&lt;br /&gt;&lt;/pre&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'verdana,helvetica,arial,sans-serif';&quot;&gt;The &lt;/span&gt;&lt;span style=&quot; font-family:'Courier New,courier';&quot;&gt;color&lt;/span&gt;&lt;span style=&quot; font-family:'verdana,helvetica,arial,sans-serif';&quot;&gt; field is an 4-byte integer containing the alpha, red, green, and blue components (0xAARRGGBB). The &lt;/span&gt;&lt;span style=&quot; font-family:'Courier New,courier';&quot;&gt;colorBalance&lt;/span&gt;&lt;span style=&quot; font-family:'verdana,helvetica,arial,sans-serif';&quot;&gt; field is an integer setting some sort of saturation for the colors, between 0 and 127. I'm not really sure what the others do. They don't seem to have an effect on Windows 8, and on Windows 7 I think they control the intensity/opacity of different glass efects.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'verdana,helvetica,arial,sans-serif';&quot;&gt;Now you can use the functions.&lt;/span&gt;&lt;/p&gt;
+&lt;pre style=&quot; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New,courier';&quot;&gt;DwmColorizationParameters myColor; // declare the struct that we'll be using&lt;/span&gt;&lt;/pre&gt;
+&lt;pre style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New,courier';&quot;&gt;DwmGetColorizationParameters(&amp;amp;myColor); // myColor now contains the current values of the Windows interface&lt;/span&gt;&lt;/pre&gt;
+&lt;pre style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Courier New,courier';&quot;&gt;&lt;br /&gt;&lt;/pre&gt;
+&lt;pre style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New,courier';&quot;&gt;myColor.color = 0xFF00FF00; // Alpha: 255, Red: 0, Green: 255, Blue: 0&lt;/span&gt;&lt;/pre&gt;
+&lt;pre style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Courier New,courier';&quot;&gt;&lt;br /&gt;&lt;/pre&gt;
+&lt;pre style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New,courier';&quot;&gt;DwmSetColorizationParameters(&amp;amp;myColor, 0); // I don't know what the 0 does but you need it&lt;/span&gt;&lt;/pre&gt;
+&lt;pre style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Courier New,courier';&quot;&gt;&lt;br /&gt;&lt;/pre&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'verdana,helvetica,arial,sans-serif';&quot;&gt;By knowing this basic implementation you can do all sorts of things with the Windows theme colors. I'm not sure why Microsoft chose to leave these functions undocumented; I think they're pretty neat.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'verdana,helvetica,arial,sans-serif';&quot;&gt;One other thing: I can't take the credit for finding out how to fish into the Window Manager DLL. I realized it was possible when I was playing with the display settings and the theme color changed instantly -- surely there must be a mechanism with which to do that. After hours of intense searching, I managed to string together a few incomplete tutorials to make it work. If you were the first person to figure it out, let me know and I'll credit you and link to your tutorial/website.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
     </widget>
    </item>
   </layout>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>QWebView</class>
-   <extends>QWidget</extends>
-   <header>QtWebKitWidgets/QWebView</header>
-  </customwidget>
- </customwidgets>
  <resources/>
  <connections/>
 </ui>

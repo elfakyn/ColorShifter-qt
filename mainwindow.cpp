@@ -467,6 +467,10 @@ void MainWindow::on_paletteTable_itemSelectionChanged()
         return; // massive hack reloaded
     }
 
+    if(HACK_FLAG(HACK_INHIBIT_PALETTE_TABLE_UPDATE)) {
+        return;
+    }
+
     if(ui->paletteTable->selectedItems().empty()) {
         clearColorTable();
         ui->colorGroup->setEnabled(false);
@@ -906,7 +910,11 @@ void QTableWidget::dropEvent(QDropEvent *event)
         return;
     }
 
-    SET_HACK_FLAG(HACK_INHIBIT_COLOR_TABLE_UPDATE); // massive hack, act 1
+    if (this->objectName() == "colorTable") {
+        SET_HACK_FLAG(HACK_INHIBIT_COLOR_TABLE_UPDATE); // massive hack, act 1
+    } else {
+        SET_HACK_FLAG(HACK_INHIBIT_PALETTE_TABLE_UPDATE);
+    }
     // copy data over to new row
     insertRow(destRow);
     for (int i = 0; i < columnCount(); i++) {
@@ -921,7 +929,11 @@ void QTableWidget::dropEvent(QDropEvent *event)
     verticalScrollBar()->setValue(scrollValue);
     scrollTo(destIndex, QAbstractItemView::EnsureVisible);
 
-    CLEAR_HACK_FLAG(HACK_INHIBIT_COLOR_TABLE_UPDATE); // massive hack, act 2
+    if (this->objectName() == "colorTable") {
+        CLEAR_HACK_FLAG(HACK_INHIBIT_COLOR_TABLE_UPDATE); // massive hack, act 2
+    } else {
+        CLEAR_HACK_FLAG(HACK_INHIBIT_PALETTE_TABLE_UPDATE);
+    }
 
 #ifdef QT_DEBUG
     std::cout<<" (ok)"<<std::endl;
@@ -974,7 +986,7 @@ void MainWindow::on_removePaletteButton_clicked()
 {
     SET_HACK_FLAG(HACK_INHIBIT_DWM_TABLE_UPDATE2);
 
-    ui->colorTable->clearSelection();
+    ui->colorTable->selectionModel()->clearSelection();
 
     int row = ui->paletteTable->selectedItems().first()->row();
     ui->paletteTable->removeRow(row);
@@ -992,8 +1004,10 @@ void MainWindow::on_removePaletteButton_clicked()
 void MainWindow::on_addPaletteButton_clicked()
 {
     SET_HACK_FLAG(HACK_INHIBIT_DWM_TABLE_UPDATE2);
+    SET_HACK_FLAG(HACK_INHIBIT_COLOR_TABLE_UPDATE);
 
-    ui->colorTable->clearSelection();
+
+    ui->colorTable->selectionModel()->clearSelection();
 
     ui->removePaletteButton->setEnabled(true);
     if (ui->paletteTable->rowCount() >= TABLE_MAX_ELEMENTS - 1) {
@@ -1010,6 +1024,8 @@ void MainWindow::on_addPaletteButton_clicked()
         ui->paletteTable->setItem(row, i, item);
     }
 
+    SET_HACK_FLAG(HACK_INHIBIT_COLOR_CELL_CHANGE);
+
     if (ui->copyPaletteCheckbox->isChecked()) {
         palettes.addAt(row, palettes.getAt(row - 1));
     } else {
@@ -1021,7 +1037,14 @@ void MainWindow::on_addPaletteButton_clicked()
     ui->paletteTable->selectRow(row);
     ui->colorTable->selectRow(0);
 
+    CLEAR_HACK_FLAG(HACK_INHIBIT_COLOR_TABLE_UPDATE);
     CLEAR_HACK_FLAG(HACK_INHIBIT_DWM_TABLE_UPDATE2);
+    CLEAR_HACK_FLAG(HACK_INHIBIT_COLOR_CELL_CHANGE);
+
+    if (!ui->copyPaletteCheckbox->isChecked()) {
+        palettes.at(row)->setAt(0, int4 {255, 0, 0, 0});
+    }
+    on_colorTable_itemSelectionChanged();
     updateColorAndPreview();
 }
 
@@ -1420,6 +1443,7 @@ void MainWindow::on_aboutButton_clicked()
 
 void MainWindow::on_helpButton_clicked()
 {
+
     HelpWindow help;
     help.exec();
     help.deleteLater();
