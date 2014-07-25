@@ -78,6 +78,7 @@ public:
     QPushButton *aboutButton;
     QPushButton *quitButton;
     QPushButton *helpButton;
+    QPushButton *resetButton;
     QButtonGroup *radioGroup;
 
     void setupUi(QMainWindow *MainWindow)
@@ -214,7 +215,7 @@ public:
         colorTable->raise();
         startWindowsCheckbox = new QCheckBox(centralWidget);
         startWindowsCheckbox->setObjectName(QStringLiteral("startWindowsCheckbox"));
-        startWindowsCheckbox->setGeometry(QRect(390, 450, 121, 21));
+        startWindowsCheckbox->setGeometry(QRect(400, 450, 121, 21));
         mainButton = new QPushButton(centralWidget);
         mainButton->setObjectName(QStringLiteral("mainButton"));
         mainButton->setGeometry(QRect(530, 450, 101, 21));
@@ -344,13 +345,16 @@ public:
         copyPaletteCheckbox->raise();
         aboutButton = new QPushButton(centralWidget);
         aboutButton->setObjectName(QStringLiteral("aboutButton"));
-        aboutButton->setGeometry(QRect(10, 450, 101, 21));
+        aboutButton->setGeometry(QRect(10, 450, 71, 21));
         quitButton = new QPushButton(centralWidget);
         quitButton->setObjectName(QStringLiteral("quitButton"));
-        quitButton->setGeometry(QRect(230, 450, 101, 21));
+        quitButton->setGeometry(QRect(280, 450, 91, 21));
         helpButton = new QPushButton(centralWidget);
         helpButton->setObjectName(QStringLiteral("helpButton"));
-        helpButton->setGeometry(QRect(120, 450, 101, 21));
+        helpButton->setGeometry(QRect(90, 450, 71, 21));
+        resetButton = new QPushButton(centralWidget);
+        resetButton->setObjectName(QStringLiteral("resetButton"));
+        resetButton->setGeometry(QRect(180, 450, 91, 21));
         MainWindow->setCentralWidget(centralWidget);
 
         retranslateUi(MainWindow);
@@ -482,6 +486,10 @@ public:
         helpButton->setToolTip(QApplication::translate("MainWindow", "Detailed help", 0));
 #endif // QT_NO_TOOLTIP
         helpButton->setText(QApplication::translate("MainWindow", "Help", 0));
+#ifndef QT_NO_TOOLTIP
+        resetButton->setToolTip(QApplication::translate("MainWindow", "Detailed help", 0));
+#endif // QT_NO_TOOLTIP
+        resetButton->setText(QApplication::translate("MainWindow", "Reset defaults", 0));
     } // retranslateUi
 
 };

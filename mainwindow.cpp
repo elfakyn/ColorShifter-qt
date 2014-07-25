@@ -1463,3 +1463,15 @@ void MainWindow::on_helpButton_clicked()
     help.exec();
     help.deleteLater();
 }
+
+void MainWindow::on_resetButton_clicked()
+{
+    QMessageBox::StandardButton confirm;
+    confirm = QMessageBox::question(this, "Reset to default?", "Are you sure you want to reset all palettes and settings to default?", QMessageBox::Yes|QMessageBox::No);
+    if (confirm == QMessageBox::Yes) {
+        loadPalettes(":/palettes.json");
+        savePalettes(configFile.fileName());
+    } else {
+        // do nothing
+    }
+}

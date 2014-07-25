@@ -465,7 +465,7 @@
    <widget class="QCheckBox" name="startWindowsCheckbox">
     <property name="geometry">
      <rect>
-      <x>390</x>
+      <x>400</x>
       <y>450</y>
       <width>121</width>
       <height>21</height>
@@ -984,7 +984,7 @@
      <rect>
       <x>10</x>
       <y>450</y>
-      <width>101</width>
+      <width>71</width>
       <height>21</height>
      </rect>
     </property>
@@ -998,9 +998,9 @@
    <widget class="QPushButton" name="quitButton">
     <property name="geometry">
      <rect>
-      <x>230</x>
+      <x>280</x>
       <y>450</y>
-      <width>101</width>
+      <width>91</width>
       <height>21</height>
      </rect>
     </property>
@@ -1014,9 +1014,9 @@
    <widget class="QPushButton" name="helpButton">
     <property name="geometry">
      <rect>
-      <x>120</x>
+      <x>90</x>
       <y>450</y>
-      <width>101</width>
+      <width>71</width>
       <height>21</height>
      </rect>
     </property>
@@ -1025,6 +1025,22 @@
     </property>
     <property name="text">
      <string>Help</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="resetButton">
+    <property name="geometry">
+     <rect>
+      <x>180</x>
+      <y>450</y>
+      <width>91</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string>Detailed help</string>
+    </property>
+    <property name="text">
+     <string>Reset defaults</string>
     </property>
    </widget>
   </widget>

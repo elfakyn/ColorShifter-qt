@@ -116,6 +116,8 @@ private slots:
 
     void on_helpButton_clicked();
 
+    void on_resetButton_clicked();
+
 protected:
     void closeEvent(QCloseEvent *event);
 
