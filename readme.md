@@ -7,6 +7,8 @@ ColorShifter dynamically changes the Windows 7/8 theme colors by tapping into an
 
 ##[Download it here](https://github.com/elfakyn/ColorShifter-qt/releases/latest)
 
+### You may need the [Microsoft Visual C++ redistributable](http://www.microsoft.com/en-us/download/details.aspx?id=40784) to get it to work. Sorry!
+
 ##Not working?
 
 If you have your theme set to very transparent, ColorShifter's changes will not be too visible. Try the following:
