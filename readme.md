@@ -37,7 +37,7 @@ The settings group contains the following options:
 
 | Item | Description |
 | --- | --- |
-| Smootness | Changes the smoothness of the transitions. Smoother settings consume more resources. "Disco" disables transitions. |
+| Smoothness | Changes the smoothness of the transitions. Smoother settings consume more resources. "Disco" disables transitions. |
 | Cycle time | Sets the duration of a cycle, i.e. the time until the palette wraps around back to the first color. Minimum value: 00:00:01. Maximum value: 23:59:59. |
 | Shift colors in random order | Picks colors at random from the palette instead of cycling between them sequentially. |
 | Transition by hue | Uses Hue-Saturation-Value representation when transitioning between colors, e.g. Red->Green goes through yellow instead of brown. May have a few visual glitches. |
