@@ -249,7 +249,7 @@ void MainWindow::on_randomizeColorButton_clicked()
         } else {
             // for RGB we want to avoid all 3 sliders in the same position
 
-            int seed = rand() % 6 + 1;
+            int seed = rand() % 8 + 1;
 
             if (rand() % 2) { // 50% chance of respecting seed
                 if (seed / 4) {
